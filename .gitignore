@@ -1,0 +1,23 @@
+# Keep proprietary game data and generated build outputs out of this public status repository.
+*.xbe
+*.iso
+*.xiso
+*.xmv
+*.pak
+*.rom
+*.elf
+*.exe
+*.dll
+*.obj
+*.o
+*.pdb
+*.idb
+*.i64
+*.gpr
+*.rep
+*.log
+jogo xbox/
+**/TDATA/
+**/UDATA/
+**/levels/
+**/videos/
