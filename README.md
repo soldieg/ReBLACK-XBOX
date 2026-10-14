@@ -1,4 +1,4 @@
-# ReBlack Xbox Project [![decomp.dev: Black 0.00% matched](https://decomp.dev/projects/1419097310.svg?mode=shield&version=BLACK&style=plastic)](https://decomp.dev/soldieg/ReBLACK-XBOX)
+# ReBlack Xbox— BLACK de XBOX para PC [![decomp.dev: Black 0.00% matched](https://decomp.dev/projects/1419097310.svg?mode=shield&version=BLACK&style=plastic)](https://decomp.dev/soldieg/ReBLACK-XBOX)
 
 The ReBlack Xbox Project aims to fully decompile *BLACK* for the original Xbox, reconstruct its code, and work toward a PC recompilation.
 
