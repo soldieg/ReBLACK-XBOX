@@ -1,25 +1,25 @@
 name: ReBLACK Xbox decomp.dev report
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - tools/decompdev/progress-source.json
+      - tools/decompdev/inventory-approval.json
   workflow_dispatch:
-    inputs:
-      version:
-        description: decomp.dev report artifact prefix
-        required: true
-        default: BLACK
 
 permissions:
   contents: read
 
 jobs:
   report:
-    name: Generate objdiff report
+    name: Validate and publish sanitized objdiff report
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Validate complete objdiff inputs
+      - name: Validate approved inventory and sanitized report
         shell: bash
         run: |
           python3 - <<'PY'
@@ -27,57 +27,106 @@ jobs:
           import pathlib
           import sys
 
-          config_path = pathlib.Path("objdiff.json")
-          if not config_path.is_file():
-              sys.exit("Missing objdiff.json. Add the reviewed full linked-object inventory before generating a decomp.dev report.")
+          root = pathlib.Path.cwd()
+          approval_path = root / "tools/decompdev/inventory-approval.json"
+          report_path = root / "tools/decompdev/progress-source.json"
+          for path in (approval_path, report_path):
+              if not path.is_file():
+                  sys.exit(f"Required reviewed input is missing: {path.relative_to(root)}")
 
-          config = json.loads(config_path.read_text(encoding="utf-8"))
-          units = config.get("units")
-          if not isinstance(units, list) or not units:
-              sys.exit("objdiff.json must contain a non-empty units array.")
+          approval = json.loads(approval_path.read_text(encoding="utf-8"))
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          if approval.get("status") != "reviewed-complete" or approval.get("scope") != "all-linked-units":
+              sys.exit("Inventory approval must explicitly cover all linked units before reporting.")
+          expected = approval.get("unit_count")
+          units = report.get("units")
+          if type(expected) is not int or expected <= 0 or not isinstance(units, list) or len(units) != expected:
+              sys.exit("Report units do not match the reviewed complete inventory count.")
+          if report.get("version") != 2 or not isinstance(report.get("measures"), dict):
+              sys.exit("The report must use objdiff report version 2 and include measures.")
+          if report["measures"].get("total_units") != expected:
+              sys.exit("Report aggregate total_units does not match the reviewed inventory.")
 
-          root = pathlib.Path.cwd().resolve()
-          errors = []
-          for index, unit in enumerate(units):
-              if not isinstance(unit, dict) or not unit.get("name"):
-                  errors.append(f"unit {index}: missing unit name")
-                  continue
-              for key in ("target_path", "base_path"):
-                  value = unit.get(key)
-                  if key == "base_path" and value is None:
-                      continue
-                  if not isinstance(value, str) or not value:
-                      errors.append(f"{unit['name']}: missing {key}")
-                      continue
-                  path = (root / value).resolve()
-                  if root not in path.parents and path != root:
-                      errors.append(f"{unit['name']}: {key} escapes the repository")
-                  elif not path.is_file():
-                      errors.append(f"{unit['name']}: {key} does not exist: {value}")
+          report_keys = {"version", "measures", "units", "categories"}
+          measure_keys = {"fuzzy_match_percent", "total_code", "matched_code", "matched_code_percent", "total_data", "matched_data", "matched_data_percent", "total_functions", "matched_functions", "matched_functions_percent", "complete_code", "complete_code_percent", "complete_data", "complete_data_percent", "total_units", "complete_units"}
+          unit_keys = {"name", "measures", "sections", "functions", "metadata"}
+          item_keys = {"name", "size", "fuzzy_match_percent", "metadata", "address"}
+          unit_meta_keys = {"complete", "module_name", "module_id", "progress_categories", "auto_generated"}
+          item_meta_keys = {"demangled_name", "virtual_address"}
 
-          if errors:
-              sys.exit("Invalid objdiff inputs: " + "; ".join(errors))
-          print(f"Validated {len(units)} objdiff units.")
+          def path_like(value):
+              return value.startswith("/") or value.startswith(chr(92)) or (len(value) > 1 and value[1] == ":")
+
+          def reject_paths(value, where="report"):
+              if isinstance(value, dict):
+                  for key, child in value.items():
+                      if "path" in key.lower():
+                          raise ValueError(f"{where}.{key} exposes a local path")
+                      reject_paths(child, where + "." + key)
+              elif isinstance(value, list):
+                  for index, child in enumerate(value):
+                      reject_paths(child, f"{where}[{index}]")
+              elif isinstance(value, str) and path_like(value):
+                  raise ValueError(f"{where} contains an absolute path")
+
+          def check_keys(obj, allowed, where):
+              if not isinstance(obj, dict):
+                  raise ValueError(f"{where} must be an object")
+              extra = set(obj) - allowed
+              if extra:
+                  raise ValueError(f"{where} contains unapproved fields: {sorted(extra)}")
+
+          def check_measures(value, where):
+              check_keys(value, measure_keys, where)
+
+          def check_item(item, where):
+              check_keys(item, item_keys, where)
+              if not isinstance(item.get("name"), str) or path_like(item["name"]):
+                  raise ValueError(f"{where}.name is invalid or path-like")
+              if "metadata" in item:
+                  check_keys(item["metadata"], item_meta_keys, where + ".metadata")
+
+          try:
+              check_keys(report, report_keys, "report")
+              check_measures(report["measures"], "report.measures")
+              if not isinstance(units, list):
+                  raise ValueError("report.units must be an array")
+              names = set()
+              for index, unit in enumerate(units):
+                  where = f"units[{index}]"
+                  check_keys(unit, unit_keys, where)
+                  name = unit.get("name")
+                  if not isinstance(name, str) or not name or path_like(name) or name in names:
+                      raise ValueError(f"{where}.name is missing, duplicated, or path-like")
+                  names.add(name)
+                  check_measures(unit.get("measures"), where + ".measures")
+                  for kind in ("sections", "functions"):
+                      items = unit.get(kind, [])
+                      if not isinstance(items, list):
+                          raise ValueError(f"{where}.{kind} must be an array")
+                      for item_index, item in enumerate(items):
+                          check_item(item, f"{where}.{kind}[{item_index}]")
+                  if "metadata" in unit:
+                      check_keys(unit["metadata"], unit_meta_keys, where + ".metadata")
+              categories = report.get("categories", [])
+              if not isinstance(categories, list):
+                  raise ValueError("report.categories must be an array")
+              for index, category in enumerate(categories):
+                  check_keys(category, {"id", "name", "measures"}, f"categories[{index}]")
+                  check_measures(category.get("measures"), f"categories[{index}].measures")
+              reject_paths(report)
+          except (TypeError, ValueError) as error:
+              sys.exit(f"Report rejected: {error}")
+
+          output = pathlib.Path("build/report.json")
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          print(f"Validated objdiff v2 report: {expected} units; no local paths or extra fields.")
           PY
-      - name: Download pinned objdiff-cli
-        shell: bash
-        run: |
-          curl --fail --location --silent --show-error \
-            https://github.com/encounter/objdiff/releases/download/v3.8.2/objdiff-cli-linux-x86_64 \
-            --output objdiff-cli
-          echo "e5445089a6f707e30cb5e02992451b604619cedfd2660ee2373a86bfefd9e718  objdiff-cli" | sha256sum --check
-          chmod +x objdiff-cli
-      - name: Generate report
-        shell: bash
-        run: |
-          mkdir -p build
-          ./objdiff-cli report generate -o build/report.json
-          test -s build/report.json
-          python3 -m json.tool build/report.json >/dev/null
       - name: Upload decomp.dev report
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ inputs.version }}_report
+          name: BLACK_report
           path: build/report.json
           if-no-files-found: error
           retention-days: 14
