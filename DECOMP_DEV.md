@@ -9,7 +9,9 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 - Base side: **86** independent MSVC x86 objects built from the available manual C reconstructions; 79 files are marked complete and 7 are in progress in the local tracker.
 - objdiff v3.8.2 results: **85 / 2,297,156 exact code bytes (0.0037002%)**, 12 exact functions, and **0.1973351% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
-- The page remains below decomp.dev's 0.5% visibility threshold. The report updates the data artifact but does not change that site threshold.
+- The exact-code figure remains below 0.5%; the badge currently rounds it to **0.01%**.
+
+Latest publication: [GitHub Actions run 38638705393](https://github.com/soldieg/ReBLACK-XBOX/actions/runs/38638705393) succeeded on commit `91d043445542e3b332ec8260ba4d18381b6f0d7f` and uploaded `BLACK_report`. The live [decomp.dev report JSON](https://decomp.dev/projects/1419097310.json?mode=report&version=BLACK) returns all 13,676 units and the measures above.
 
 The 13,676 split entries are not the only detected starts: the refined XboxRecomp detector inventory has 16,598 candidates. Its ranges include overlaps and uncertain boundaries, and the inspected project has no original linker map or equivalent complete object mapping. Neither candidate count is presented as a proven whole-game denominator.
 
