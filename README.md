@@ -1,25 +1,28 @@
-# ReBLACK — Xbox
+# ReBlack Xbox Project
 
-ReBLACK is an ongoing research and engineering project focused on the original Xbox version of *BLACK*. The work combines XBE analysis, function-level reconstruction, isolated validation, and research toward a playable recompilation.
-
-This public repository is the project's status and planning hub. It is not a mirror of the local analysis workspace.
+The ReBlack Xbox Project aims to fully decompile *BLACK* for the original Xbox, reconstruct its code, and work toward a PC recompilation.
 
 ## Current status
 
-The local workspace contains a preserved game copy and a substantial analysis base: XBE metadata and disassembly, 13,676 split function files, two distinct generated-lift snapshots, 82 manually reconstructed C function files, 12 isolated function harnesses, and 10 standalone object files. These artifacts support targeted analysis; they do not constitute recovered original source or a complete game build.
+XBE analysis and function-by-function reconstruction are underway. Work starts with smaller functions and groups functions when they depend on one another. Full decompilation and a PC build are not complete.
 
-See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the inventory and evidence boundaries, and [ROADMAP.md](ROADMAP.md) for the proposed next steps.
+This public repository contains project documentation, planning, and progress updates. It does not distribute the game executable, disc image, extracted assets, generated lifts, or reconstructed game code.
 
-## Tooling
+## Project documents
 
-- **XboxRecomp** provides the XBE-oriented parser, split, and recompilation tools used for this project's Xbox binary workflow.
-- **REA** is the required reverse-engineering evidence workflow where its operations support the target and question.
-- **Ghidra** is available for compatible formats. The project's XBE should not be sent through Ghidra without separately verified loader support.
+- [Project status](PROJECT_STATUS.md)
+- [Roadmap](ROADMAP.md)
+- [decomp.dev reporting status](DECOMP_DEV.md)
 
-## Public-content scope
+## References and tools
 
-This repository contains project notes and status only. It does not distribute the game executable, disc image, extracted game assets, generated lifts, or reconstructed game code. The local workspace remains the source for those materials.
+- [Black-2006-Recomp](https://github.com/portingpete/Black-2006-Recomp) — a related project consulted for technical context and comparison.
+- [XboxRecomp](https://github.com/sp00nznet/xboxrecomp) — used for Xbox-aware XBE analysis and function splitting.
+- [REA](https://github.com/morluto/rea) — used for supported reverse-engineering tasks and evidence. It does not accept this project's XBE.
+- [Ghidra](https://github.com/NationalSecurityAgency/ghidra) — available for compatible formats; support for this XBE is not assumed.
+- [objdiff](https://github.com/encounter/objdiff) — used in a local comparison pilot; a project-wide progress metric has not been established.
+- [decomp.dev](https://decomp.dev/) — planned progress dashboard; registration and reporting are pending.
 
-## decomp.dev
+## AI assistance
 
-The decomp.dev dashboard integration is pending. It expects a supported progress report from GitHub Actions; the project has not yet established a trustworthy matching metric or report generator. See [DECOMP_DEV.md](DECOMP_DEV.md).
+- [OpenAI Codex](https://openai.com/codex/) — assists with analysis, reconstruction workflow, and documentation.
