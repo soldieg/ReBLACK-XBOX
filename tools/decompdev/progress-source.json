@@ -1,0 +1,32 @@
+{
+  "measures": {
+    "fuzzy_match_percent": 3.7906976,
+    "total_code": "85",
+    "matched_data_percent": 100.0,
+    "total_functions": 1,
+    "complete_data_percent": 100.0,
+    "total_units": 1
+  },
+  "units": [
+    {
+      "name": "pilot/sub_0003F180",
+      "measures": {
+        "fuzzy_match_percent": 3.7906976,
+        "total_code": "85",
+        "matched_data_percent": 100.0,
+        "total_functions": 1,
+        "complete_data_percent": 100.0,
+        "total_units": 1
+      },
+      "sections": [
+        {"name": ".data", "metadata": {}},
+        {"name": ".text$mn", "size": "85", "fuzzy_match_percent": 3.7906976, "metadata": {}}
+      ],
+      "functions": [
+        {"name": "_sub_0003F180", "size": "85", "fuzzy_match_percent": 3.7906976, "metadata": {}, "address": "0"}
+      ],
+      "metadata": {"complete": false}
+    }
+  ],
+  "version": 2
+}

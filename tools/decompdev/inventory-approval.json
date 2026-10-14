@@ -1,0 +1,13 @@
+{
+  "schema": "reblack-decompdev-report-scope-v1",
+  "status": "reviewed-incomplete",
+  "scope": "single-object-pilot",
+  "unit_count": 1,
+  "candidate_function_count": 16598,
+  "xbe_sha256": "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6",
+  "limitations": [
+    "This is one 85-byte pilot object, not a complete XBE or linked-unit inventory.",
+    "The function boundary is heuristic and the base reconstruction is not an authoritative matching build.",
+    "Do not interpret this report as whole-game decompilation progress or register the project from this report alone."
+  ]
+}
