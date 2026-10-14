@@ -9,7 +9,7 @@
 - Structural XBE analysis: headers, sections, imports, strings, references, ABI estimates, function catalog, and disassembly.
 - **13,676** split function assembly files, preserving instruction/byte evidence.
 - Two unique XboxRecomp-generated C lift snapshots. These are approximate instruction translations, not original source.
-- **84** manually reconstructed C function files, each requiring its associated evidence and review notes.
+- **86** manual C reconstruction files: 79 marked complete and 7 in progress in the function tracker. Two additional focused-lift review drafts are tracked separately and are not included in that count.
 - **12** isolated function harnesses and **10** standalone object files. These validate narrow contracts and do not prove whole-level or gameplay behavior.
 - A local XboxRecomp tool snapshot, REA CLI 6.4.0, and Ghidra 12.1.4 for compatible targets. The XBE workflow uses XboxRecomp; Ghidra's acceptance of this XBE is not assumed.
 
@@ -31,5 +31,5 @@
 ## Current integration state
 
 - The public GitHub repository is intended to hold status and planning documents, not a copy of the local game-data workspace.
-- The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBOX). GitHub Actions publishes a one-function, explicitly incomplete pilot report; this does not measure whole-game progress.
-- A complete linked-unit inventory and project-wide object comparison remain future work. The pilot's 3.7906976% fuzzy match applies only to one 85-byte candidate.
+- The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBOX). GitHub Actions publishes an explicitly incomplete report over 13,676 XboxRecomp split candidates; 86 local C reconstruction objects were compared, with 12 exact function matches (85 bytes, 0.0037% exact code).
+- The report is not a complete linked-unit inventory: the split ranges include heuristic boundaries and 1,517 overlaps, and the broader detector produced 16,598 candidates. The 0.1973% fuzzy match is a candidate-snapshot measure, not whole-game completion.

@@ -24,6 +24,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
+          import hashlib
           import pathlib
           import sys
 
@@ -46,8 +47,21 @@ jobs:
                   sys.exit("Pilot scope must identify exactly one compared unit and the current 16,598-function candidate inventory.")
               if approval.get("xbe_sha256") != "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6":
                   sys.exit("Pilot report XBE identity does not match the recorded local evidence.")
+          elif status == "reviewed-incomplete" and scope == "split-candidate-snapshot":
+              report_scope = "candidate-snapshot"
+              if approval.get("unit_count") != 13676 or approval.get("split_manifest_count") != 13676:
+                  sys.exit("Candidate snapshot must cover all 13,676 XboxRecomp split-manifest entries.")
+              if approval.get("candidate_function_count") != 16598:
+                  sys.exit("Candidate snapshot must record the separate 16,598-entry refined detector inventory.")
+              if approval.get("expected_total_code_bytes") != 2297156:
+                  sys.exit("Candidate snapshot code-byte denominator does not match the reviewed split manifest.")
+              if approval.get("xbe_sha256") != "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6":
+                  sys.exit("Candidate snapshot XBE identity does not match the recorded local evidence.")
+              report_sha256 = hashlib.sha256(report_path.read_bytes()).hexdigest()
+              if approval.get("report_sha256") != report_sha256:
+                  sys.exit("Candidate report hash does not match the reviewed approval record.")
           else:
-              sys.exit("Report scope must be either reviewed-complete/all-linked-units or reviewed-incomplete/single-object-pilot.")
+              sys.exit("Report scope must be reviewed-complete/all-linked-units, reviewed-incomplete/single-object-pilot, or reviewed-incomplete/split-candidate-snapshot.")
           expected = approval.get("unit_count")
           units = report.get("units")
           if type(expected) is not int or expected <= 0 or not isinstance(units, list) or len(units) != expected:
@@ -63,6 +77,13 @@ jobs:
                   sys.exit("Pilot unit must be explicitly marked incomplete.")
               if report["measures"].get("total_code") != "85" or report["measures"].get("total_functions") != 1:
                   sys.exit("Pilot aggregate measures do not match the recorded 85-byte, one-function comparison.")
+          elif report_scope == "candidate-snapshot":
+              if report["measures"].get("total_code") != "2297156" or report["measures"].get("total_functions") != 13676:
+                  sys.exit("Candidate snapshot aggregates do not match the approved split-manifest inventory.")
+              if any(not isinstance(unit.get("name"), str) or not unit["name"].startswith("candidate/") for unit in units):
+                  sys.exit("Candidate snapshot units must be named candidate/<function>.")
+              if any(unit.get("metadata", {}).get("complete") is not False for unit in units):
+                  sys.exit("Every candidate snapshot unit must remain explicitly incomplete.")
 
           report_keys = {"version", "measures", "units", "categories"}
           measure_keys = {"fuzzy_match_percent", "total_code", "matched_code", "matched_code_percent", "total_data", "matched_data", "matched_data_percent", "total_functions", "matched_functions", "matched_functions_percent", "complete_code", "complete_code_percent", "complete_data", "complete_data_percent", "total_units", "complete_units"}
@@ -148,6 +169,20 @@ jobs:
                   encoding="utf-8",
               )
               print("Validated objdiff v2 pilot report: 1 explicitly incomplete unit; not whole-game progress.")
+          elif report_scope == "candidate-snapshot":
+              summary = pathlib.Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
+              measures = report["measures"]
+              summary.write_text(
+                  "## decomp.dev report — INCOMPLETE CANDIDATE SNAPSHOT\n\n"
+                  f"This report contains {expected:,} XboxRecomp split candidates and {measures.get('total_code')} candidate code bytes. "
+                  f"Objdiff measured {measures.get('matched_code', '0')} exact bytes "
+                  f"({measures.get('matched_code_percent', 0)}% exact; {measures.get('fuzzy_match_percent', 0)}% fuzzy) "
+                  f"across {measures.get('matched_functions', 0)} exact functions.\n\n"
+                  "All units are marked incomplete. The split manifest is heuristic, has overlapping ranges, and is not a complete linked-unit inventory; "
+                  "do not interpret these percentages as whole-game completion.\n",
+                  encoding="utf-8",
+              )
+              print(f"Validated objdiff v2 incomplete candidate snapshot: {expected} candidate units; not whole-game progress.")
           else:
               print(f"Validated objdiff v2 complete report: {expected} units; no local paths or extra fields.")
           PY

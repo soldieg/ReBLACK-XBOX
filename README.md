@@ -6,7 +6,7 @@ The ReBlack Xbox Project aims to fully decompile *BLACK* for the original Xbox, 
 
 XBE analysis and function-by-function reconstruction are underway. Work starts with smaller functions and groups functions when they depend on one another. Full decompilation and a PC build are not complete.
 
-**decomp.dev report (BLACK):** one pilot function, 85 bytes, with **3.79% fuzzy match**. This is a single-function sample, not whole-game progress. The exact matched-code measure is **0.00%**, so decomp.dev keeps the project page hidden below its 0.5% visibility threshold.
+**decomp.dev report (BLACK):** the report now compares all **13,676 XboxRecomp split candidates** against **86** locally compiled C reconstructions. Objdiff found **12 exact functions / 85 bytes**: **0.0037% exact code** and **0.1973% fuzzy match** across 2,297,156 candidate bytes. This is an explicitly incomplete candidate snapshot, not a complete linked-unit inventory or whole-game progress measure. The page remains below decomp.dev's 0.5% visibility threshold.
 
 This public repository contains project documentation, planning, and progress updates. It does not distribute the game executable, disc image, extracted assets, generated lifts, or reconstructed game code.
 
@@ -22,8 +22,8 @@ This public repository contains project documentation, planning, and progress up
 - [XboxRecomp](https://github.com/sp00nznet/xboxrecomp) — used for Xbox-aware XBE analysis and function splitting.
 - [REA](https://github.com/morluto/rea) — used for supported reverse-engineering tasks and evidence. It does not accept this project's XBE.
 - [Ghidra](https://github.com/NationalSecurityAgency/ghidra) — available for compatible formats; support for this XBE is not assumed.
-- [objdiff](https://github.com/encounter/objdiff) — used in a local comparison pilot; a project-wide progress metric has not been established.
-- [decomp.dev project page](https://decomp.dev/soldieg/ReBLACK-XBOX) — registered; GitHub Actions publishes an explicitly incomplete one-function pilot report. Whole-game progress is not established.
+- [objdiff](https://github.com/encounter/objdiff) — compares per-function target objects with available C reconstruction objects and generates the progress report.
+- [decomp.dev project page](https://decomp.dev/soldieg/ReBLACK-XBOX) — registered; GitHub Actions publishes the incomplete 13,676-candidate snapshot. A complete linked-unit inventory is not established.
 
 ## AI assistance
 

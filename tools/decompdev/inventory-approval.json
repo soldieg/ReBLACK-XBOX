@@ -1,13 +1,20 @@
 {
   "schema": "reblack-decompdev-report-scope-v1",
   "status": "reviewed-incomplete",
-  "scope": "single-object-pilot",
-  "unit_count": 1,
+  "scope": "split-candidate-snapshot",
+  "unit_count": 13676,
+  "split_manifest_count": 13676,
   "candidate_function_count": 16598,
+  "expected_total_code_bytes": 2297156,
+  "base_reconstruction_object_count": 86,
+  "exact_matched_code_bytes": 85,
+  "exact_matched_function_count": 12,
   "xbe_sha256": "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6",
+  "report_sha256": "29a0d59773611fe7cbb4699a723d62d9f177da1f219b954ab2a3aa0b0b76df92",
   "limitations": [
-    "This is one 85-byte pilot object, not a complete XBE or linked-unit inventory.",
-    "The function boundary is heuristic and the base reconstruction is not an authoritative matching build.",
-    "Do not interpret this report as whole-game decompilation progress."
+    "The report covers all 13,676 entries in the XboxRecomp split manifest; a separate refined detector inventory contains 16,598 candidates.",
+    "Candidate ranges are heuristic and include overlaps; they are not a proven complete original linked-unit inventory.",
+    "All objdiff report units are explicitly incomplete. The exact-byte metric is not whole-game completion.",
+    "The 86 base objects were compiled locally from manual C reconstructions; target/base objects and source C remain local."
   ]
 }
