@@ -1,6 +1,6 @@
 # decomp.dev integration status
 
-**Status:** no report workflow yet. The local pilot proves objdiff can produce a report, but the complete unit denominator, object grouping, and report scope are not certified.
+**Status:** the `ReBLACK Xbox decomp.dev report` workflow is published on `main`, but there has been no workflow run and no `BLACK_report` artifact. Its validation gate is intentionally closed until a reviewed complete linked-unit inventory and sanitized objdiff v2 report are committed.
 
 The decomp.wiki guide requires target objects representing the matched binary, source-built base objects (or null when no source exists), and an objdiff.json inventory covering every linked object. GitHub Actions must generate report.json and upload it as <VERSION>_report on the default branch before the project can be added to decomp.dev.
 
@@ -16,8 +16,12 @@ Re-running XboxRecomp's detector with those addresses as seeds produced 16,598 c
 
 The union of those ranges covers 2,227,947 of 2,577,820 bytes (86.428%) across executable-flagged raw sections. This byte coverage is not a completeness metric: some sections can contain embedded data, and uncovered ranges may be data, padding, or missed code. The .text section alone has 94.362% range coverage; other sections vary substantially.
 
-## Why the workflow is still gated
+## Why the decomp.dev report is still gated
 
-The public repository is a status/planning hub and contains no project source, objdiff.json, buildable target/base inputs, or reviewed complete inventory. The selected scope follows the decomp.wiki requirement to include every linked object; the local detector has not established that inventory. A workflow file alone would not produce an ingestible report, and a one-function artifact would present an incomplete percentage as project progress.
+The local audit currently has three different function inventories: 13,676 XboxRecomp split entries, 16,702 function-ID candidates, and 16,598 refined detector candidates. The refined candidates include 1,517 overlapping range pairs; 463 additional vtable candidates were not retained; and 349,873 bytes in executable-flagged sections remain uncovered. REA/Ghidra's PE-derived view found 7,389 procedures, which corroborates many starts but does not recover the original linker-object boundaries. No original linker map, symbol file, library, or object-grouping record was found in the inspected project tree.
 
-Keep the XBE, extracted code, and object files local. Add the workflow after the unit inventory and reproducible sanitized report input are reviewed. XboxRecomp is the parser used for this XBE; REA rejected the XBE format and supplied no independent analysis. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports.
+These counts describe detected functions and byte ranges, not every object linked into the XBE. The only generated comparison remains the local one-function pilot: 85 bytes and 3.79% fuzzy match. Its source-to-object provenance is not verified, so it is not a project progress measure. Publishing it as `BLACK_report` would make a pilot subset look like whole-game progress.
+
+The public repository is a status/planning hub and contains no project source, complete `objdiff.json`, buildable target/base inputs, or reviewed complete linked-unit inventory. A workflow file alone does not produce an ingestible report. The current workflow correctly requires `inventory-approval.json` with `status=reviewed-complete` and `scope=all-linked-units`, plus `progress-source.json`, before uploading the `BLACK_report` artifact.
+
+Keep the XBE, extracted code, and object files local. To finish the inventory gate, recover the original build's linker map/symbol information or an equivalent authoritative list that maps every linked unit to its target range. Then establish source-built base objects and target-object provenance, reconcile overlaps and gaps, create the sanitized report input, and run the workflow. XboxRecomp is the parser used for this XBE; REA rejected the original XBE format and its analysis of a derived PE view is corroborative only. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports. Project registration remains postponed.
