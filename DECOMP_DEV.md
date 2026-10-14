@@ -1,11 +1,11 @@
 # decomp.dev integration status
 
-**Status:** pilot blocked before comparison; project not registered; no progress-report workflow is configured.
+**Status:** local objdiff pilot completed; project not registered; no progress-report workflow is configured.
 
-The XboxRecomp XBE parser accepted the local Black retail XBE (title ID `0x45410083`, XDK 5849). REA rejected this XBE format, so it supplied no independent analysis.
+The decomp.wiki integration guide requires target objects representing the matched binary, base objects built from project sources (or null when no source exists), and an `objdiff.json` inventory containing every object linked into the binary. GitHub Actions must generate `report.json` and upload it as `<VERSION>_report` from the default branch before the project can be added at decomp.dev.
 
-A candidate function has a manual C reconstruction and a local compiled object, but the pilot did not establish a genuine relocatable target object from the XBE or verify that the local object was built from that exact source. No compiler or objdiff CLI is available in the current environment. Therefore no target/base comparison or objdiff report was produced.
+A local pilot now compares one XboxRecomp-generated target object with an MSVC-built reconstruction object using objdiff-cli v3.8.2. The report gives 3.79% fuzzy match for one 85-byte candidate. Its boundary has only 0.50 heuristic confidence, and the C reconstruction normalizes the original calling convention. This confirms the toolchain can produce a report, but the percentage is not a valid project-wide decompilation metric. The pilot artifacts remain local under `decompilacao/compilacao/decompdev-pilot/`.
 
-The existing function counts, generated lifts, harnesses, and manual reconstructions are not a verified byte-matching metric. This repository does not publish a completion percentage or placeholder report.
+The two current inventories disagree: the XboxRecomp split manifest has 13,676 entries and the function-ID summary has 16,702. Reconcile the complete linked-unit inventory, verify target boundaries and source-derived base objects, then audit the report categories before enabling the default-branch workflow. Until that denominator is trustworthy, do not publish a progress artifact or register the project.
 
-To resume, establish a reproducible method for producing a genuine objdiff-supported target object and a provenance-verified base object for one exact XBE function. Keep both objects local under the project's compilation folder, run and review the comparison, and only then define a report workflow. Until that gate passes, this GitHub repository remains the public project-status hub. The optional decomp.dev GitHub App does not generate project-progress reports by itself.
+The XBE parser used for local metadata is XboxRecomp; REA rejected this XBE format and supplied no independent analysis. The optional decomp.dev GitHub App sends workflow notifications and can comment on PRs; it does not generate progress reports by itself.
