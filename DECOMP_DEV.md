@@ -1,9 +1,11 @@
 # decomp.dev integration status
 
-**Status:** not registered; no progress report workflow is configured.
+**Status:** pilot blocked before comparison; project not registered; no progress-report workflow is configured.
 
-The upstream [decomp.dev project](https://github.com/encounter/decomp.dev) describes a decompilation progress dashboard and GitHub bot. Its dashboard ingests progress reports from GitHub Actions artifacts. The associated [GitHub App](https://github.com/apps/decomp-dev) sends workflow-completion notifications and can add configured PR comments.
+The XboxRecomp XBE parser accepted the local Black retail XBE (title ID `0x45410083`, XDK 5849). REA rejected this XBE format, so it supplied no independent analysis.
 
-The local BLACK/Xbox workspace currently has inventories, generated lifts, manual reconstructions, and isolated harnesses. Those counts alone are not a valid byte-matching metric. This repository therefore does not publish a fabricated completion percentage or a placeholder objdiff report.
+A candidate function has a manual C reconstruction and a local compiled object, but the pilot did not establish a genuine relocatable target object from the XBE or verify that the local object was built from that exact source. No compiler or objdiff CLI is available in the current environment. Therefore no target/base comparison or objdiff report was produced.
 
-Before enabling dashboard reporting, define and verify a metric that maps the project's real work to the report format accepted by decomp.dev, then add a workflow that produces that report. Until then, this GitHub repository remains the public project-status hub; the optional GitHub App does not itself generate or interpret project-progress reports.
+The existing function counts, generated lifts, harnesses, and manual reconstructions are not a verified byte-matching metric. This repository does not publish a completion percentage or placeholder report.
+
+To resume, establish a reproducible method for producing a genuine objdiff-supported target object and a provenance-verified base object for one exact XBE function. Keep both objects local under the project's compilation folder, run and review the comparison, and only then define a report workflow. Until that gate passes, this GitHub repository remains the public project-status hub. The optional decomp.dev GitHub App does not generate project-progress reports by itself.
