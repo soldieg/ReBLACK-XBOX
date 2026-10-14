@@ -6,7 +6,7 @@ The ReBlack Xbox Project aims to fully decompile *BLACK* for the original Xbox, 
 
 XBE analysis and function-by-function reconstruction are underway. Work starts with smaller functions and groups functions when they depend on one another. Full decompilation and a PC build are not complete.
 
-**decomp.dev report (BLACK):** one pilot function, 85 bytes, with **3.79% fuzzy match**. This is a single-function sample, not whole-game progress. The exact matched-code measure is **0.00%**, so decomp.dev keeps the project page hidden below its 0.5% visibility threshold. [Open the full report (JSON)](https://decomp.dev/projects/1419097310.json?mode=report&version=BLACK).
+**decomp.dev report (BLACK):** one pilot function, 85 bytes, with **3.79% fuzzy match**. This is a single-function sample, not whole-game progress. The exact matched-code measure is **0.00%**, so decomp.dev keeps the project page hidden below its 0.5% visibility threshold.
 
 This public repository contains project documentation, planning, and progress updates. It does not distribute the game executable, disc image, extracted assets, generated lifts, or reconstructed game code.
 
