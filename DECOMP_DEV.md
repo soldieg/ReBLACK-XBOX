@@ -1,8 +1,16 @@
 # decomp.dev integration status
 
-**Status:** the `ReBLACK Xbox decomp.dev report` workflow is published on `main`, but there has been no workflow run and no `BLACK_report` artifact. Its validation gate is intentionally closed until a reviewed complete linked-unit inventory and sanitized objdiff v2 report are committed.
+**Status:** GitHub Actions now produces a sanitized, explicitly incomplete pilot artifact named `BLACK_report`. It contains one 85-byte candidate and is not a whole-game progress report. Project registration remains postponed until the full inventory and object mapping are ready.
 
 The decomp.wiki guide requires target objects representing the matched binary, source-built base objects (or null when no source exists), and an objdiff.json inventory covering every linked object. GitHub Actions must generate report.json and upload it as <VERSION>_report on the default branch before the project can be added to decomp.dev.
+
+## Pilot report artifact
+
+- Workflow run: [38614648807](https://github.com/soldieg/ReBLACK-XBOX/actions/runs/38614648807) — success, commit `7949cfa`.
+- Artifact: `BLACK_report`, containing only `report.json` (objdiff Report v2); SHA-256 `814fea9a81d06115baadaa7c1728973bf4809488ac390d35bf275ed0c2d85b25`.
+- Scope: one unit, `pilot/sub_0003F180`; one function; 85 code bytes; 3.7906976% fuzzy match; `metadata.complete=false`.
+- The workflow summary labels it **INCOMPLETE PILOT**. Do not interpret the percentage as project-wide progress or register the project from this artifact alone.
+- The report was generated locally by `objdiff-cli v3.8.2` from the local target/base objects. GitHub Actions validates the sanitized objdiff v2 JSON, writes `build/report.json`, and uploads it; it does not rebuild the XBE or regenerate target/base objects on the runner.
 
 ## Local pilot
 
@@ -16,12 +24,12 @@ Re-running XboxRecomp's detector with those addresses as seeds produced 16,598 c
 
 The union of those ranges covers 2,227,947 of 2,577,820 bytes (86.428%) across executable-flagged raw sections. This byte coverage is not a completeness metric: some sections can contain embedded data, and uncovered ranges may be data, padding, or missed code. The .text section alone has 94.362% range coverage; other sections vary substantially.
 
-## Why the decomp.dev report is still gated
+## Why the full project report is still gated
 
 The local audit currently has three different function inventories: 13,676 XboxRecomp split entries, 16,702 function-ID candidates, and 16,598 refined detector candidates. The refined candidates include 1,517 overlapping range pairs; 463 additional vtable candidates were not retained; and 349,873 bytes in executable-flagged sections remain uncovered. REA/Ghidra's PE-derived view found 7,389 procedures, which corroborates many starts but does not recover the original linker-object boundaries. No original linker map, symbol file, library, or object-grouping record was found in the inspected project tree.
 
-These counts describe detected functions and byte ranges, not every object linked into the XBE. The only generated comparison remains the local one-function pilot: 85 bytes and 3.79% fuzzy match. Its source-to-object provenance is not verified, so it is not a project progress measure. Publishing it as `BLACK_report` would make a pilot subset look like whole-game progress.
+These counts describe detected functions and byte ranges, not every object linked into the XBE. The published pilot compares one reconstructed 85-byte function and reports 3.7906976% fuzzy match. Its heuristic boundary and normalized calling convention make it unsuitable as a whole-game progress measure; the workflow marks the unit incomplete and its run summary states the limited scope.
 
-The public repository is a status/planning hub and contains no project source, complete `objdiff.json`, buildable target/base inputs, or reviewed complete linked-unit inventory. A workflow file alone does not produce an ingestible report. The current workflow correctly requires `inventory-approval.json` with `status=reviewed-complete` and `scope=all-linked-units`, plus `progress-source.json`, before uploading the `BLACK_report` artifact.
+The public repository is a status/planning hub and contains no project source, complete `objdiff.json`, buildable target/base inputs, or reviewed complete linked-unit inventory. The workflow accepts either this declared single-object pilot scope or a future reviewed-complete scope. A pilot artifact exists now, but it does not satisfy the inventory gate for full project reporting. The decomp.wiki steps for building all target objects, building source base objects, and listing every linked unit remain incomplete; only the one-unit pilot report and artifact-publication step are established.
 
-Keep the XBE, extracted code, and object files local. To finish the inventory gate, recover the original build's linker map/symbol information or an equivalent authoritative list that maps every linked unit to its target range. Then establish source-built base objects and target-object provenance, reconcile overlaps and gaps, create the sanitized report input, and run the workflow. XboxRecomp is the parser used for this XBE; REA rejected the original XBE format and its analysis of a derived PE view is corroborative only. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports. Project registration remains postponed.
+Keep the XBE, extracted code, and object files local. To replace the pilot with a full report, recover the original build's linker map/symbol information or an equivalent authoritative list that maps every linked unit to its target range. Then establish source-built base objects and target-object provenance, reconcile overlaps and gaps, create the sanitized complete report input, and run the workflow. XboxRecomp is the parser used for this XBE; REA rejected the original XBE format and its analysis of a derived PE view is corroborative only. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports. Project registration remains postponed.
