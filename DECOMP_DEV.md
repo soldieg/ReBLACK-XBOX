@@ -1,15 +1,15 @@
 # decomp.dev integration status
 
-**Status:** GitHub Actions now produces a sanitized, explicitly incomplete pilot artifact named `BLACK_report`. It contains one 85-byte candidate and is not a whole-game progress report. Project registration remains postponed until the full inventory and object mapping are ready.
+**Status:** The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBOX). GitHub Actions publishes the sanitized, explicitly incomplete `BLACK_report` pilot artifact. It contains one 85-byte candidate and is not a whole-game progress report.
 
-The decomp.wiki guide requires target objects representing the matched binary, source-built base objects (or null when no source exists), and an objdiff.json inventory covering every linked object. GitHub Actions must generate report.json and upload it as <VERSION>_report on the default branch before the project can be added to decomp.dev.
+The decomp.wiki guide describes reports built from target objects, source-built base objects (or null when no source exists), and an objdiff.json inventory covering every linked object. GitHub Actions generates report.json and uploads it as <VERSION>_report on the default branch. The current registered project uses an explicitly incomplete one-function pilot while the full inventory is prepared.
 
 ## Pilot report artifact
 
 - Workflow run: [38614648807](https://github.com/soldieg/ReBLACK-XBOX/actions/runs/38614648807) — success, commit `7949cfa`.
 - Artifact: `BLACK_report`, containing only `report.json` (objdiff Report v2); SHA-256 `814fea9a81d06115baadaa7c1728973bf4809488ac390d35bf275ed0c2d85b25`.
 - Scope: one unit, `pilot/sub_0003F180`; one function; 85 code bytes; 3.7906976% fuzzy match; `metadata.complete=false`.
-- The workflow summary labels it **INCOMPLETE PILOT**. Do not interpret the percentage as project-wide progress or register the project from this artifact alone.
+- The workflow summary labels it **INCOMPLETE PILOT**. Do not interpret the percentage as project-wide progress.
 - The report was generated locally by `objdiff-cli v3.8.2` from the local target/base objects. GitHub Actions validates the sanitized objdiff v2 JSON, writes `build/report.json`, and uploads it; it does not rebuild the XBE or regenerate target/base objects on the runner.
 
 ## Local pilot
@@ -32,4 +32,4 @@ These counts describe detected functions and byte ranges, not every object linke
 
 The public repository is a status/planning hub and contains no project source, complete `objdiff.json`, buildable target/base inputs, or reviewed complete linked-unit inventory. The workflow accepts either this declared single-object pilot scope or a future reviewed-complete scope. A pilot artifact exists now, but it does not satisfy the inventory gate for full project reporting. The decomp.wiki steps for building all target objects, building source base objects, and listing every linked unit remain incomplete; only the one-unit pilot report and artifact-publication step are established.
 
-Keep the XBE, extracted code, and object files local. To replace the pilot with a full report, recover the original build's linker map/symbol information or an equivalent authoritative list that maps every linked unit to its target range. Then establish source-built base objects and target-object provenance, reconcile overlaps and gaps, create the sanitized complete report input, and run the workflow. XboxRecomp is the parser used for this XBE; REA rejected the original XBE format and its analysis of a derived PE view is corroborative only. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports. Project registration remains postponed.
+Keep the XBE, extracted code, and object files local. To replace the pilot with a full report, recover the original build's linker map/symbol information or an equivalent authoritative list that maps every linked unit to its target range. Then establish source-built base objects and target-object provenance, reconcile overlaps and gaps, create the sanitized complete report input, and run the workflow. XboxRecomp is the parser used for this XBE; REA rejected the original XBE format and its analysis of a derived PE view is corroborative only. The optional decomp.dev GitHub App sends workflow notifications and may comment on PRs; it does not generate reports. The project is registered; the full linked-unit inventory and project-wide object mapping remain future work.

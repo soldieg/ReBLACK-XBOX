@@ -18,9 +18,9 @@ Update one manual function reconstruction at a time. Keep generated lift output 
 
 Use a focused harness for the function contract. Treat a harness result as isolated validation; require emulator or gameplay evidence for claims about game behavior.
 
-## 5. Define project progress reporting
+## 5. Expand project progress reporting
 
-Choose a progress metric that this project's workflow can calculate accurately. Then determine whether it can produce a valid decomp.dev report without presenting function inventory or manual review as byte-matching progress.
+Replace the current one-function pilot with a reviewed inventory of all linked units, valid target objects, and source-built base objects. Keep analysis counts and incomplete pilot results separate from whole-game matching progress.
 
 ## 6. Integrate into the game project
 

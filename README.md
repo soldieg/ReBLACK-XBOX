@@ -21,7 +21,7 @@ This public repository contains project documentation, planning, and progress up
 - [REA](https://github.com/morluto/rea) — used for supported reverse-engineering tasks and evidence. It does not accept this project's XBE.
 - [Ghidra](https://github.com/NationalSecurityAgency/ghidra) — available for compatible formats; support for this XBE is not assumed.
 - [objdiff](https://github.com/encounter/objdiff) — used in a local comparison pilot; a project-wide progress metric has not been established.
-- [decomp.dev](https://decomp.dev/) — planned progress dashboard; registration and reporting are pending.
+- [decomp.dev project page](https://decomp.dev/soldieg/ReBLACK-XBOX) — registered; GitHub Actions publishes an explicitly incomplete one-function pilot report. Whole-game progress is not established.
 
 ## AI assistance
 

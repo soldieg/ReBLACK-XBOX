@@ -8,6 +8,6 @@
   "limitations": [
     "This is one 85-byte pilot object, not a complete XBE or linked-unit inventory.",
     "The function boundary is heuristic and the base reconstruction is not an authoritative matching build.",
-    "Do not interpret this report as whole-game decompilation progress or register the project from this report alone."
+    "Do not interpret this report as whole-game decompilation progress."
   ]
 }
