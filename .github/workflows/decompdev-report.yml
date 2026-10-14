@@ -1,0 +1,83 @@
+name: ReBLACK Xbox decomp.dev report
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: decomp.dev report artifact prefix
+        required: true
+        default: BLACK
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Generate objdiff report
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate complete objdiff inputs
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          config_path = pathlib.Path("objdiff.json")
+          if not config_path.is_file():
+              sys.exit("Missing objdiff.json. Add the reviewed full linked-object inventory before generating a decomp.dev report.")
+
+          config = json.loads(config_path.read_text(encoding="utf-8"))
+          units = config.get("units")
+          if not isinstance(units, list) or not units:
+              sys.exit("objdiff.json must contain a non-empty units array.")
+
+          root = pathlib.Path.cwd().resolve()
+          errors = []
+          for index, unit in enumerate(units):
+              if not isinstance(unit, dict) or not unit.get("name"):
+                  errors.append(f"unit {index}: missing unit name")
+                  continue
+              for key in ("target_path", "base_path"):
+                  value = unit.get(key)
+                  if key == "base_path" and value is None:
+                      continue
+                  if not isinstance(value, str) or not value:
+                      errors.append(f"{unit['name']}: missing {key}")
+                      continue
+                  path = (root / value).resolve()
+                  if root not in path.parents and path != root:
+                      errors.append(f"{unit['name']}: {key} escapes the repository")
+                  elif not path.is_file():
+                      errors.append(f"{unit['name']}: {key} does not exist: {value}")
+
+          if errors:
+              sys.exit("Invalid objdiff inputs: " + "; ".join(errors))
+          print(f"Validated {len(units)} objdiff units.")
+          PY
+      - name: Download pinned objdiff-cli
+        shell: bash
+        run: |
+          curl --fail --location --silent --show-error \
+            https://github.com/encounter/objdiff/releases/download/v3.8.2/objdiff-cli-linux-x86_64 \
+            --output objdiff-cli
+          echo "e5445089a6f707e30cb5e02992451b604619cedfd2660ee2373a86bfefd9e718  objdiff-cli" | sha256sum --check
+          chmod +x objdiff-cli
+      - name: Generate report
+        shell: bash
+        run: |
+          mkdir -p build
+          ./objdiff-cli report generate -o build/report.json
+          test -s build/report.json
+          python3 -m json.tool build/report.json >/dev/null
+      - name: Upload decomp.dev report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ inputs.version }}_report
+          path: build/report.json
+          if-no-files-found: error
+          retention-days: 14
