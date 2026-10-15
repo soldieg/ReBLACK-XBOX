@@ -6,15 +6,17 @@
   "split_manifest_count": 13676,
   "candidate_function_count": 16598,
   "expected_total_code_bytes": 2297156,
-  "base_reconstruction_object_count": 86,
-  "exact_matched_code_bytes": 85,
-  "exact_matched_function_count": 12,
+  "base_reconstruction_object_count": 130,
+  "exact_matched_code_bytes": 406,
+  "exact_matched_function_count": 47,
   "xbe_sha256": "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6",
-  "report_sha256": "29a0d59773611fe7cbb4699a723d62d9f177da1f219b954ab2a3aa0b0b76df92",
+  "report_sha256": "ff85b068904a54ba9c997b065db215da7798d663bf7398ae4baf7b731374be8d",
   "limitations": [
     "The report covers all 13,676 entries in the XboxRecomp split manifest; a separate refined detector inventory contains 16,598 candidates.",
     "Candidate ranges are heuristic and include overlaps; they are not a proven complete original linked-unit inventory.",
     "All objdiff report units are explicitly incomplete. The exact-byte metric is not whole-game completion.",
-    "The 86 base objects were compiled locally from manual C reconstructions; target/base objects and source C remain local."
+    "The 130 base objects were compiled locally from manual C reconstructions; target/base objects and source C remain local.",
+    "44 additional local function objects passed isolated compile and byte comparison; objdiff reflects 35 of these in exact-match totals, while 9 are not counted as exact at split-object level.",
+    "Six of the 44 exact local reconstructions have unresolved global/table dependency groups; all candidate units remain explicitly incomplete."
   ]
 }

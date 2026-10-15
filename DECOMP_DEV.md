@@ -6,12 +6,12 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 
 - Scope: **13,676 XboxRecomp split candidates** from the reviewed manifest. This is a candidate snapshot, not a complete linked-unit inventory.
 - Target side: one MASM object per candidate, assembled from XboxRecomp's byte-preserving split listings.
-- Base side: **86** independent MSVC x86 objects built from the available manual C reconstructions; 79 files are marked complete and 7 are in progress in the local tracker.
-- objdiff v3.8.2 results: **85 / 2,297,156 exact code bytes (0.0037002%)**, 12 exact functions, and **0.1973351% fuzzy match**.
+- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions; 79 files are marked complete and 7 are in progress in the local tracker.
+- objdiff v3.8.2 results: **406 / 2,297,156 exact code bytes (0.0176740%)**, 47 exact functions, and **0.2113089% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
 - The exact-code figure remains below 0.5%; the badge currently rounds it to **0.01%**.
 
-Latest publication: [GitHub Actions run 38638705393](https://github.com/soldieg/ReBLACK-XBOX/actions/runs/38638705393) succeeded on commit `91d043445542e3b332ec8260ba4d18381b6f0d7f` and uploaded `BLACK_report`. The live [decomp.dev report JSON](https://decomp.dev/projects/1419097310.json?mode=report&version=BLACK) returns all 13,676 units and the measures above.
+The refreshed report is published through the repository GitHub Actions workflow as `BLACK_report`. The live [decomp.dev report JSON](https://decomp.dev/projects/1419097310.json?mode=report&version=BLACK) returns all 13,676 units and the measures above. The 44 new local function reconstructions passed isolated compile and byte comparison; objdiff counted 35 of them as exact matches, and 9 did not register as exact at split-object level.
 
 The 13,676 split entries are not the only detected starts: the refined XboxRecomp detector inventory has 16,598 candidates. Its ranges include overlaps and uncertain boundaries, and the inspected project has no original linker map or equivalent complete object mapping. Neither candidate count is presented as a proven whole-game denominator.
 
