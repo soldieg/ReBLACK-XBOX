@@ -64,3 +64,7 @@ The local tracker records 336 complete, 152 in progress, and 13,188 not started 
 ### Dispatcher static-review follow-up (2026-10-16)
 
 Partial instruction-level review found and corrected five additional C issues: event-10 mask-word read order, elapsed timing order, the selector-4 state-object snapshot point, and event-12 payload storage and helper-call order. The parent remains in progress; ABI/SIMD equivalence, Xbox build/diff, and runtime remain pending. The tracker remains 336 complete, 152 in progress, and 13,188 not started. No target/base objects were added, so decomp.dev exact/fuzzy totals are unchanged. Source and detailed REA evidence remain local.
+
+### Virtual-call context (2026-10-16)
+
+REA instruction inspection confirms that both unresolved calls load the selected object into ECX, read its vtable pointer into EDX, push `owner+0x740`, and call `[EDX+8]`. Static target resolution still returns no targets or candidates; the concrete vtable and runtime dispatch remain unknown. This adds no target/base objects, so published decomp.dev exact/fuzzy totals are unchanged. Source and detailed evidence remain local.
