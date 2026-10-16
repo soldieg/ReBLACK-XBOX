@@ -39,6 +39,4 @@ This public repository contains project documentation, planning, and progress up
 
 - [OpenAI Codex](https://openai.com/codex/) — assists with analysis, reconstruction workflow, and documentation.
 
-**Next table leaf (2026-10-16):** Slot x28C13C points to sub_001F2730, a 3-byte RET 4 sequence. Its semantic C adapter is local; Ghidra does not recognize a function boundary, and the caller/ABI remain unresolved. Xbox build/diff and runtime are pending. Source and REA evidence remain local.
-
 **Next table leaf (2026-10-16):** Slot `0x28C13C` points to `sub_001F2730`, a 3-byte `RET 4` sequence. Its semantic C adapter is local; Ghidra does not recognize a function boundary, and the caller/ABI remain unresolved. Xbox build/diff and runtime are pending. Source and REA evidence remain local.
