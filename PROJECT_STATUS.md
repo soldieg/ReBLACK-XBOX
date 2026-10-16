@@ -9,7 +9,8 @@
 - Structural XBE analysis: headers, sections, imports, strings, references, ABI estimates, function catalog, and disassembly.
 - **13,676** split function assembly files, preserving instruction/byte evidence.
 - Two unique XboxRecomp-generated C lift snapshots. These are approximate instruction translations, not original source.
-- 86 existing manual C reconstruction files plus 44 new isolated function reconstructions that compiled and matched their recorded Xbox byte spans. Six of the new reconstructions still have unresolved global/table dependency groups; five other candidates failed byte comparison and are excluded.
+- The local tracker records **288 functions with a written C reconstruction and completed static review**, plus **75 in progress**, out of 13,676 split candidates (2.11% statically complete by tracker rows). Static review does not imply a successful build/diff or runtime validation.
+- A separately validated subset includes 44 isolated function reconstructions that compiled and matched their recorded Xbox byte spans. Six still have unresolved global/table dependency groups; five other candidates failed byte comparison and are excluded from those exact-match results.
 - **12** isolated function harnesses and **10** standalone object files. These validate narrow contracts and do not prove whole-level or gameplay behavior.
 - A local XboxRecomp tool snapshot, REA CLI 6.4.0, and Ghidra 12.1.4 for compatible targets. The XBE workflow uses XboxRecomp; Ghidra's acceptance of this XBE is not assumed.
 
@@ -32,4 +33,5 @@
 
 - The public GitHub repository is intended to hold status and planning documents, not a copy of the local game-data workspace.
 - The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBOX). GitHub Actions publishes an explicitly incomplete report over 13,676 XboxRecomp split candidates; 130 locally compiled reconstruction objects were compared, with 47 exact function matches (406 bytes, 0.0177% exact code). The 44 new local build-and-byte-diff results contributed 35 functions to objdiff exact totals; nine did not register as exact at split-object level.
+- The local static-review tracker (288 complete, 75 in progress) is a separate progress measure and does not change the decomp.dev binary-match result.
 - The report is not a complete linked-unit inventory: the split ranges include heuristic boundaries and 1,517 overlaps, and the broader detector produced 16,598 candidates. The 0.2113% fuzzy match is a candidate-snapshot measure, not whole-game completion. Six new reconstructions remain semantically pending because of shared global/table dependencies; all report units remain explicitly incomplete.

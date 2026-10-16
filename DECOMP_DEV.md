@@ -6,10 +6,10 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 
 - Scope: **13,676 XboxRecomp split candidates** from the reviewed manifest. This is a candidate snapshot, not a complete linked-unit inventory.
 - Target side: one MASM object per candidate, assembled from XboxRecomp's byte-preserving split listings.
-- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions; 79 files are marked complete and 7 are in progress in the local tracker.
+- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local static-review tracker (2026-10-15) records **288 complete** and **75 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
 - objdiff v3.8.2 results: **406 / 2,297,156 exact code bytes (0.0176740%)**, 47 exact functions, and **0.2113089% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
-- The exact-code figure remains below 0.5%; the badge currently rounds it to **0.01%**.
+- The exact-code figure remains below 0.5%; the badge currently rounds it to **0.02%**.
 
 Latest publication: [GitHub Actions run #4](https://github.com/soldieg/ReBLACK-XBOX/actions/runs/38688101097) succeeded on commit `5c0f801e1902eb8befabb792855e68815a8ad06d` and uploaded `BLACK_report`. The [decomp.dev report JSON](https://decomp.dev/projects/1419097310.json?mode=report&version=BLACK) is the project panel source. The 44 new local function reconstructions passed isolated compile and byte comparison; objdiff counted 35 of them as exact matches, and 9 did not register as exact at split-object level.
 
@@ -25,6 +25,6 @@ GitHub Actions does not rebuild the XBE or regenerate the target/base objects. I
 
 ## What this report proves
 
-The 12 exact matches show that the compiled C objects contain byte-identical code for those 12 candidate ranges under the recorded local compiler settings. Fuzzy matching measures similar code that is not byte-identical. This does not establish that all original functions or linked objects have been found, nor does it prove runtime behavior or a PC recompilation.
+The 47 exact matches show that the compiled C objects contain byte-identical code for those 47 candidate ranges under the recorded local compiler settings. Fuzzy matching measures similar code that is not byte-identical. This does not establish that all original functions or linked objects have been found, nor does it prove runtime behavior or a PC recompilation.
 
 The previous one-function pilot report remains in the project's decomp.dev history. It has been superseded by this 13,676-candidate snapshot for the latest report.
