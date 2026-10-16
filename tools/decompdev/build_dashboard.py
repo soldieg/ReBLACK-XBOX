@@ -13,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REPORT = ROOT / "tools/decompdev/progress-source.json"
+DEFAULT_PRIORITIES = ROOT / "docs/data/function-priorities.json"
 DEFAULT_BADGE = ROOT / "docs/assets/progress.svg"
 DEFAULT_OUTPUT = ROOT / "build/pages"
 
@@ -140,6 +141,19 @@ def read_report(path: Path) -> dict:
     return {"summary": summary, "candidates": candidates}
 
 
+def read_priorities(path: Path, candidates: list[dict]) -> dict:
+    priorities = json.loads(path.read_text(encoding="utf-8"))
+    high = priorities.get("high")
+    if priorities.get("schemaVersion") != 1 or not isinstance(high, list):
+        raise ValueError("Priority data must use schemaVersion 1 and a high candidate list")
+    known = {item["name"] for item in candidates}
+    if any(not isinstance(name, str) or name not in known for name in high):
+        raise ValueError("Priority list contains a candidate ID absent from the approved dashboard snapshot")
+    if len(high) != len(set(high)):
+        raise ValueError("Priority list contains duplicate candidate IDs")
+    return {"high": high}
+
+
 def badge_svg(summary: dict) -> str:
     exact = f"{summary['exactCodePercent']:.2f}%"
     left = "BLACK exact code"
@@ -164,6 +178,7 @@ def badge_svg(summary: dict) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT, help="validated objdiff report JSON")
+    parser.add_argument("--priorities", type=Path, default=DEFAULT_PRIORITIES, help="maintainer-curated public candidate priorities")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="static site build directory")
     parser.add_argument("--badge", type=Path, default=DEFAULT_BADGE, help="README badge SVG path")
     parser.add_argument("--check-badge", action="store_true", help="fail if the committed badge is stale; do not change it")
@@ -171,6 +186,7 @@ def main() -> int:
 
     try:
         payload = read_report(args.report)
+        payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
         expected_badge = badge_svg(payload["summary"])
         if args.check_badge:
             if not args.badge.is_file() or args.badge.read_text(encoding="utf-8") != expected_badge:

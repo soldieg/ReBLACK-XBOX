@@ -1,0 +1,55 @@
+name: Function review
+description: Report a possible error or propose an improvement to a reconstruction
+title: "[Review] "
+labels:
+  - function-review
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open a review issue for an existing function. A red map block means this report is awaiting maintainer review; it does not mean the reported problem is confirmed.
+
+  - type: input
+    id: candidate_id
+    attributes:
+      label: Candidate or function ID
+      description: Copy the ID from the progress dashboard. The selected ID is also included in the issue title.
+      placeholder: sub_00000000
+    validations:
+      required: true
+
+  - type: dropdown
+    id: review_type
+    attributes:
+      label: What should be reviewed?
+      options:
+        - Possible incorrect reconstruction
+        - Byte-diff or evidence concern
+        - Function boundary or dependency concern
+        - Suggested improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: explanation
+    attributes:
+      label: Explanation
+      description: Describe the concern or improvement and how it relates to the current reconstruction.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence or references
+      description: Link public evidence or explain how the maintainer can reproduce the check. Do not include game files or extracted bytes.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safe_submission
+    attributes:
+      label: Submission checks
+      options:
+        - label: I will not upload game files, extracted binaries, target byte dumps, local paths, or credentials.
+          required: true
