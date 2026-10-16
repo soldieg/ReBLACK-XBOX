@@ -7,6 +7,7 @@ on:
       - tools/decompdev/progress-source.json
       - tools/decompdev/inventory-approval.json
       - tools/decompdev/build_dashboard.py
+      - docs/data/function-priorities.json
       - docs/index.html
       - docs/assets/progress.svg
       - .github/workflows/progress-dashboard.yml

@@ -49,6 +49,19 @@
     .legend { display:flex; flex-wrap:wrap; gap:16px; margin:12px 0; color:var(--muted); font-size:.9rem; }
     .legend span { display:inline-flex; align-items:center; gap:7px; }
     .swatch { width:13px; height:13px; border-radius:3px; display:inline-block; }
+    .candidate-detail { margin:14px 0; padding:16px; border:1px solid var(--line); border-radius:9px; background:var(--panel); }
+    .candidate-detail[hidden] { display:none; }
+    .candidate-detail h3 { margin:0 0 6px; }
+    .candidate-detail p { margin:6px 0; }
+    .candidate-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .candidate-actions a { display:inline-flex; align-items:center; min-height:38px; padding:7px 11px; border:1px solid var(--line); border-radius:6px; background:#203148; color:var(--text); text-decoration:none; }
+    .queue { display:grid; gap:12px; }
+    .queue-section { border-top:1px solid var(--line); padding-top:10px; }
+    .queue-section h3 { margin:0 0 8px; font-size:1rem; }
+    .queue-list { margin:0; padding:0; list-style:none; display:grid; gap:6px; }
+    .queue-list a { display:flex; justify-content:space-between; gap:12px; padding:8px 10px; border:1px solid var(--line); border-radius:6px; color:var(--text); text-decoration:none; background:#111a25; }
+    .queue-list small { color:var(--muted); }
+    .candidate-actions a:focus-visible,.queue-list a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
     .chart-wrap { position:relative; background:#0c1118; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
     canvas { display:block; width:100%; height:min(62vh,620px); min-height:380px; touch-action:pan-y; }
     .tooltip { display:none; position:absolute; z-index:2; max-width:min(340px,85%); padding:8px 10px; border:1px solid #60738a; border-radius:7px; background:#111a25; box-shadow:0 6px 24px #0008; pointer-events:none; font-size:.84rem; }
@@ -113,17 +126,42 @@
           <option value="unmatched" id="filter-unmatched">No match in report</option>
         </select>
       </label>
+      <label><span id="size-zoom-label">Zoom by size</span>
+        <select id="size-zoom">
+          <option value="all" id="size-all">All sizes</option>
+          <option value="tiny" id="size-tiny">1–16 bytes</option>
+          <option value="small" id="size-small">17–256 bytes</option>
+          <option value="medium" id="size-medium">257–4,096 bytes</option>
+          <option value="large" id="size-large">Over 4,096 bytes</option>
+        </select>
+      </label>
+      <label><span id="availability-label">Availability</span>
+        <select id="availability">
+          <option value="all" id="availability-all">All candidates</option>
+          <option value="available" id="availability-free">Available</option>
+          <option value="claimed" id="availability-claimed">Claimed</option>
+          <option value="review" id="availability-review">Under review</option>
+        </select>
+      </label>
       <span id="result-count" aria-live="polite">Loading candidates…</span>
     </div>
     <div class="legend" id="legend" aria-label="Treemap legend">
       <span><i class="swatch" style="background:var(--exact)"></i><span id="legend-exact">Exact bytes</span></span>
       <span><i class="swatch" style="background:var(--fuzzy)"></i><span id="legend-fuzzy">Fuzzy-only candidate</span></span>
       <span><i class="swatch" style="background:var(--none)"></i><span id="legend-unmatched">No match recorded</span></span>
+      <span><i class="swatch" style="background:#1671c5"></i><span id="legend-claimed">Claimed</span></span>
+      <span><i class="swatch" style="background:#d63d45"></i><span id="legend-review">Review requested</span></span>
     </div>
     <div class="chart-wrap" id="chart-wrap">
       <canvas id="chart" aria-label="Treemap of candidate code sizes; use the search and candidate list to navigate by keyboard"></canvas>
       <div class="tooltip" id="tooltip" role="status"></div>
     </div>
+    <section class="candidate-detail" id="candidate-detail" aria-live="polite" hidden>
+      <h3 id="candidate-detail-title"></h3>
+      <p id="candidate-detail-status"></p>
+      <p id="candidate-detail-size"></p>
+      <div class="candidate-actions" id="candidate-actions"></div>
+    </section>
     <details class="tiles">
       <summary id="list-summary">Candidate list (type to filter; keyboard accessible)</summary>
       <ul class="tile-list" id="tile-list"></ul>
@@ -148,6 +186,15 @@
         <a class="info-link" id="guide-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/CONTRIBUTING.md"></a>
       </div>
     </div>
+    <div class="info-card">
+      <h2 id="queue-title">Function work queue</h2>
+      <p id="queue-intro">Open function issues reserve candidates; maintainer-prioritized issues appear first. Choose any other candidate from the Progress map.</p>
+      <div class="toolbar">
+        <label><span id="queue-search-label">Find a function to work on</span><input id="queue-query" type="search" autocomplete="off"></label>
+      </div>
+      <div class="queue" id="function-queue" aria-live="polite"></div>
+      <ul class="queue-list" id="available-candidates"></ul>
+    </div>
   </section>
   <section class="view" id="view-method" role="tabpanel" aria-labelledby="tab-method" tabindex="0" hidden>
     <div class="info-card">
@@ -171,7 +218,11 @@
 <script>
 (() => {
   "use strict";
-  const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568"};
+  const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568", claimed:"#1671c5", review:"#d63d45"};
+  const uiCopy = {
+    en: {sizeZoom:"Zoom by size", allSizes:"All sizes", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4,096 bytes", large:"Over 4,096 bytes", availability:"Availability", available:"Available", claimed:"Claimed", review:"Review requested", exactState:"Exact byte match", fuzzyState:"Approximate match", unmatchedState:"No match recorded", availableState:"Available to claim", claimedState:"Claimed in an open function issue", reviewState:"Review requested; a maintainer must assess it. The existing byte-match record is unchanged.", claimAction:"Claim this function", openTask:"View active task", reviewAction:"Report a problem or suggest an improvement", viewReview:"View review issue", queueTitle:"Function work queue", queueIntro:"The maintainer-curated high-priority list appears first. Open function issues mark candidates as claimed. A review report stays red until a maintainer records a decision.", priorityQueue:"High-priority candidates", activeQueue:"Other active tasks", reviewQueue:"Under review", findQueue:"Find a function to work on", queuePlaceholder:"Search by candidate ID", queueEmpty:"No active issues in this group.", priorityEmpty:"No candidates are marked high priority yet.", queueNeedSearch:"Type an ID to find available candidates.", queueNoResults:"No matching candidates.", issueLoadError:"Could not load GitHub issue status. The map still shows byte-match data; task colors are unavailable.", sizeZoomHelp:"Size filters rescale the selected group to fill the map. They do not imply that one function contains another.", overlayHelp:"Green, amber, and gray show byte-match classification. Blue marks an open work issue; red marks a review awaiting a maintainer decision."},
+    "pt-BR": {sizeZoom:"Ampliar por tamanho", allSizes:"Todos os tamanhos", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4.096 bytes", large:"Mais de 4.096 bytes", availability:"Disponibilidade", available:"Disponíveis", claimed:"Assumidas", review:"Revisão solicitada", exactState:"Correspondência exata de bytes", fuzzyState:"Correspondência aproximada", unmatchedState:"Sem correspondência registrada", availableState:"Disponível para alguém assumir", claimedState:"Assumida em um Issue aberto de função", reviewState:"Revisão solicitada; uma pessoa mantenedora precisa analisar. O registro de bytes exatos continua inalterado.", claimAction:"Assumir esta função", openTask:"Ver tarefa ativa", reviewAction:"Apontar problema ou sugerir melhoria", viewReview:"Ver Issue de revisão", queueTitle:"Fila de funções", queueIntro:"A lista de alta prioridade escolhida pelos mantenedores aparece primeiro. Issues abertos de função marcam candidatas assumidas. Um apontamento continua vermelho até um mantenedor registrar a decisão.", priorityQueue:"Candidatas prioritárias", activeQueue:"Outras tarefas ativas", reviewQueue:"Em revisão", findQueue:"Encontre uma função para trabalhar", queuePlaceholder:"Buscar pelo ID da candidata", queueEmpty:"Não há Issues ativos neste grupo.", priorityEmpty:"Ainda não há candidatas marcadas como prioritárias.", queueNeedSearch:"Digite um ID para encontrar candidatas disponíveis.", queueNoResults:"Nenhuma candidata encontrada.", issueLoadError:"Não foi possível carregar o estado dos Issues do GitHub. O mapa ainda mostra a correspondência de bytes, mas as cores de tarefa estão indisponíveis.", sizeZoomHelp:"Os filtros redimensionam o grupo selecionado para preencher o mapa. Eles não indicam que uma função contém outra.", overlayHelp:"Verde, âmbar e cinza indicam a classificação por bytes. Azul marca uma tarefa aberta; vermelho marca uma revisão aguardando decisão de um mantenedor."}
+  };
   const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
   const K = Object.fromEntries(keys.map((key,index)=>[key,index]));
   const messages = {
@@ -236,7 +287,9 @@
   const tooltip = document.getElementById("tooltip");
   const query = document.getElementById("query");
   const classification = document.getElementById("classification");
-  let all = [], visible = [], rectangles = [], selected = null;
+  const sizeZoom = document.getElementById("size-zoom");
+  const availability = document.getElementById("availability");
+  let all = [], visible = [], rectangles = [], selected = null, issueStates = new Map(), issueStatusLoaded = false, issueStatusError = false;
   const languageToggle = document.getElementById("language-toggle");
   const languageMenu = document.getElementById("language-menu");
   const languageLabel = document.getElementById("language-label");
@@ -316,6 +369,17 @@
     const template = messages[language][K[key]] || messages.en[K[key]];
     return template.replace(/\{(\w+)\}/g,(_,name)=>values[name] ?? "");
   }
+  function ui(key) { return (uiCopy[language] || uiCopy.en)[key] || uiCopy.en[key] || key; }
+  function updateMapUi() {
+    const labels = {"size-zoom-label":"sizeZoom","size-all":"allSizes","size-tiny":"tiny","size-small":"small","size-medium":"medium","size-large":"large","availability-label":"availability","availability-free":"available","availability-claimed":"claimed","availability-review":"review","legend-claimed":"claimed","legend-review":"review","queue-title":"queueTitle","queue-intro":"queueIntro","queue-search-label":"findQueue"};
+    for (const [id,key] of Object.entries(labels)) document.getElementById(id).textContent=ui(key);
+    document.getElementById("availability-all").textContent=msg("allCandidates");
+    sizeZoom.setAttribute("aria-label",ui("sizeZoom"));
+    availability.setAttribute("aria-label",ui("availability"));
+    document.getElementById("queue-query").placeholder=ui("queuePlaceholder");
+    document.getElementById("size-zoom-label").title=ui("sizeZoomHelp");
+    document.getElementById("map-description").textContent=`${msg("mapDescription")} ${ui("overlayHelp")}`;
+  }
   function applyLanguage(code) {
     language = code;
     const rtl = code === "ar";
@@ -343,6 +407,7 @@
     languageLabel.textContent = `${msg("languageLabel")}: ${languages.find(item=>item[0]===code)[1]}`;
     languageMenu.setAttribute("aria-label",msg("languageMenu"));
     updateExtraLanguage();
+    updateMapUi();
     if (report) {
       document.getElementById("exact-percent").textContent = `${fmt.format(Number(report.summary.exactCodePercent.toFixed(2)))}%`;
       document.getElementById("fuzzy-percent").textContent = `${fmt.format(Number(report.summary.fuzzyMatchPercent.toFixed(4)))}%`;
@@ -455,6 +520,135 @@
     }
     return out;
   }
+  function candidateState(item) {
+    const state=issueStates.get(item.name.toLowerCase());
+    if (state?.reviews.length) return "review";
+    if (state?.tasks.length) return "claimed";
+    return issueStatusLoaded && !issueStatusError ? "available" : "unknown";
+  }
+  function candidateIssueIds(issue) {
+    const body=String(issue.body || "");
+    const field=body.match(/###\s*Candidate or function ID\s*\r?\n+([\s\S]*?)(?=\r?\n###\s|$)/i);
+    const source=`${issue.title || ""}\n${field ? field[1] : ""}`;
+    return [...new Set([...source.matchAll(/\bsub_[0-9a-f]{8}\b/gi)].map(match=>match[0].toLowerCase()))];
+  }
+  function taskStateFor(id) {
+    let state=issueStates.get(id.toLowerCase());
+    if (!state) { state={tasks:[],reviews:[]}; issueStates.set(id.toLowerCase(),state); }
+    return state;
+  }
+  async function loadIssueStates() {
+    const issues=[];
+    for (let page=1; page<=10; page++) {
+      const url=`https://api.github.com/repos/soldieg/ReBLACK-XBOX/issues?state=all&per_page=100&page=${page}&sort=updated&direction=desc`;
+      const response=await fetch(url,{headers:{Accept:"application/vnd.github+json"}});
+      if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+      const batch=await response.json();
+      issues.push(...batch.filter(issue=>!issue.pull_request));
+      if (batch.length<100) break;
+      if (page===10) throw new Error("Issue list exceeds safe pagination limit");
+    }
+    for (const issue of issues) {
+      const labels=(issue.labels || []).map(label=>String(label.name || "").toLowerCase());
+      const title=String(issue.title || "").toLowerCase();
+      const isReview=labels.includes("function-review") || title.startsWith("[review]");
+      const isTask=labels.includes("function-task") || title.startsWith("[function]");
+      if (!isReview && !isTask) continue;
+      const decided=issue.state==="closed" && (labels.includes("review-accepted") || labels.includes("review-declined"));
+      if ((isTask && issue.state!=="open") || (isReview && decided)) continue;
+      const entry={number:issue.number,title:String(issue.title || ""),url:String(issue.html_url || ""),updatedAt:String(issue.updated_at || "")};
+      for (const id of candidateIssueIds(issue)) {
+        const state=taskStateFor(id);
+        (isReview ? state.reviews : state.tasks).push(entry);
+      }
+    }
+    issueStatusLoaded=true;
+  }
+  function addAction(parent,label,href,className="") {
+    const link=document.createElement("a"); link.textContent=label; link.href=href;
+    if (className) link.className=className;
+    if (href.startsWith("https://github.com/")) { link.target="_blank"; link.rel="noopener noreferrer"; }
+    parent.append(link); return link;
+  }
+  function issueFormUrl(template,item,kind) {
+    const url=new URL("https://github.com/soldieg/ReBLACK-XBOX/issues/new");
+    url.searchParams.set("template",template); url.searchParams.set("title",`[${kind}] ${item.name}`);
+    return url.toString();
+  }
+  function selectCandidate(item) {
+    showView("progress");
+    query.value=item.name; classification.value="all"; sizeZoom.value="all"; availability.value="all";
+    updateFilter(); selected=item; resizeAndDraw(); renderCandidateDetails(item);
+    document.getElementById("candidate-detail").scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  function renderCandidateDetails(item) {
+    const panel=document.getElementById("candidate-detail"), actions=document.getElementById("candidate-actions"), state=candidateState(item), records=issueStates.get(item.name.toLowerCase());
+    panel.hidden=false;
+    document.getElementById("candidate-detail-title").textContent=item.name;
+    const base=item.category==="exact" ? msg("exact") : item.category==="fuzzy" ? msg("fuzzy") : msg("unmatched");
+    const task=state==="review" ? ui("reviewState") : state==="claimed" ? ui("claimedState") : state==="available" ? ui("availableState") : ui("issueLoadError");
+    document.getElementById("candidate-detail-status").textContent=`${base} · ${task}`;
+    document.getElementById("candidate-detail-size").textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}`;
+    actions.replaceChildren();
+    if (records?.tasks.length) for (const entry of records.tasks) addAction(actions,`${ui("openTask")} #${entry.number}`,entry.url);
+    else addAction(actions,ui("claimAction"),issueFormUrl("function-task.yml",item,"Function"));
+    if (records?.reviews.length) for (const entry of records.reviews) addAction(actions,`${ui("viewReview")} #${entry.number}`,entry.url);
+    addAction(actions,ui("reviewAction"),issueFormUrl("function-review.yml",item,"Review"));
+  }
+  function selectFromQueue(item) { selectCandidate(item); }
+  function queueList(title,entries) {
+    const section=document.createElement("section"); section.className="queue-section";
+    const heading=document.createElement("h3"); heading.textContent=title; section.append(heading);
+    const list=document.createElement("ul"); list.className="queue-list";
+    if (!entries.length) { const empty=document.createElement("p"); empty.textContent=ui("queueEmpty"); section.append(empty); return section; }
+    for (const [item,entry] of entries.slice(0,20)) {
+      const li=document.createElement("li"), link=document.createElement("a"), name=document.createElement("span"), meta=document.createElement("small");
+      name.textContent=item.name; meta.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · #${entry.number}`;
+      link.href=entry.url; link.target="_blank"; link.rel="noopener noreferrer"; link.append(name,meta);
+      link.addEventListener("click",event=>{event.preventDefault();selectFromQueue(item);});
+      li.append(link); list.append(li);
+    }
+    section.append(list); return section;
+  }
+  function queueCandidates(title,entries) {
+    const section=document.createElement("section"); section.className="queue-section";
+    const heading=document.createElement("h3"); heading.textContent=title; section.append(heading);
+    const list=document.createElement("ul"); list.className="queue-list";
+    if (!entries.length) { const empty=document.createElement("p"); empty.textContent=ui("priorityEmpty"); section.append(empty); return section; }
+    for (const item of entries.slice(0,40)) {
+      const li=document.createElement("li"), link=document.createElement("a"), name=document.createElement("span"), meta=document.createElement("small"), state=candidateState(item);
+      name.textContent=item.name; meta.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${ui(state==="review" ? "review" : state==="claimed" ? "claimed" : "available")}`;
+      link.href="#progress"; link.append(name,meta); link.addEventListener("click",event=>{event.preventDefault();selectFromQueue(item);});
+      li.append(link); list.append(li);
+    }
+    section.append(list); return section;
+  }
+  function renderQueue() {
+    const root=document.getElementById("function-queue"); root.replaceChildren();
+    if (issueStatusError) { const error=document.createElement("p"); error.textContent=ui("issueLoadError"); root.append(error); }
+    if (!issueStatusLoaded) { const loading=document.createElement("p"); loading.textContent=msg("loadingCandidates"); root.append(loading); return; }
+    const candidateById=new Map(all.map(item=>[item.name.toLowerCase(),item]));
+    const high=(report?.priorities?.high || []).map(id=>candidateById.get(String(id).toLowerCase())).filter(Boolean), active=[],reviews=[];
+    for (const [id,state] of issueStates) {
+      const item=candidateById.get(id); if (!item) continue;
+      for (const entry of state.tasks) active.push([item,entry]);
+      for (const entry of state.reviews) reviews.push([item,entry]);
+    }
+    high.sort((a,b)=>a.bytes-b.bytes); active.sort((a,b)=>a[0].bytes-b[0].bytes);
+    root.append(queueCandidates(ui("priorityQueue"),high),queueList(ui("activeQueue"),active),queueList(ui("reviewQueue"),reviews));
+    renderAvailableCandidates();
+  }
+  function renderAvailableCandidates() {
+    const list=document.getElementById("available-candidates"), q=document.getElementById("queue-query").value.trim().toLowerCase(); list.replaceChildren();
+    if (!q) { const li=document.createElement("li"); li.textContent=ui("queueNeedSearch"); list.append(li); return; }
+    const matches=all.filter(item=>item.name.toLowerCase().includes(q) && candidateState(item)==="available").slice(0,25);
+    if (!matches.length) { const li=document.createElement("li"); li.textContent=ui("queueNoResults"); list.append(li); return; }
+    for (const item of matches) {
+      const li=document.createElement("li"), link=document.createElement("a"), name=document.createElement("span"), meta=document.createElement("small");
+      name.textContent=item.name; meta.textContent=`${fmt.format(item.bytes)} ${msg("bytes")}`; link.href="#progress"; link.append(name,meta);
+      link.addEventListener("click",event=>{event.preventDefault();selectFromQueue(item);}); li.append(link); list.append(li);
+    }
+  }
   function resizeAndDraw() {
     const box = canvas.getBoundingClientRect();
     if (!box.width || !box.height) return;
@@ -464,7 +658,8 @@
     rectangles = layout(visible,box.width,box.height);
     ctx.clearRect(0,0,box.width,box.height);
     for (const rect of rectangles) {
-      ctx.fillStyle = colors[rect.item.category];
+      const state = candidateState(rect.item);
+      ctx.fillStyle = state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
       ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
       if (rect.w > 5 && rect.h > 5) {
         ctx.strokeStyle = "#10151d"; ctx.lineWidth = .65;
@@ -480,7 +675,8 @@
     const label = item.category === "exact" ? msg("tooltipExact") : item.category === "fuzzy" ? msg("tooltipFuzzy",{percent:fmt.format(item.fuzzyPercent)}) : msg("tooltipNone");
     tooltip.replaceChildren();
     const title=document.createElement("strong"), detail=document.createElement("span");
-    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${label}`;
+    const state=candidateState(item), stateLabel=state==="review" ? ui("review") : state==="claimed" ? ui("claimed") : state==="available" ? ui("available") : ui("issueLoadError");
+    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${label} · ${stateLabel}`;
     tooltip.append(title,detail);
   }
   function showTooltip(item,x,y,pin=false) {
@@ -490,7 +686,7 @@
     const maxY = wrap.clientHeight - tooltip.offsetHeight - 8;
     tooltip.style.left = `${Math.max(8,Math.min(x+12,maxX))}px`;
     tooltip.style.top = `${Math.max(8,Math.min(y+12,maxY))}px`;
-    if (pin) { selected=item; resizeAndDraw(); }
+    if (pin) { selected=item; resizeAndDraw(); renderCandidateDetails(item); }
   }
   function drawList(matches,filtered) {
     const list=document.getElementById("tile-list"), note=document.getElementById("list-note");
@@ -501,7 +697,8 @@
     if (!filtered) return;
     for (const item of matches.slice(0,80)) {
       const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small");
-      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}`;
+      const state=candidateState(item), stateText=state==="review" ? ui("review") : state==="claimed" ? ui("claimed") : state==="available" ? ui("available") : "";
+      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}${stateText ? ` · ${stateText}` : ""}`;
       button.type="button"; button.append(name,size);
       button.addEventListener("focus",()=>{ const i=visible.indexOf(item); if(i>=0){const r=rectangles.find(x=>x.item===item); if(r)showTooltip(item,r.x+r.w/2,r.y+r.h/2);}});
       button.addEventListener("click",()=>{ selected=item; resizeAndDraw(); showTooltip(item,wrap.clientWidth/2,wrap.clientHeight/2,true); });
@@ -509,10 +706,15 @@
     }
   }
   function updateFilter() {
-    const q=query.value.trim().toLowerCase(), category=classification.value;
-    visible=all.filter(item => (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category));
+    const q=query.value.trim().toLowerCase(), category=classification.value, range=sizeZoom.value, status=availability.value;
+    const inRange=item=>range==="all" || (range==="tiny" && item.bytes<=16) || (range==="small" && item.bytes>=17 && item.bytes<=256) || (range==="medium" && item.bytes>=257 && item.bytes<=4096) || (range==="large" && item.bytes>4096);
+    visible=all.filter(item => {
+      const state=candidateState(item);
+      return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && (status==="all" || (status==="available" && state==="available") || state===status);
+    });
     selected=null; tooltip.style.display="none";
-    drawList(visible,q.length>0 || category!=="all"); resizeAndDraw();
+    document.getElementById("candidate-detail").hidden=true;
+    drawList(visible,q.length>0 || category!=="all" || range!=="all" || status!=="all"); resizeAndDraw();
   }
   canvas.addEventListener("pointermove",event=>{
     const box=canvas.getBoundingClientRect(), x=event.clientX-box.left, y=event.clientY-box.top;
@@ -527,15 +729,18 @@
     if(hit){selected=hit.item;showTooltip(hit.item,x,y,true);} else {selected=null;showTooltip(null);resizeAndDraw();}
   });
   query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
+  sizeZoom.addEventListener("change",updateFilter); availability.addEventListener("change",updateFilter);
+  document.getElementById("queue-query").addEventListener("input",renderAvailableCandidates);
   window.addEventListener("resize",resizeAndDraw);
 
   applyLanguage(language);
   fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
     report=data;
-    all=data.candidates; applyLanguage(language);
+    all=data.candidates; applyLanguage(language); renderQueue();
   }).catch(error=>{
     loadError=error.message; applyLanguage(language);
   });
+  loadIssueStates().then(()=>{renderQueue(); if(report) updateFilter();}).catch(()=>{issueStates.clear(); issueStatusError=true; issueStatusLoaded=true; renderQueue(); if(report) updateFilter();});
 })();
 </script>
 </body>
