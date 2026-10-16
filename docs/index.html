@@ -13,6 +13,19 @@
     h1 { margin:0; font-size:clamp(1.65rem,4vw,2.4rem); line-height:1.15; }
     h2 { margin:0; font-size:1.15rem; }
     .site-header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
+    .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 14px; border-bottom:1px solid var(--line); }
+    .tabs button { min-height:42px; border:1px solid transparent; border-bottom:0; border-radius:8px 8px 0 0; background:transparent; color:var(--muted); padding:8px 14px; font:inherit; cursor:pointer; }
+    .tabs button[aria-selected="true"] { border-color:var(--line); background:var(--panel); color:var(--text); }
+    .tabs button:focus-visible,.info-link:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .language-note { margin:14px 0; padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--muted); }
+    .language-note[hidden],.view[hidden] { display:none; }
+    .view { min-height:35vh; }
+    .info-card { max-width:850px; margin:16px 0; padding:18px 20px; border:1px solid var(--line); border-radius:10px; background:var(--panel); }
+    .info-card h2 { margin-bottom:8px; }
+    .info-card ol,.info-card ul { padding-inline-start:24px; }
+    .info-card li { margin:10px 0; color:var(--muted); }
+    .info-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .info-link { display:inline-flex; align-items:center; min-height:42px; padding:8px 12px; border:1px solid var(--line); border-radius:7px; background:#203148; color:var(--text); text-decoration:none; }
     .lang-control { position:relative; flex:none; }
     .lang-toggle { min-height:42px; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--text); padding:8px 12px; font:inherit; cursor:pointer; }
     .lang-toggle:hover,.lang-toggle:focus-visible,.lang-menu button:hover,.lang-menu button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
@@ -67,6 +80,16 @@
       <div class="lang-menu" id="language-menu" role="menu" aria-label="Choose page language" hidden></div>
     </div>
   </header>
+  <nav class="tabs" id="page-tabs" role="tablist" aria-label="Project sections">
+    <button id="tab-progress" data-view="progress" type="button" role="tab" aria-controls="view-progress" aria-selected="true" tabindex="0">Progress</button>
+    <button id="tab-contribute" data-view="contribute" type="button" role="tab" aria-controls="view-contribute" aria-selected="false" tabindex="-1">Contribute</button>
+    <button id="tab-method" data-view="method" type="button" role="tab" aria-controls="view-method" aria-selected="false" tabindex="-1">How we verify</button>
+  </nav>
+  <div class="language-note" id="language-note" aria-live="polite" hidden>
+    <span id="language-note-text"></span>
+    <a id="language-request-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues/new">Request this language</a>
+  </div>
+  <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
   <div class="scope" id="scope" aria-live="polite">Loading reviewed report scope…</div>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
     <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Exact code matched</span></div>
@@ -107,6 +130,40 @@
       <p id="list-note"></p>
     </details>
   </section>
+  </section>
+  <section class="view" id="view-contribute" role="tabpanel" aria-labelledby="tab-contribute" tabindex="0" hidden>
+    <div class="info-card">
+      <h2 id="contribute-title">Help with BLACK Xbox reconstruction</h2>
+      <p id="contribute-intro"></p>
+      <ol>
+        <li id="contribute-step-one"></li>
+        <li id="contribute-step-two"></li>
+        <li id="contribute-step-three"></li>
+      </ol>
+      <p id="contribute-no-files"></p>
+      <div class="info-links">
+        <a class="info-link" id="issues-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues"></a>
+        <a class="info-link" id="pulls-link" href="https://github.com/soldieg/ReBLACK-XBOX/pulls"></a>
+      </div>
+    </div>
+  </section>
+  <section class="view" id="view-method" role="tabpanel" aria-labelledby="tab-method" tabindex="0" hidden>
+    <div class="info-card">
+      <h2 id="method-title">How we review a contribution</h2>
+      <p id="method-intro"></p>
+      <ol>
+        <li id="method-step-one"></li>
+        <li id="method-step-two"></li>
+        <li id="method-step-three"></li>
+      </ol>
+      <h2 id="method-status-title"></h2>
+      <ul>
+        <li id="status-exact"></li>
+        <li id="status-approximate"></li>
+        <li id="status-pending"></li>
+      </ul>
+    </div>
+  </section>
   <p class="foot"><span id="footer-text">The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately.</span> <a id="repo-link" href="https://github.com/soldieg/ReBLACK-XBOX">Repository overview</a> · <a id="docs-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/README.md">Documentation index</a></p>
 </main>
 <script>
@@ -132,7 +189,45 @@
   const languages = [
     ["en","English"],["pt-BR","Português (Brasil)"],["es","Español"],["ru","Русский"],["fr","Français"],["de","Deutsch"],["it","Italiano"],["ja","日本語"],["ko","한국어"],["zh-CN","中文（简体）"],["ar","العربية"],["tr","Türkçe"]
   ];
-  let language = "en", fmt = new Intl.NumberFormat("en-US"), report = null, loadError = null;
+  const extraKeys = ["tabsLabel","tabProgress","tabContribute","tabMethod","useBrowserLanguage","contributeTitle","contributeIntro","contributeOne","contributeTwo","contributeThree","contributeNoFiles","issuesLink","pullsLink","methodTitle","methodIntro","methodOne","methodTwo","methodThree","exactStatus","approximateStatus","pendingStatus","missingLanguage","requestTranslation"];
+  const X = Object.fromEntries(extraKeys.map((key,index)=>[key,index]));
+  const extraMessages = {
+    en: ["Project sections","Progress","Contribute","How we verify","Use browser language","Help us reconstruct BLACK for Xbox","Choose an open task. Work on one function or a related dependency group, then submit your work as a pull request.","Choose an open task and note the function IDs, addresses, sizes, and dependencies you plan to cover.","Reconstruct the function and include the compiler, version, flags, and evidence you used.","Open a pull request with a result for each function, including what passed and what remains pending.","Do not upload game files, extracted binaries, local file paths, or credentials.","Browse open tasks","View pull requests","How we review contributions","We compare each submission and its evidence with the project reference. A maintainer reviews the result before it is accepted into the progress report.","Confirm the function identity, address, size, boundaries, and dependencies.","Review the reconstruction and build it with the recorded Xbox-target compiler and flags.","Compare the output bytes with the target and record the result for each function. Runtime behavior is tracked separately.","Exact: all function bytes match under the recorded build settings.","Approximate: the code is similar, but an exact byte match has not been established.","Pending: evidence is incomplete or function boundaries and dependencies need review.","Language {locale} is not available yet. Showing {fallback}.","Request this language on GitHub"],
+    "pt-BR": ["Seções do projeto","Progresso","Contribua","Como verificamos","Usar idioma do navegador","Ajude a reconstruir BLACK para Xbox","Escolha uma tarefa aberta. Trabalhe em uma função ou em um grupo de dependências relacionadas e envie o resultado por pull request.","Escolha uma tarefa e registre os IDs, endereços, tamanhos e dependências das funções incluídas.","Reconstrua a função e informe compilador, versão, opções e evidências usadas.","Abra uma pull request com um resultado por função, indicando o que passou e o que continua pendente.","Não envie arquivos do jogo, binários extraídos, caminhos locais ou credenciais.","Ver tarefas abertas","Ver pull requests","Como analisamos contribuições","Comparamos cada contribuição e suas evidências com as referências do projeto. Uma pessoa responsável revisa o resultado antes de ele entrar no relatório de progresso.","Confirme a identidade, o endereço, o tamanho, os limites e as dependências da função.","Revise a reconstrução e compile com o compilador Xbox e as opções registradas.","Compare os bytes gerados com o alvo e registre o resultado de cada função. O comportamento em execução é acompanhado separadamente.","Exata: todos os bytes da função correspondem com as opções de compilação registradas.","Aproximada: o código é semelhante, mas a igualdade exata dos bytes não foi comprovada.","Pendente: faltam evidências ou ainda é preciso revisar limites e dependências.","O idioma {locale} ainda não está disponível. Exibindo {fallback}.","Solicitar este idioma no GitHub"],
+    es: ["Secciones del proyecto","Progreso","Colabora","Cómo verificamos","Usar idioma del navegador","Ayúdanos a reconstruir BLACK para Xbox","Elige una tarea abierta. Trabaja en una función o en un grupo de dependencias relacionadas y envía el resultado mediante una pull request.","Elige una tarea e indica los identificadores, direcciones, tamaños y dependencias de las funciones que cubrirás.","Reconstruye la función e incluye el compilador, la versión, las opciones y las pruebas utilizadas.","Abre una pull request con un resultado por función e indica qué pasó y qué sigue pendiente.","No subas archivos del juego, binarios extraídos, rutas locales ni credenciales.","Ver tareas abiertas","Ver pull requests","Cómo revisamos las contribuciones","Comparamos cada aporte y sus pruebas con las referencias del proyecto. Una persona responsable revisa el resultado antes de añadirlo al informe de progreso.","Confirma la identidad, dirección, tamaño, límites y dependencias de la función.","Revisa la reconstrucción y compílala con el compilador de Xbox y las opciones registradas.","Compara los bytes generados con el objetivo y registra el resultado de cada función. El comportamiento en ejecución se sigue por separado.","Exacta: todos los bytes de la función coinciden con las opciones de compilación registradas.","Aproximada: el código es similar, pero no se ha demostrado una coincidencia exacta de bytes.","Pendiente: faltan pruebas o hay que revisar los límites y las dependencias.","El idioma {locale} aún no está disponible. Se muestra {fallback}.","Solicitar este idioma en GitHub"],
+    ru: ["Разделы проекта","Прогресс","Помочь проекту","Как мы проверяем","Язык браузера","Помогите восстановить BLACK для Xbox","Выберите открытую задачу. Работайте над одной функцией или связанным набором зависимостей и отправьте результат через pull request.","Выберите задачу и укажите идентификаторы, адреса, размеры и зависимости функций.","Восстановите функцию и укажите компилятор, версию, параметры и использованные доказательства.","Создайте pull request с отдельным результатом для каждой функции и отметьте, что проверено, а что ещё ожидает проверки.","Не загружайте файлы игры, извлечённые бинарные данные, локальные пути или учётные данные.","Открытые задачи","Pull request","Как мы проверяем вклад","Мы сравниваем работу и её доказательства с эталонными данными проекта. Перед добавлением результата в отчёт его проверяет сопровождающий.","Проверьте идентификатор функции, адрес, размер, границы и зависимости.","Проверьте реконструкцию и соберите её указанным компилятором Xbox с записанными параметрами.","Сравните полученные байты с целевыми и запишите результат для каждой функции. Поведение при запуске учитывается отдельно.","Точное совпадение: все байты функции совпали при указанных настройках сборки.","Приблизительное совпадение: код похож, но точное совпадение байтов не подтверждено.","Ожидает проверки: данных недостаточно или нужно проверить границы и зависимости.","Язык {locale} пока не поддерживается. Показан вариант: {fallback}.","Запросить этот язык на GitHub"],
+    fr: ["Sections du projet","Progression","Contribuer","Comment nous vérifions","Utiliser la langue du navigateur","Aidez-nous à reconstruire BLACK sur Xbox","Choisissez une tâche ouverte. Travaillez sur une fonction ou un groupe de dépendances liées, puis envoyez le résultat par pull request.","Choisissez une tâche et indiquez les identifiants, adresses, tailles et dépendances des fonctions concernées.","Reconstituez la fonction et indiquez le compilateur, sa version, ses options et les preuves utilisées.","Ouvrez une pull request avec un résultat par fonction et précisez ce qui a réussi et ce qui reste à vérifier.","Ne téléversez pas de fichiers du jeu, de binaires extraits, de chemins locaux ni d’identifiants.","Voir les tâches ouvertes","Voir les pull requests","Comment nous examinons les contributions","Nous comparons chaque contribution et ses preuves aux références du projet. Une personne responsable examine le résultat avant son ajout au rapport de progression.","Confirmez l’identité, l’adresse, la taille, les limites et les dépendances de la fonction.","Examinez la reconstruction et compilez-la avec le compilateur Xbox et les options consignées.","Comparez les octets produits à la cible et consignez le résultat de chaque fonction. Le comportement à l’exécution est suivi séparément.","Exacte : tous les octets correspondent avec les options de compilation consignées.","Approximative : le code est similaire, mais l’égalité exacte des octets n’est pas établie.","En attente : les preuves sont incomplètes ou les limites et dépendances doivent être examinées.","La langue {locale} n’est pas encore disponible. Affichage en {fallback}.","Demander cette langue sur GitHub"],
+    de: ["Projektbereiche","Fortschritt","Mitwirken","So prüfen wir","Browsersprache verwenden","Hilf uns, BLACK für Xbox zu rekonstruieren","Wähle eine offene Aufgabe. Bearbeite eine Funktion oder eine zusammengehörige Abhängigkeitsgruppe und reiche das Ergebnis als Pull Request ein.","Wähle eine Aufgabe und notiere die IDs, Adressen, Größen und Abhängigkeiten der Funktionen.","Rekonstruiere die Funktion und nenne Compiler, Version, Optionen und verwendete Nachweise.","Erstelle einen Pull Request mit einem Ergebnis pro Funktion und nenne bestandene sowie ausstehende Prüfungen.","Lade keine Spieldateien, extrahierten Binärdateien, lokalen Pfade oder Zugangsdaten hoch.","Offene Aufgaben ansehen","Pull Requests ansehen","So prüfen wir Beiträge","Wir vergleichen jeden Beitrag und seine Nachweise mit den Projekt-Referenzen. Vor der Aufnahme in den Fortschrittsbericht prüft eine zuständige Person das Ergebnis.","Prüfe Funktionsidentität, Adresse, Größe, Grenzen und Abhängigkeiten.","Prüfe die Rekonstruktion und kompiliere sie mit dem angegebenen Xbox-Compiler und den dokumentierten Optionen.","Vergleiche die erzeugten Bytes mit dem Ziel und erfasse das Ergebnis je Funktion. Laufzeitverhalten wird getrennt erfasst.","Exakt: Alle Funktionsbytes stimmen mit den dokumentierten Build-Einstellungen überein.","Annähernd: Der Code ähnelt dem Ziel, aber eine exakte Byte-Übereinstimmung ist nicht belegt.","Ausstehend: Nachweise fehlen oder Grenzen und Abhängigkeiten müssen geprüft werden.","Die Sprache {locale} wird noch nicht unterstützt. Anzeige in {fallback}.","Diese Sprache auf GitHub anfragen"],
+    it: ["Sezioni del progetto","Progresso","Contribuisci","Come verifichiamo","Usa la lingua del browser","Aiutaci a ricostruire BLACK per Xbox","Scegli un’attività aperta. Lavora su una funzione o su un gruppo di dipendenze correlate e invia il risultato con una pull request.","Scegli un’attività e annota ID, indirizzi, dimensioni e dipendenze delle funzioni interessate.","Ricostruisci la funzione e indica compilatore, versione, opzioni e prove usate.","Apri una pull request con un risultato per ogni funzione e indica cosa è stato verificato e cosa è ancora in sospeso.","Non caricare file del gioco, binari estratti, percorsi locali o credenziali.","Vedi attività aperte","Vedi pull request","Come esaminiamo i contributi","Confrontiamo ogni contributo e le relative prove con i riferimenti del progetto. Una persona responsabile esamina il risultato prima di inserirlo nel rapporto di avanzamento.","Verifica identità, indirizzo, dimensione, limiti e dipendenze della funzione.","Esamina la ricostruzione e compilala con il compilatore Xbox e le opzioni registrate.","Confronta i byte generati con il target e registra il risultato per ogni funzione. Il comportamento in esecuzione è tracciato separatamente.","Esatta: tutti i byte della funzione corrispondono con le opzioni di compilazione registrate.","Approssimativa: il codice è simile, ma la corrispondenza esatta dei byte non è dimostrata.","In sospeso: le prove sono incomplete o i limiti e le dipendenze devono essere verificati.","La lingua {locale} non è ancora disponibile. Visualizzazione in {fallback}.","Richiedi questa lingua su GitHub"],
+    ja: ["プロジェクトのセクション","進捗","プロジェクトに協力","検証方法","ブラウザーの言語を使う","Xbox版BLACKの再構築にご協力ください","公開中のタスクを選び、関数または関連する依存関係のグループを作業して、プルリクエストを送ってください。","タスクを選び、対象関数のID、アドレス、サイズ、依存関係を記録してください。","関数を再構築し、使用したコンパイラー、バージョン、オプション、証拠を記載してください。","関数ごとの結果を含むプルリクエストを作成し、確認済みと保留中の項目を明記してください。","ゲームファイル、抽出したバイナリ、ローカルパス、認証情報はアップロードしないでください。","公開タスクを見る","プルリクエストを見る","貢献内容の確認方法","提出された再構築と証拠をプロジェクトの参照情報と比較します。進捗レポートへ反映する前に、担当者が結果を確認します。","関数の識別情報、アドレス、サイズ、境界、依存関係を確認します。","再構築を確認し、記録されたXbox向けコンパイラーとオプションでビルドします。","生成されたバイト列を対象と比較し、関数ごとに結果を記録します。実行時の動作は別に記録します。","完全一致：記録されたビルド設定で関数の全バイトが一致します。","近似一致：コードは似ていますが、バイト単位の完全一致は確認されていません。","保留：証拠が不足しているか、関数境界や依存関係の確認が必要です。","言語 {locale} はまだ利用できません。{fallback} で表示しています。","GitHubでこの言語をリクエスト"],
+    ko: ["프로젝트 섹션","진행 상황","프로젝트 참여","검증 방법","브라우저 언어 사용","Xbox용 BLACK 재구성에 참여하세요","열려 있는 작업을 선택하세요. 함수 하나 또는 관련 의존성 그룹을 작업한 뒤 풀 리퀘스트로 제출하세요.","작업을 선택하고 대상 함수의 ID, 주소, 크기, 의존성을 기록하세요.","함수를 재구성하고 사용한 컴파일러, 버전, 옵션, 증거를 포함하세요.","함수별 결과를 담은 풀 리퀘스트를 열고 통과한 항목과 대기 중인 항목을 적으세요.","게임 파일, 추출한 바이너리, 로컬 경로, 자격 증명은 업로드하지 마세요.","열린 작업 보기","풀 리퀘스트 보기","기여 내용 검토 방식","제출된 코드와 증거를 프로젝트 참조 자료와 비교합니다. 진행 보고서에 반영하기 전에 담당자가 결과를 검토합니다.","함수의 ID, 주소, 크기, 경계, 의존성을 확인합니다.","재구성 내용을 검토하고 기록된 Xbox 대상 컴파일러와 옵션으로 빌드합니다.","생성된 바이트를 대상과 비교하고 함수별 결과를 기록합니다. 실행 시 동작은 별도로 추적합니다.","정확 일치: 기록된 빌드 설정에서 함수의 모든 바이트가 일치합니다.","유사 일치: 코드는 비슷하지만 바이트 단위의 정확한 일치는 확인되지 않았습니다.","대기 중: 증거가 부족하거나 함수 경계와 의존성 검토가 필요합니다.","{locale} 언어는 아직 지원되지 않습니다. {fallback}(으)로 표시합니다.","GitHub에서 이 언어 요청"],
+    "zh-CN": ["项目栏目","进度","参与项目","验证方式","使用浏览器语言","帮助我们重建 Xbox 版 BLACK","选择一个开放任务。处理单个函数或相关依赖组，然后通过拉取请求提交。","选择任务，并记录涉及函数的 ID、地址、大小和依赖关系。","重建函数，并注明所用编译器、版本、选项和证据。","提交拉取请求，为每个函数列出结果，并说明已通过和仍待处理的检查。","请勿上传游戏文件、提取的二进制文件、本地路径或凭据。","查看开放任务","查看拉取请求","我们如何审核贡献","我们会将提交的重建代码和证据与项目参考资料进行比对。结果经维护者审核后才会计入进度报告。","确认函数身份、地址、大小、边界和依赖关系。","审核重建代码，并使用记录的 Xbox 目标编译器和选项进行编译。","将生成的字节与目标进行比较，并逐个记录结果。运行时行为单独跟踪。","精确匹配：在记录的构建设置下，函数的所有字节均一致。","近似匹配：代码相似，但尚未证明字节完全一致。","待审核：证据不完整，或函数边界和依赖关系仍需确认。","暂不支持 {locale} 语言，当前显示 {fallback}。","在 GitHub 上请求此语言"],
+    ar: ["أقسام المشروع","التقدم","ساهم في المشروع","كيف نتحقق","استخدام لغة المتصفح","ساعدنا في إعادة بناء BLACK على Xbox","اختر مهمة مفتوحة. اعمل على دالة واحدة أو مجموعة اعتماديات مترابطة، ثم أرسل العمل عبر طلب دمج.","اختر مهمة وسجّل معرّفات الدوال وعناوينها وأحجامها واعتمادياتها.","أعد بناء الدالة وأرفق المترجم وإصداره وخياراته والأدلة المستخدمة.","أنشئ طلب دمج بنتيجة لكل دالة، واذكر ما اجتاز الفحص وما لا يزال قيد الانتظار.","لا ترفع ملفات اللعبة أو الثنائيات المستخرجة أو المسارات المحلية أو بيانات الاعتماد.","تصفح المهام المفتوحة","تصفح طلبات الدمج","كيف نراجع المساهمات","نقارن العمل المرسل وأدلته بالمراجع المعتمدة للمشروع. يراجع المسؤول النتيجة قبل إضافتها إلى تقرير التقدم.","تحقق من هوية الدالة وعنوانها وحجمها وحدودها واعتمادياتها.","راجع إعادة البناء وابنها بمترجم Xbox وخيارات البناء المسجلة.","قارن البايتات الناتجة بالهدف وسجّل نتيجة كل دالة. يُتتبّع سلوك وقت التشغيل بشكل منفصل.","تطابق تام: تتطابق كل بايتات الدالة وفق إعدادات البناء المسجلة.","تطابق تقريبي: الشيفرة مشابهة لكن لم يثبت تطابق البايتات تمامًا.","قيد المراجعة: الأدلة غير مكتملة أو تحتاج حدود الدالة واعتمادياتها إلى مراجعة.","اللغة {locale} غير متاحة بعد. يتم العرض بـ {fallback}.","اطلب هذه اللغة على GitHub"],
+    tr: ["Proje bölümleri","İlerleme","Projeye katkıda bulun","Nasıl doğruluyoruz","Tarayıcı dilini kullan","Xbox için BLACK'in yeniden oluşturulmasına yardım edin","Açık bir görev seçin. Bir işlev veya ilişkili bir bağımlılık grubu üzerinde çalışın ve sonucu bir pull request ile gönderin.","Bir görev seçin ve ilgili işlevlerin kimliklerini, adreslerini, boyutlarını ve bağımlılıklarını kaydedin.","İşlevi yeniden oluşturun; derleyiciyi, sürümünü, seçenekleri ve kanıtları belirtin.","Her işlev için sonuç içeren bir pull request açın; geçen ve bekleyen kontrolleri belirtin.","Oyun dosyalarını, çıkarılmış ikili dosyaları, yerel yolları veya kimlik bilgilerini yüklemeyin.","Açık görevleri gör","Pull request'leri gör","Katkıları nasıl inceliyoruz","Gönderilen çalışmayı ve kanıtları proje referanslarıyla karşılaştırırız. Sonuç, ilerleme raporuna eklenmeden önce bir sorumlu tarafından incelenir.","İşlevin kimliğini, adresini, boyutunu, sınırlarını ve bağımlılıklarını doğrulayın.","Yeniden oluşturmayı inceleyin ve kayıtlı Xbox hedef derleyicisi ile seçenekleri kullanarak derleyin.","Üretilen baytları hedefle karşılaştırın ve her işlevin sonucunu kaydedin. Çalışma zamanı davranışı ayrı izlenir.","Tam eşleşme: kayıtlı derleme ayarlarında işlevin tüm baytları eşleşir.","Yaklaşık eşleşme: kod benzerdir ancak bayt düzeyinde tam eşleşme kanıtlanmamıştır.","Beklemede: kanıtlar eksiktir veya işlev sınırları ve bağımlılıkları incelenmelidir.","{locale} dili henüz desteklenmiyor. {fallback} gösteriliyor.","Bu dili GitHub'da iste"]
+  };
+  const statusHeadings = {en:"Result statuses","pt-BR":"Estados da validação",es:"Estados de validación",ru:"Статусы проверки",fr:"États de validation",de:"Prüfstatus",it:"Stati della verifica",ja:"確認ステータス",ko:"검증 상태","zh-CN":"验证状态",ar:"حالات التحقق",tr:"Doğrulama durumları"};
+  const languageStorageKey = "reblack-xbox-language";
+  function detectBrowserLanguage() {
+    const preferences = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    let unsupported = null;
+    for (const preference of preferences) {
+      const requested = String(preference || "").trim().replace(/_/g,"-");
+      const exact = languages.find(([code]) => code.toLowerCase() === requested.toLowerCase());
+      if (exact) return {code:exact[0], unsupported};
+      const base = requested.split("-")[0].toLowerCase();
+      const sameLanguage = base === "zh" ? languages.find(([code]) => code === "zh-CN") : languages.find(([code]) => code.split("-")[0].toLowerCase() === base);
+      if (sameLanguage) return {code:sameLanguage[0], unsupported};
+      if (requested && !unsupported) unsupported = requested;
+    }
+    return {code:"en", unsupported};
+  }
+  let storedLanguage = null;
+  try { storedLanguage = localStorage.getItem(languageStorageKey); } catch (_) {}
+  if (!languages.some(([code]) => code === storedLanguage)) storedLanguage = null;
+  const browserLanguage = detectBrowserLanguage();
+  let automaticLanguage = !storedLanguage;
+  let unsupportedLanguage = automaticLanguage ? browserLanguage.unsupported : null;
+  let language = storedLanguage || browserLanguage.code, fmt = new Intl.NumberFormat(language), report = null, loadError = null;
   const canvas = document.getElementById("chart");
   const ctx = canvas.getContext("2d");
   const wrap = document.getElementById("chart-wrap");
@@ -143,6 +238,58 @@
   const languageToggle = document.getElementById("language-toggle");
   const languageMenu = document.getElementById("language-menu");
   const languageLabel = document.getElementById("language-label");
+  const languageNote = document.getElementById("language-note");
+  const languageNoteText = document.getElementById("language-note-text");
+  const languageRequestLink = document.getElementById("language-request-link");
+  const tabList = document.getElementById("page-tabs");
+  const pageTabs = [...tabList.querySelectorAll('[role="tab"]')];
+  const extraTextIds = {
+    "tab-progress":"tabProgress","tab-contribute":"tabContribute","tab-method":"tabMethod",
+    "contribute-title":"contributeTitle","contribute-intro":"contributeIntro","contribute-step-one":"contributeOne",
+    "contribute-step-two":"contributeTwo","contribute-step-three":"contributeThree","contribute-no-files":"contributeNoFiles",
+    "issues-link":"issuesLink","pulls-link":"pullsLink","method-title":"methodTitle","method-intro":"methodIntro",
+    "method-step-one":"methodOne","method-step-two":"methodTwo","method-step-three":"methodThree",
+    "status-exact":"exactStatus","status-approximate":"approximateStatus","status-pending":"pendingStatus"
+  };
+
+  function extra(key, values={}) {
+    const template = extraMessages[language]?.[X[key]] || extraMessages.en[X[key]] || "";
+    return template.replace(/\{(\w+)\}/g,(_,name)=>values[name] ?? "");
+  }
+  function updateLanguageNotice() {
+    if (!unsupportedLanguage || !automaticLanguage) { languageNote.hidden = true; return; }
+    const fallback = languages.find(([code])=>code===language)?.[1] || "English";
+    languageNoteText.textContent = extra("missingLanguage",{locale:unsupportedLanguage,fallback});
+    const issue = new URL("https://github.com/soldieg/ReBLACK-XBOX/issues/new");
+    issue.searchParams.set("title",`Translation request: ${unsupportedLanguage}`);
+    issue.searchParams.set("body",`Please consider adding support for the browser language "${unsupportedLanguage}". The page currently falls back to ${fallback}.`);
+    languageRequestLink.href = issue.toString();
+    languageRequestLink.textContent = extra("requestTranslation");
+    languageNote.hidden = false;
+  }
+  function updateExtraLanguage() {
+    for (const [id,key] of Object.entries(extraTextIds)) document.getElementById(id).textContent = extra(key);
+    document.getElementById("page-tabs").setAttribute("aria-label",extra("tabsLabel"));
+    document.getElementById("language-note").setAttribute("lang",language);
+    document.getElementById("method-status-title").textContent = statusHeadings[language] || statusHeadings.en;
+    const automaticOption = languageMenu.querySelector('[data-language="auto"]');
+    if (automaticOption) automaticOption.textContent = extra("useBrowserLanguage");
+    for (const option of languageMenu.querySelectorAll("button")) {
+      const selected = option.dataset.language === language || (option.dataset.language === "auto" && automaticLanguage);
+      option.setAttribute("aria-checked",String(selected));
+    }
+    updateLanguageNotice();
+  }
+  function showView(name, focus=false) {
+    for (const tab of pageTabs) {
+      const selected = tab.dataset.view === name;
+      tab.setAttribute("aria-selected",String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = !selected;
+      if (selected && focus) tab.focus();
+    }
+    if (name === "progress") requestAnimationFrame(resizeAndDraw);
+  }
 
   function msg(key, values={}) {
     const template = messages[language][K[key]] || messages.en[K[key]];
@@ -174,7 +321,7 @@
     document.getElementById("chart").setAttribute("aria-label",msg("chartAria"));
     languageLabel.textContent = `${msg("languageLabel")}: ${languages.find(item=>item[0]===code)[1]}`;
     languageMenu.setAttribute("aria-label",msg("languageMenu"));
-    for (const option of languageMenu.querySelectorAll("button")) option.setAttribute("aria-checked",String(option.dataset.language===code));
+    updateExtraLanguage();
     if (report) {
       document.getElementById("exact-percent").textContent = `${fmt.format(Number(report.summary.exactCodePercent.toFixed(2)))}%`;
       document.getElementById("fuzzy-percent").textContent = `${fmt.format(Number(report.summary.fuzzyMatchPercent.toFixed(4)))}%`;
@@ -188,22 +335,56 @@
       document.getElementById("result-count").textContent = msg("loadingCandidates");
     }
   }
-  for (const [code,name] of languages) {
+  function chooseLanguage(code) {
+    if (code === "auto") {
+      automaticLanguage = true;
+      try { localStorage.removeItem(languageStorageKey); } catch (_) {}
+      const detected = detectBrowserLanguage();
+      unsupportedLanguage = detected.unsupported;
+      applyLanguage(detected.code);
+    } else {
+      automaticLanguage = false;
+      unsupportedLanguage = null;
+      try { localStorage.setItem(languageStorageKey,code); } catch (_) {}
+      applyLanguage(code);
+    }
+    languageMenu.hidden=true;
+    languageToggle.setAttribute("aria-expanded","false");
+    languageToggle.focus();
+  }
+  function addLanguageOption(code,name) {
     const option = document.createElement("button");
     option.type = "button"; option.role = "menuitemradio"; option.dataset.language = code; option.textContent = name;
-    option.addEventListener("click",()=>{applyLanguage(code);languageMenu.hidden=true;languageToggle.setAttribute("aria-expanded","false");languageToggle.focus();});
+    option.addEventListener("click",()=>chooseLanguage(code));
     languageMenu.append(option);
   }
+  addLanguageOption("auto",extra("useBrowserLanguage"));
+  for (const [code,name] of languages) addLanguageOption(code,name);
   languageToggle.addEventListener("click",()=>{
     languageMenu.hidden = !languageMenu.hidden;
     languageToggle.setAttribute("aria-expanded",String(!languageMenu.hidden));
-    if (!languageMenu.hidden) languageMenu.querySelector(`[data-language="${language}"]`).focus();
+    if (!languageMenu.hidden) languageMenu.querySelector(`[data-language="${automaticLanguage ? "auto" : language}"]`).focus();
   });
   document.addEventListener("pointerdown",event=>{
     if (!event.target.closest(".lang-control")) { languageMenu.hidden=true; languageToggle.setAttribute("aria-expanded","false"); }
   });
   languageMenu.addEventListener("keydown",event=>{
     if (event.key === "Escape") { languageMenu.hidden=true; languageToggle.setAttribute("aria-expanded","false"); languageToggle.focus(); }
+  });
+  tabList.addEventListener("click",event=>{
+    const tab=event.target.closest('[role="tab"]');
+    if (tab) showView(tab.dataset.view);
+  });
+  tabList.addEventListener("keydown",event=>{
+    const current=event.target.closest('[role="tab"]');
+    if (!current) return;
+    const index=pageTabs.indexOf(current);
+    let next=null;
+    if (event.key==="ArrowRight") next=pageTabs[(index+1)%pageTabs.length];
+    if (event.key==="ArrowLeft") next=pageTabs[(index+pageTabs.length-1)%pageTabs.length];
+    if (event.key==="Home") next=pageTabs[0];
+    if (event.key==="End") next=pageTabs[pageTabs.length-1];
+    if (next) { event.preventDefault(); showView(next.dataset.view,true); }
   });
 
   function worst(row, side) {
