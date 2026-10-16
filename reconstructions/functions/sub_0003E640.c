@@ -1,0 +1,8 @@
+/*
+ * Normalized static reconstruction of sub_0003E640.
+ * XBE SHA-256: DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6
+ * XboxRecomp split SHA-256: 3E945E18DA97DE130CBF59537E3B44AFD2C3A66A8488915D0C65D68D6AF9AB27
+ * Original range: 0x0003E640-0x0003E646 (6 bytes / 2 instructions).
+ */
+#include <stdint.h>
+uint32_t sub_0003E640(void) { return 0x002979C0u; }
