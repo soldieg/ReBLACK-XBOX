@@ -56,3 +56,7 @@ REA/Ghidra links the constructor at `0x14380` to the object published in `0x2D12
 ### State-dispatch parent draft (2026-10-16)
 
 The local `sub_00201430` reconstruction has a semantic C adapter for selectors 2–5 and events 10–12. Its 1,336-byte body matches the raw XBE, derived PE analyzed by REA, and XboxRecomp split. A manual macroblock review found no high-level flow discrepancy and corrected state-mask access ordering. Two computed calls at `0x2015E5` and `0x2018DD` remain unresolved; helper spills, callback contracts, original ABI, SIMD order, instruction-level review, Xbox build/diff, and runtime are pending. This local status update adds no target/base objects, so the published objdiff report and decomp.dev exact/fuzzy totals do not change. C and detailed evidence remain local.
+
+### State-dispatch review correction (2026-10-16)
+
+The local tracker records 336 complete, 152 in progress, and 13,188 not started out of 13,676 candidates. Four dependency adapters have been added locally; spill values, EDI/ABI details, and virtual callback targets remain unresolved. A partial review of sub_00201430 caught and corrected a vector-copy width error in the C draft. Instruction-level review, Xbox build/diff, and runtime remain pending. No target/base objects were added, so the published objdiff report and decomp.dev exact/fuzzy totals are unchanged. Sources and detailed REA evidence remain local.
