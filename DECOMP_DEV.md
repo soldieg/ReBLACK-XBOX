@@ -60,3 +60,7 @@ The local `sub_00201430` reconstruction has a semantic C adapter for selectors 2
 ### State-dispatch review correction (2026-10-16)
 
 The local tracker records 336 complete, 152 in progress, and 13,188 not started out of 13,676 candidates. Four dependency adapters have been added locally; spill values, EDI/ABI details, and virtual callback targets remain unresolved. A partial review of sub_00201430 caught and corrected a vector-copy width error in the C draft. Instruction-level review, Xbox build/diff, and runtime remain pending. No target/base objects were added, so the published objdiff report and decomp.dev exact/fuzzy totals are unchanged. Sources and detailed REA evidence remain local.
+
+### Dispatcher static-review follow-up (2026-10-16)
+
+Partial instruction-level review found and corrected five additional C issues: event-10 mask-word read order, elapsed timing order, the selector-4 state-object snapshot point, and event-12 payload storage and helper-call order. The parent remains in progress; ABI/SIMD equivalence, Xbox build/diff, and runtime remain pending. The tracker remains 336 complete, 152 in progress, and 13,188 not started. No target/base objects were added, so decomp.dev exact/fuzzy totals are unchanged. Source and detailed REA evidence remain local.
