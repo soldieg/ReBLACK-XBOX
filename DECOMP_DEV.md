@@ -44,3 +44,7 @@ Static REA evidence traces the heap context from `0x28195` to global `0x566154`;
 ### Allocator resize reconstruction (2026-10-16)
 
 The local workspace now contains a C draft for the observed normal paths of `sub_000A394A`: null-pointer allocation, zero-size release, debug-mode alignment, resize call, and new-handler retry. Its two body ranges match XBE raw/split bytes in 223/223 bytes. The table-owned handler island at `0xA39EC` remains an explicit gap; its frame-dependent behavior and exceptional cleanup are unresolved. The function remains `in_progress`, with Xbox link/diff and runtime pending. No target/base objects or byte-diff results were added, so the decomp.dev report figures above are unchanged. Detailed source and evidence remain local.
+
+### Allocator dispatch owner follow-up (2026-10-16)
+
+A fresh REA/Ghidra pass found no direct references to the candidate table at `0x28C120`. A complete scan of 5,729,660 initialized bytes in the derived PE also found no literal absolute-address pattern for that table. This leaves computed or indirect dispatch possible. The split candidates at `0x1F4140` and `0x1F4160` remain without recognized Ghidra procedures or decoded entry instructions, so their boundaries and semantics are unresolved. No C or target/base object was added; tracker status and decomp.dev match totals are unchanged. Xbox link/diff and runtime remain pending. Detailed local evidence stays outside this public repository.
