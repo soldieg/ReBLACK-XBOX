@@ -1,0 +1,35 @@
+name: Translation request
+description: Request support for a missing dashboard language
+title: "[Translation] "
+labels:
+  - translation-request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request a page translation. Do not include private project data.
+
+  - type: input
+    id: locale
+    attributes:
+      label: Language or locale
+      description: Enter the language shown by your browser, for example `nl-NL`.
+      placeholder: nl-NL
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_translation
+    attributes:
+      label: Suggested translation or notes
+      description: Optional. Tell us which page text should be translated or reviewed.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: safe_submission
+    attributes:
+      label: Submission check
+      options:
+        - label: I have not included game files, extracted binaries, local paths, or credentials.
+          required: true

@@ -20,7 +20,8 @@ jobs:
               {name: "function-task", color: "1671c5", description: "A contributor has claimed or submitted work for a function."},
               {name: "function-review", color: "d63d45", description: "A function reconstruction has a pending review report."},
               {name: "review-accepted", color: "27835c", description: "A maintainer confirmed the report and updated the official progress record."},
-              {name: "review-declined", color: "465568", description: "A maintainer reviewed the report and did not confirm a change."}
+              {name: "review-declined", color: "465568", description: "A maintainer reviewed the report and did not confirm a change."},
+              {name: "translation-request", color: "6f42c1", description: "A visitor requested a dashboard language."}
             ];
             for (const label of wanted) {
               try {
@@ -31,7 +32,7 @@ jobs:
             }
             const title = context.payload.issue.title || "";
             const normalized = title.toLowerCase();
-            const label = normalized.startsWith("[review]") ? "function-review" : normalized.startsWith("[function]") ? "function-task" : null;
+            const label = normalized.startsWith("[review]") ? "function-review" : normalized.startsWith("[function]") ? "function-task" : normalized.startsWith("[translation]") ? "translation-request" : null;
             if (label && !(context.payload.issue.labels || []).some(item => item.name === label)) {
               await github.rest.issues.addLabels({owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, labels: [label]});
             }

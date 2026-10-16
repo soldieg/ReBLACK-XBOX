@@ -110,10 +110,12 @@
     <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact functions</span></div>
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
+    <div class="metric"><strong id="validated-count">—</strong><span id="validated-metric">Reconstructions accepted after build + exact byte diff</span></div>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
     <p id="map-description">Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors report this snapshot’s match classification, not analysis completeness or runtime behavior.</p>
+    <p id="region-help">Click an address-region box to zoom in; choose all regions to return. Regions group candidates by start address only, not by calls or function containment.</p>
     <div class="toolbar">
       <label><span id="search-label">Find a candidate</span>
         <input id="query" type="search" placeholder="Example: sub_000285B9" autocomplete="off">
@@ -134,6 +136,9 @@
           <option value="medium" id="size-medium">257–4,096 bytes</option>
           <option value="large" id="size-large">Over 4,096 bytes</option>
         </select>
+      </label>
+      <label><span id="region-zoom-label">Address region</span>
+        <select id="region-zoom"><option value="all" id="region-all">All address regions</option></select>
       </label>
       <label><span id="availability-label">Availability</span>
         <select id="availability">
@@ -160,6 +165,7 @@
       <h3 id="candidate-detail-title"></h3>
       <p id="candidate-detail-status"></p>
       <p id="candidate-detail-size"></p>
+      <p id="candidate-validation"></p>
       <div class="candidate-actions" id="candidate-actions"></div>
     </section>
     <details class="tiles">
@@ -224,6 +230,48 @@
     "pt-BR": {sizeZoom:"Ampliar por tamanho", allSizes:"Todos os tamanhos", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4.096 bytes", large:"Mais de 4.096 bytes", availability:"Disponibilidade", available:"Disponíveis", claimed:"Assumidas", review:"Revisão solicitada", exactState:"Correspondência exata de bytes", fuzzyState:"Correspondência aproximada", unmatchedState:"Sem correspondência registrada", availableState:"Disponível para alguém assumir", claimedState:"Assumida em um Issue aberto de função", reviewState:"Revisão solicitada; uma pessoa mantenedora precisa analisar. O registro de bytes exatos continua inalterado.", claimAction:"Assumir esta função", openTask:"Ver tarefa ativa", reviewAction:"Apontar problema ou sugerir melhoria", viewReview:"Ver Issue de revisão", queueTitle:"Fila de funções", queueIntro:"A lista de alta prioridade escolhida pelos mantenedores aparece primeiro. Issues abertos de função marcam candidatas assumidas. Um apontamento continua vermelho até um mantenedor registrar a decisão.", priorityQueue:"Candidatas prioritárias", activeQueue:"Outras tarefas ativas", reviewQueue:"Em revisão", findQueue:"Encontre uma função para trabalhar", queuePlaceholder:"Buscar pelo ID da candidata", queueEmpty:"Não há Issues ativos neste grupo.", priorityEmpty:"Ainda não há candidatas marcadas como prioritárias.", queueNeedSearch:"Digite um ID para encontrar candidatas disponíveis.", queueNoResults:"Nenhuma candidata encontrada.", issueLoadError:"Não foi possível carregar o estado dos Issues do GitHub. O mapa ainda mostra a correspondência de bytes, mas as cores de tarefa estão indisponíveis.", sizeZoomHelp:"Os filtros redimensionam o grupo selecionado para preencher o mapa. Eles não indicam que uma função contém outra.", overlayHelp:"Verde, âmbar e cinza indicam a classificação por bytes. Azul marca uma tarefa aberta; vermelho marca uma revisão aguardando decisão de um mantenedor."}
   };
   const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
+  const regionCopy = {
+    en:{label:"Address region",all:"All address regions",help:"Click a region to zoom in; choose all regions to return. Grouped by start address only, not calls or containment.",tip:"Address range {region}: {count} candidates, {bytes} code bytes. Grouped by start address; this does not imply calls."},
+    "pt-BR":{label:"Região de endereço",all:"Todas as regiões",help:"Clique numa região para ampliar; escolha todas as regiões para voltar. O agrupamento usa só o endereço inicial, não chamadas ou contenção.",tip:"Faixa {region}: {count} candidatas, {bytes} bytes de código. Agrupadas pelo endereço inicial; isso não indica chamadas."},
+    es:{label:"Región de direcciones",all:"Todas las regiones",help:"Haz clic en una región para ampliar; selecciona todas para volver. Se agrupa solo por dirección inicial, no por llamadas ni contención.",tip:"Rango {region}: {count} candidatas, {bytes} bytes de código. Agrupadas por dirección inicial; no indica llamadas."},
+    ru:{label:"Область адресов",all:"Все области",help:"Нажмите на область для увеличения; выберите все области для возврата. Группировка только по начальному адресу, не по вызовам или вложенности.",tip:"Диапазон {region}: кандидатов — {count}, байт кода — {bytes}. Группировка по начальному адресу не означает связь вызовов."},
+    fr:{label:"Région d’adresses",all:"Toutes les régions",help:"Cliquez sur une région pour zoomer ; choisissez toutes les régions pour revenir. Le regroupement suit l’adresse de début, pas les appels ni l’imbrication.",tip:"Plage {region} : {count} candidats, {bytes} octets de code. Regroupés par adresse de début ; cela n’indique pas des appels."},
+    de:{label:"Adressbereich",all:"Alle Adressbereiche",help:"Klicken Sie auf einen Bereich zum Vergrößern; wählen Sie alle Bereiche für die Rückkehr. Gruppiert wird nur nach Startadresse, nicht nach Aufrufen oder Verschachtelung.",tip:"Bereich {region}: {count} Kandidaten, {bytes} Code-Bytes. Gruppiert nach Startadresse; daraus folgt keine Aufrufbeziehung."},
+    it:{label:"Area di indirizzi",all:"Tutte le aree",help:"Fai clic su un’area per ingrandirla; seleziona tutte le aree per tornare. Il raggruppamento usa solo l’indirizzo iniziale, non chiamate o contenimento.",tip:"Intervallo {region}: {count} candidate, {bytes} byte di codice. Raggruppate per indirizzo iniziale; non indica chiamate."},
+    ja:{label:"アドレス領域",all:"すべての領域",help:"領域をクリックすると拡大し、すべての領域を選ぶと戻ります。開始アドレスによる分類で、呼び出しや包含関係を示しません。",tip:"範囲 {region}: 候補 {count} 件、コード {bytes} バイト。開始アドレス別の分類であり、呼び出し関係を示すものではありません。"},
+    ko:{label:"주소 영역",all:"모든 주소 영역",help:"영역을 클릭해 확대하고, 모든 영역을 선택해 돌아가세요. 시작 주소로만 묶으며 호출이나 포함 관계를 뜻하지 않습니다.",tip:"범위 {region}: 후보 {count}개, 코드 {bytes}바이트. 시작 주소별 그룹이며 호출 관계를 뜻하지 않습니다."},
+    "zh-CN":{label:"地址区域",all:"所有地址区域",help:"点击区域可放大，选择所有区域可返回。这里只按起始地址分组，不代表调用或包含关系。",tip:"范围 {region}：{count} 个候选项，代码 {bytes} 字节。按起始地址分组，不代表调用关系。"},
+    ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
+    tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
+  };
+  const validationMetricCopy = {
+    en:"Accepted build + exact byte diff (share of split candidates)",
+    "pt-BR":"Build + diff exato aceitos (proporção das candidatas)",
+    es:"Build + diff exacto aceptados (proporción de candidatas)",
+    ru:"Принятые сборки и точные сравнения байтов (доля кандидатов)",
+    fr:"Build et comparaison exacte acceptés (part des candidats)",
+    de:"Akzeptierter Build und exakter Bytevergleich (Anteil der Kandidaten)",
+    it:"Build e confronto esatto accettati (quota delle candidate)",
+    ja:"ビルドと完全なバイト比較の承認数（候補に対する割合）",
+    ko:"승인된 빌드 및 정확한 바이트 비교 (후보 대비 비율)",
+    "zh-CN":"已接受的构建和精确字节比较（候选项占比）",
+    ar:"عمليات البناء ومقارنة البايتات المقبولة (نسبة المرشحين)",
+    tr:"Kabul edilen derleme ve tam bayt karşılaştırması (aday oranı)"
+  };
+  const validationDetailCopy = {
+    en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
+    "pt-BR":{accepted:"Build + diff exato de bytes: aceito após revisão de mantenedor.",pending:"Ainda não há build + diff exato de bytes aceito registrado."},
+    es:{accepted:"Build + diff exacto de bytes: aceptado tras revisión del mantenedor.",pending:"Aún no hay un build + diff exacto de bytes aceptado."},
+    ru:{accepted:"Сборка и точное сравнение байтов: принято после проверки сопровождающим.",pending:"Принятая сборка с точным сравнением байтов пока не зарегистрирована."},
+    fr:{accepted:"Compilation et comparaison exacte des octets : acceptées après revue du responsable.",pending:"Aucune compilation avec comparaison exacte acceptée n’est encore enregistrée."},
+    de:{accepted:"Build und exakter Bytevergleich: nach Maintainer-Prüfung akzeptiert.",pending:"Noch kein akzeptierter Build mit exaktem Bytevergleich eingetragen."},
+    it:{accepted:"Build e confronto esatto dei byte: accettati dopo la revisione del maintainer.",pending:"Non è ancora registrato un build con confronto esatto dei byte accettato."},
+    ja:{accepted:"ビルドと完全なバイト比較：メンテナー確認後に承認済み。",pending:"承認済みのビルドと完全なバイト比較はまだ記録されていません。"},
+    ko:{accepted:"빌드 및 정확한 바이트 비교: 관리자 검토 후 승인됨.",pending:"승인된 빌드 및 정확한 바이트 비교 기록이 아직 없습니다."},
+    "zh-CN":{accepted:"构建和精确字节比较：经维护者审核后已接受。",pending:"尚无已接受的构建和精确字节比较记录。"},
+    ar:{accepted:"البناء والمقارنة الدقيقة للبايتات: مقبولان بعد مراجعة المشرف.",pending:"لا يوجد سجل مقبول للبناء والمقارنة الدقيقة للبايتات حتى الآن."},
+    tr:{accepted:"Derleme ve tam bayt karşılaştırması: bakım sorumlusu incelemesinden sonra kabul edildi.",pending:"Henüz kabul edilmiş derleme ve tam bayt karşılaştırması kaydı yok."}
+  };
   const K = Object.fromEntries(keys.map((key,index)=>[key,index]));
   const messages = {
     en: ["ReBlack Xbox progress","A repository-owned snapshot of exact and fuzzy matches for BLACK Xbox reconstruction candidates.","Incomplete XboxRecomp split-candidate snapshot; not a complete linked-unit inventory.","Project snapshot metrics","Exact code matched","Fuzzy match score","Exact functions","Split candidates","Candidate code bytes","Candidate size map","Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors show this snapshot’s match classification, not analysis completeness or runtime behavior.","Find a candidate","Example: sub_000285B9","Classification","All candidates","Exact","Fuzzy only","No match in report","Loading candidates…","Treemap legend","Exact bytes","Fuzzy-only candidate","No match recorded","Treemap of candidate code sizes; use search and the candidate list to navigate by keyboard","Candidate list (type to filter; keyboard accessible)","Filtered candidate list (up to {limit} shown)","Showing the first {limit} results. Refine the filter to narrow the list.","Filtered results: {count}.","Search or select a classification to show candidates in this list.","The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately.","Repository overview","Documentation index","Loading reviewed report scope…","Progress data could not be loaded: {error}. Build the Pages folder before previewing this page.","No report data loaded","bytes","100% exact match","fuzzy score {percent}%","no match recorded","Results: {count}","Language","Choose page language"],
@@ -288,6 +336,7 @@
   const query = document.getElementById("query");
   const classification = document.getElementById("classification");
   const sizeZoom = document.getElementById("size-zoom");
+  const regionZoom = document.getElementById("region-zoom");
   const availability = document.getElementById("availability");
   let all = [], visible = [], rectangles = [], selected = null, issueStates = new Map(), issueStatusLoaded = false, issueStatusError = false;
   const languageToggle = document.getElementById("language-toggle");
@@ -330,8 +379,9 @@
     const fallback = languages.find(([code])=>code===language)?.[1] || "English";
     languageNoteText.textContent = extra("missingLanguage",{locale:unsupportedLanguage,fallback});
     const issue = new URL("https://github.com/soldieg/ReBLACK-XBOX/issues/new");
-    issue.searchParams.set("title",`Translation request: ${unsupportedLanguage}`);
-    issue.searchParams.set("body",`Please consider adding support for the browser language "${unsupportedLanguage}". The page currently falls back to ${fallback}.`);
+    issue.searchParams.set("template","translation-request.yml");
+    issue.searchParams.set("title",`[Translation] ${unsupportedLanguage}`);
+    issue.searchParams.set("body",`Requested language: ${unsupportedLanguage}\n\nThe page currently falls back to ${fallback}. Please consider translating the dashboard.`);
     languageRequestLink.href = issue.toString();
     languageRequestLink.textContent = extra("requestTranslation");
     languageNote.hidden = false;
@@ -374,6 +424,10 @@
     const labels = {"size-zoom-label":"sizeZoom","size-all":"allSizes","size-tiny":"tiny","size-small":"small","size-medium":"medium","size-large":"large","availability-label":"availability","availability-free":"available","availability-claimed":"claimed","availability-review":"review","legend-claimed":"claimed","legend-review":"review","queue-title":"queueTitle","queue-intro":"queueIntro","queue-search-label":"findQueue"};
     for (const [id,key] of Object.entries(labels)) document.getElementById(id).textContent=ui(key);
     document.getElementById("availability-all").textContent=msg("allCandidates");
+    document.getElementById("region-zoom-label").textContent=regionCopy[language].label;
+    document.getElementById("region-all").textContent=regionCopy[language].all;
+    document.getElementById("region-help").textContent=regionCopy[language].help;
+    regionZoom.setAttribute("aria-label",regionCopy[language].label);
     sizeZoom.setAttribute("aria-label",ui("sizeZoom"));
     availability.setAttribute("aria-label",ui("availability"));
     document.getElementById("queue-query").placeholder=ui("queuePlaceholder");
@@ -400,6 +454,7 @@
       el.textContent = msg(key);
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
+    document.getElementById("validated-metric").textContent=validationMetricCopy[code] || validationMetricCopy.en;
     document.getElementById("legend").setAttribute("aria-label",msg("legend"));
     document.getElementById("scope").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
     document.getElementById("query").placeholder = msg("searchPlaceholder");
@@ -414,6 +469,7 @@
       document.getElementById("exact-functions").textContent = fmt.format(report.summary.exactFunctions);
       document.getElementById("candidate-count").textContent = fmt.format(report.summary.candidateCount);
       document.getElementById("byte-count").textContent = fmt.format(report.summary.totalCodeBytes);
+      document.getElementById("validated-count").textContent = `${fmt.format(report.summary.validatedReconstructionCount || 0)} · ${fmt.format(Number((report.summary.validatedReconstructionPercent || 0).toFixed(2)))}%`;
       updateFilter();
     } else if (loadError) {
       document.getElementById("result-count").textContent = msg("noData");
@@ -526,6 +582,32 @@
     if (state?.tasks.length) return "claimed";
     return issueStatusLoaded && !issueStatusError ? "available" : "unknown";
   }
+  function populateRegions() {
+    const previous=regionZoom.value, option=document.createElement("option");
+    option.value="all"; option.id="region-all"; option.textContent=regionCopy[language].all;
+    regionZoom.replaceChildren(option);
+    const regions=[...new Set(all.map(item=>item.addressRegion || "Unknown"))].sort();
+    for (const region of regions) {
+      const start=Number.parseInt(region.slice(2),16), end=start+0xFFFF, item=document.createElement("option");
+      item.value=region; item.textContent=`${region}–0x${end.toString(16).toUpperCase().padStart(8,"0")}`;
+      regionZoom.append(item);
+    }
+    regionZoom.value=regions.includes(previous) ? previous : "all";
+  }
+  function regionGroups(items) {
+    const groups=new Map();
+    for (const item of items) {
+      const region=item.addressRegion || "Unknown";
+      if (!groups.has(region)) groups.set(region,[]);
+      groups.get(region).push(item);
+    }
+    return [...groups.entries()].map(([region,members])=>({
+      region, name:region, members,
+      bytes:members.reduce((total,item)=>total+item.bytes,0),
+      category:members.some(item=>item.category==="fuzzy") ? "fuzzy" : members.some(item=>item.category==="unmatched") ? "unmatched" : "exact",
+      state:members.some(item=>candidateState(item)==="review") ? "review" : members.some(item=>candidateState(item)==="claimed") ? "claimed" : "available"
+    })).sort((a,b)=>a.region.localeCompare(b.region));
+  }
   function candidateIssueIds(issue) {
     const body=String(issue.body || "");
     const field=body.match(/###\s*Candidate or function ID\s*\r?\n+([\s\S]*?)(?=\r?\n###\s|$)/i);
@@ -577,7 +659,7 @@
   }
   function selectCandidate(item) {
     showView("progress");
-    query.value=item.name; classification.value="all"; sizeZoom.value="all"; availability.value="all";
+    query.value=item.name; classification.value="all"; sizeZoom.value="all"; regionZoom.value=item.addressRegion || "Unknown"; availability.value="all";
     updateFilter(); selected=item; resizeAndDraw(); renderCandidateDetails(item);
     document.getElementById("candidate-detail").scrollIntoView({behavior:"smooth",block:"nearest"});
   }
@@ -589,6 +671,7 @@
     const task=state==="review" ? ui("reviewState") : state==="claimed" ? ui("claimedState") : state==="available" ? ui("availableState") : ui("issueLoadError");
     document.getElementById("candidate-detail-status").textContent=`${base} · ${task}`;
     document.getElementById("candidate-detail-size").textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}`;
+    document.getElementById("candidate-validation").textContent=(validationDetailCopy[language] || validationDetailCopy.en)[item.reconstructionValidated ? "accepted" : "pending"];
     actions.replaceChildren();
     if (records?.tasks.length) for (const entry of records.tasks) addAction(actions,`${ui("openTask")} #${entry.number}`,entry.url);
     else addAction(actions,ui("claimAction"),issueFormUrl("function-task.yml",item,"Function"));
@@ -655,10 +738,11 @@
     const dpr = Math.max(1,window.devicePixelRatio || 1);
     canvas.width = Math.round(box.width*dpr); canvas.height = Math.round(box.height*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    rectangles = layout(visible,box.width,box.height);
+    const mapItems=regionZoom.value==="all" ? regionGroups(visible) : visible;
+    rectangles = layout(mapItems,box.width,box.height);
     ctx.clearRect(0,0,box.width,box.height);
     for (const rect of rectangles) {
-      const state = candidateState(rect.item);
+      const state = rect.item.members ? rect.item.state : candidateState(rect.item);
       ctx.fillStyle = state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
       ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
       if (rect.w > 5 && rect.h > 5) {
@@ -672,6 +756,15 @@
     }
   }
   function explain(item) {
+    if (item.members) {
+      const detail=document.createElement("span"), title=document.createElement("strong");
+      const template=regionCopy[language].tip;
+      tooltip.replaceChildren();
+      title.textContent=`${item.region} · ${fmt.format(item.members.length)} ${msg("candidatesMetric")}`;
+      detail.textContent=template.replace("{region}",item.region).replace("{count}",fmt.format(item.members.length)).replace("{bytes}",fmt.format(item.bytes));
+      tooltip.append(title,detail);
+      return;
+    }
     const label = item.category === "exact" ? msg("tooltipExact") : item.category === "fuzzy" ? msg("tooltipFuzzy",{percent:fmt.format(item.fuzzyPercent)}) : msg("tooltipNone");
     tooltip.replaceChildren();
     const title=document.createElement("strong"), detail=document.createElement("span");
@@ -710,11 +803,12 @@
     const inRange=item=>range==="all" || (range==="tiny" && item.bytes<=16) || (range==="small" && item.bytes>=17 && item.bytes<=256) || (range==="medium" && item.bytes>=257 && item.bytes<=4096) || (range==="large" && item.bytes>4096);
     visible=all.filter(item => {
       const state=candidateState(item);
-      return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && (status==="all" || (status==="available" && state==="available") || state===status);
+      const inRegion=regionZoom.value==="all" || item.addressRegion===regionZoom.value;
+      return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && inRegion && (status==="all" || (status==="available" && state==="available") || state===status);
     });
     selected=null; tooltip.style.display="none";
     document.getElementById("candidate-detail").hidden=true;
-    drawList(visible,q.length>0 || category!=="all" || range!=="all" || status!=="all"); resizeAndDraw();
+    drawList(visible,q.length>0 || category!=="all" || range!=="all" || regionZoom.value!=="all" || status!=="all"); resizeAndDraw();
   }
   canvas.addEventListener("pointermove",event=>{
     const box=canvas.getBoundingClientRect(), x=event.clientX-box.left, y=event.clientY-box.top;
@@ -726,17 +820,18 @@
   canvas.addEventListener("click",event=>{
     const box=canvas.getBoundingClientRect(),x=event.clientX-box.left,y=event.clientY-box.top;
     const hit=rectangles.find(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h);
-    if(hit){selected=hit.item;showTooltip(hit.item,x,y,true);} else {selected=null;showTooltip(null);resizeAndDraw();}
+    if(hit?.item.members){regionZoom.value=hit.item.region;updateFilter();}
+    else if(hit){selected=hit.item;showTooltip(hit.item,x,y,true);} else {selected=null;showTooltip(null);resizeAndDraw();}
   });
   query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
-  sizeZoom.addEventListener("change",updateFilter); availability.addEventListener("change",updateFilter);
+  sizeZoom.addEventListener("change",updateFilter); regionZoom.addEventListener("change",updateFilter); availability.addEventListener("change",updateFilter);
   document.getElementById("queue-query").addEventListener("input",renderAvailableCandidates);
   window.addEventListener("resize",resizeAndDraw);
 
   applyLanguage(language);
   fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
     report=data;
-    all=data.candidates; applyLanguage(language); renderQueue();
+    all=data.candidates; populateRegions(); applyLanguage(language); renderQueue();
   }).catch(error=>{
     loadError=error.message; applyLanguage(language);
   });

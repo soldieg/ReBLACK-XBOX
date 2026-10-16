@@ -8,6 +8,8 @@ on:
       - tools/decompdev/inventory-approval.json
       - tools/decompdev/build_dashboard.py
       - docs/data/function-priorities.json
+      - reconstructions/validation-index.json
+      - tools/decompdev/validate_public_contributions.py
       - docs/index.html
       - docs/assets/progress.svg
       - .github/workflows/progress-dashboard.yml

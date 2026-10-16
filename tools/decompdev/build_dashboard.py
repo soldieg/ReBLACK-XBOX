@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -14,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REPORT = ROOT / "tools/decompdev/progress-source.json"
 DEFAULT_PRIORITIES = ROOT / "docs/data/function-priorities.json"
+DEFAULT_VALIDATIONS = ROOT / "reconstructions/validation-index.json"
 DEFAULT_BADGE = ROOT / "docs/assets/progress.svg"
 DEFAULT_OUTPUT = ROOT / "build/pages"
 
@@ -26,6 +28,53 @@ def percent(value: object, field: str) -> float:
     if result < 0 or result > 100:
         raise ValueError(f"{field} must be between 0 and 100")
     return result
+
+
+def address_region(candidate_id: str) -> str | None:
+    """Return the 64 KiB code-address bucket encoded in a split candidate ID."""
+    match = re.fullmatch(r"sub_([0-9a-fA-F]{8})", candidate_id)
+    if not match:
+        return None
+    return f"0x{int(match.group(1), 16) & 0xFFFF0000:08X}"
+
+
+def read_validation_index(path: Path, candidates: list[dict]) -> dict:
+    """Load maintainer-reviewed build/diff records, separate from objdiff matches."""
+    index = json.loads(path.read_text(encoding="utf-8"))
+    records = index.get("functions")
+    if index.get("schemaVersion") != 1 or not isinstance(records, list):
+        raise ValueError("Validation index must use schemaVersion 1 and a functions list")
+    known = {item["name"]: item for item in candidates}
+    ids: set[str] = set()
+    validated: list[str] = []
+    allowed_build = {"pending", "pass", "fail"}
+    allowed_review = {"pending", "accepted", "declined"}
+    for entry in records:
+        if not isinstance(entry, dict):
+            raise ValueError("Validation records must be objects")
+        candidate_id = entry.get("id")
+        build_diff = entry.get("buildDiff")
+        review = entry.get("maintainerReview")
+        evidence = entry.get("evidence", "")
+        if not isinstance(candidate_id, str) or candidate_id not in known:
+            raise ValueError("Validation index references a candidate absent from the approved snapshot")
+        if candidate_id in ids:
+            raise ValueError("Validation index contains duplicate candidate IDs")
+        if build_diff not in allowed_build or review not in allowed_review:
+            raise ValueError(f"{candidate_id} has an invalid buildDiff or maintainerReview state")
+        if not isinstance(evidence, str) or (evidence and not evidence.startswith("https://")):
+            raise ValueError(f"{candidate_id} evidence must be an HTTPS link or empty")
+        if build_diff == "pass" and review == "accepted" and not evidence:
+            raise ValueError(f"{candidate_id} needs public evidence before it can be counted as validated")
+        ids.add(candidate_id)
+        if build_diff == "pass" and review == "accepted":
+            validated.append(candidate_id)
+    validated.sort()
+    return {
+        "validatedIds": validated,
+        "validatedCount": len(validated),
+        "validatedPercent": (100.0 * len(validated) / len(candidates)) if candidates else 0.0,
+    }
 
 
 def read_report(path: Path) -> dict:
@@ -119,6 +168,7 @@ def read_report(path: Path) -> dict:
             "category": category,
             "exactPercent": exact_percent,
             "fuzzyPercent": fuzzy_percent,
+            "addressRegion": address_region(name.removeprefix("candidate/")),
         })
 
     if byte_sum != total_code:
@@ -179,6 +229,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT, help="validated objdiff report JSON")
     parser.add_argument("--priorities", type=Path, default=DEFAULT_PRIORITIES, help="maintainer-curated public candidate priorities")
+    parser.add_argument("--validations", type=Path, default=DEFAULT_VALIDATIONS, help="maintainer-reviewed function build/diff index")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="static site build directory")
     parser.add_argument("--badge", type=Path, default=DEFAULT_BADGE, help="README badge SVG path")
     parser.add_argument("--check-badge", action="store_true", help="fail if the committed badge is stale; do not change it")
@@ -187,6 +238,12 @@ def main() -> int:
     try:
         payload = read_report(args.report)
         payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
+        payload["validation"] = read_validation_index(args.validations, payload["candidates"])
+        validated_ids = set(payload["validation"]["validatedIds"])
+        for candidate in payload["candidates"]:
+            candidate["reconstructionValidated"] = candidate["name"] in validated_ids
+        payload["summary"]["validatedReconstructionCount"] = payload["validation"]["validatedCount"]
+        payload["summary"]["validatedReconstructionPercent"] = payload["validation"]["validatedPercent"]
         expected_badge = badge_svg(payload["summary"])
         if args.check_badge:
             if not args.badge.is_file() or args.badge.read_text(encoding="utf-8") != expected_badge:
@@ -205,7 +262,9 @@ def main() -> int:
         print(
             f"Built {summary['candidateCount']:,} candidates / {summary['totalCodeBytes']:,} bytes; "
             f"exact {summary['exactFunctions']} functions ({summary['exactCodePercent']:.8f}%); "
-            f"fuzzy {summary['fuzzyMatchPercent']:.8f}%."
+            f"fuzzy {summary['fuzzyMatchPercent']:.8f}%; "
+            f"build/diff-validated reconstructions {summary['validatedReconstructionCount']} "
+            f"({summary['validatedReconstructionPercent']:.8f}% of split candidates)."
         )
         print(f"Pages files: {args.output_dir}")
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
