@@ -39,5 +39,5 @@
 
 - The public GitHub repository is intended to hold status and planning documents, not a copy of the local game-data workspace.
 - The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBOX). GitHub Actions publishes an explicitly incomplete report over 13,676 XboxRecomp split candidates; 130 locally compiled reconstruction objects were compared, with 47 exact function matches (406 bytes, 0.0177% exact code). The 44 new local build-and-byte-diff results contributed 35 functions to objdiff exact totals; nine did not register as exact at split-object level.
-- The local split static-review tracker (336 complete, 93 in progress as of 2026-10-16) is a separate progress measure and does not change the decomp.dev binary-match result.
+- The local split static-review tracker (336 complete, 94 in progress as of 2026-10-16) is a separate progress measure and does not change the decomp.dev binary-match result.
 - The report is not a complete linked-unit inventory: the split ranges include heuristic boundaries and 1,517 overlaps, and the broader detector produced 16,598 candidates. The 0.2113% fuzzy match is a candidate-snapshot measure, not whole-game completion. Six new reconstructions remain semantically pending because of shared global/table dependencies; all report units remain explicitly incomplete.
