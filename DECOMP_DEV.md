@@ -5,9 +5,9 @@ The former [decomp.dev project page](https://decomp.dev/soldieg/ReBLACK-XBOX) di
 ## Current report snapshot
 
 - Scope: **13,676 XboxRecomp split candidates** and **2,297,156 candidate code bytes**. This is an incomplete split-candidate inventory, not a complete linked-unit list or a whole-game denominator.
-- objdiff: **406 exact bytes**, **47 exact functions**, **0.017674029% exact code** (shown as **0.02%**), and **0.21520935% fuzzy match**.
-- Candidate map: **47 exact**, **74 fuzzy-only**, and **13,555 with no match recorded** in this report.
-- These figures describe objdiff matches. They are separate from the local function reconstruction tracker, static review, compile status, Xbox link, runtime observation, and visible gameplay.
+- objdiff: **811 exact bytes**, **63 exact functions**, **0.035304524% exact code** (shown as **0.04%**), and **0.66778016% fuzzy match**.
+- Candidate map: **63 exact**, **268 fuzzy-only**, and **13,345 with no match recorded** in this report.
+- The current report compares 401 compiled current C objects to 13,676 XboxRecomp split candidate objects using objdiff 3.8.2; 15 current C sources failed host compilation and are absent as base objects. Of those compiled sources, 63 are exact, 268 fuzzy-only, and 70 have no match. These figures describe candidate-level objdiff matches, not complete linked functions, Xbox linking, runtime behavior, or visible gameplay. The private validation queue records the per-source outcomes.
 
 ## Update flow
 

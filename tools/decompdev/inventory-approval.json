@@ -6,18 +6,16 @@
   "split_manifest_count": 13676,
   "candidate_function_count": 16598,
   "expected_total_code_bytes": 2297156,
-  "base_reconstruction_object_count": 132,
-  "exact_matched_code_bytes": 406,
-  "exact_matched_function_count": 47,
+  "base_reconstruction_object_count": 401,
+  "exact_matched_code_bytes": 811,
+  "exact_matched_function_count": 63,
   "xbe_sha256": "DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6",
-  "report_sha256": "f81ad77e2b47d6bf8182e91836bc6e24df48cd6bf377a9ff1a78b55216b2f34f",
+  "report_sha256": "fdcd1929a88269c1ebdc51db119d9cbfe743d74e1a032db5ed41bd04bbe1b0e8",
   "limitations": [
     "The report covers all 13,676 entries in the XboxRecomp split manifest; a separate refined detector inventory contains 16,598 candidates.",
     "Candidate ranges are heuristic and include overlaps; they are not a proven complete original linked-unit inventory.",
-    "All objdiff report units are explicitly incomplete. The exact-byte metric is not whole-game completion.",
-    "The 132 base objects were compiled locally from manual C reconstructions; target/base objects and source C remain local.",
-    "44 additional local function objects passed isolated compile and byte comparison; objdiff reflects 35 of these in exact-match totals, while 9 are not counted as exact at split-object level.",
-    "Six of the 44 exact local reconstructions have unresolved global/table dependency groups; all candidate units remain explicitly incomplete.",
-    "The current two additional local reconstruction objects compiled, but neither matched its target function byte-for-byte; both units remain explicitly incomplete and exact-match totals are unchanged."
+    "All objdiff report units are explicitly incomplete. Exact byte matches at candidate boundaries do not prove whole-game completion or runtime behavior.",
+    "The current comparison uses 401 locally compiled MSVC x86 objects from current manual C reconstructions; 15 sources failed compilation and have no base object in this report. Source C, objects, and detailed evidence remain private.",
+    "The comparison uses objdiff 3.8.2 against XboxRecomp split candidate objects. Exact means the compiled base candidate code bytes match the target candidate bytes; fuzzy-only and unmatched candidates are not exact reconstructions."
   ]
 }
