@@ -22,3 +22,5 @@ jogo xbox/
 **/levels/
 **/videos/
 /build/
+__pycache__/
+*.py[cod]

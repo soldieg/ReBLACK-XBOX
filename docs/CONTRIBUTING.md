@@ -4,10 +4,10 @@ Use the public progress dashboard to find a candidate, then use the repository I
 
 ## 1. Find or propose a function
 
-1. Search the [progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/) for a candidate ID. Filter or zoom by size, select a block, and review its byte-match status and active task/issues. The size filters enlarge the selected size range; they do not imply that one candidate contains another.
+1. Search the [progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/) for a candidate ID. Filter by size, select an address-region box to zoom in, and review the candidate's byte-match, reconstruction-validation, and active task/review states. Region boxes group start addresses only; they do not describe calls or function containment.
 2. Check [existing function Issues](https://github.com/soldieg/ReBLACK-XBOX/issues?q=is%3Aissue+label%3Afunction-task) to avoid duplicate work.
 3. If there is no suitable Issue, select the candidate in the dashboard and use **Claim this function** to open a pre-titled Function task Issue. Include the candidate ID, known address range and size, related callers/callees or shared state, and links to public evidence. An open task Issue marks the candidate blue. Maintainers curate the high-priority list in [`docs/data/function-priorities.json`](data/function-priorities.json); it is separate from claimed work.
-4. Wait for a maintainer to confirm the function identity, boundaries, dependencies, and whether the task is ready. Dashboard split candidates can have heuristic boundaries; an Issue does not make those boundaries authoritative.
+4. Wait for a maintainer to confirm the function identity, boundaries, dependencies, and whether the task is ready. Dashboard split candidates can have heuristic boundaries; an Issue does not make those boundaries authoritative. An open task colors the candidate blue. A review Issue colors it red until a maintainer records a decision; red is a review request, not a confirmed defect.
 
 ## 2. Reconstruct and submit
 
@@ -24,7 +24,7 @@ Use the public progress dashboard to find a candidate, then use the repository I
 - **Xbox link/runtime:** integration or behavior was observed at the corresponding level. Do not infer it from static review or a byte diff.
 - **Approximate or pending:** similarity is not exact equivalence; missing boundaries, dependencies, toolchain details, or evidence remain explicit.
 
-Maintainers review submissions and update the progress report only when the evidence supports the reported status. A pull request is not automatically accepted because it builds or has a high similarity score.
+The public preflight workflow checks contribution file format, candidate IDs, required evidence files, and obvious accidental data disclosures. **A passing preflight is not Xbox compilation or byte-diff validation.** The dashboard's accepted-reconstruction count changes only after a maintainer verifies the target build and exact byte comparison, reviews the evidence, and updates [`reconstructions/validation-index.json`](../reconstructions/validation-index.json). Contributors must not edit that index. Repository settings should require a maintainer review for changes to the index, workflows, and validation tooling. A pull request is not accepted because it builds or has a high similarity score.
 
 ## Review an existing reconstruction
 

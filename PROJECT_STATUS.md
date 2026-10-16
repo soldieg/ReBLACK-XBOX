@@ -37,7 +37,7 @@
 
 ## Current integration state
 
-- The public GitHub repository holds project documentation, a sanitized objdiff candidate snapshot, and a repository-owned progress dashboard. Game files, reconstructed C sources, and private evidence bundles remain local.
+- The public GitHub repository holds project documentation, a sanitized objdiff candidate snapshot, the progress dashboard, and the public function-contribution workflow. Contributors may submit reconstructed C files and sanitized evidence through reviewed PRs; game binaries/assets, target-byte dumps, local paths, credentials, and private evidence bundles stay out of the public repository. The public preflight checks submission safety and format, while maintainers record build + exact byte-diff validation only after checking the evidence in the target environment.
 - The dashboard reports 13,676 XboxRecomp split candidates and 2,297,156 candidate code bytes: 47 exact functions / 406 bytes (0.017674029% exact) and 0.21520935% fuzzy. Its candidate map lists 47 exact, 74 fuzzy-only, and 13,555 unmatched candidates.
 - The local split static-review tracker is a separate measure. Reconstruction status, static review, isolated compile, byte comparison, Xbox linking, runtime observation, and visible gameplay are not interchangeable.
 - Split boundaries are heuristic, the manifest includes 1,517 overlaps, and the broader detector found 16,598 candidates. The dashboard is a commit-driven candidate snapshot, not whole-game completion.

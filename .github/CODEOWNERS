@@ -1,0 +1,5 @@
+# Keep the accepted-validation ledger and the checks that publish it under maintainer review.
+/reconstructions/validation-index.json @soldieg
+/.github/workflows/ @soldieg
+/tools/decompdev/validate_public_contributions.py @soldieg
+/tools/decompdev/build_dashboard.py @soldieg
