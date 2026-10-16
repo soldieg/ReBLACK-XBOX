@@ -52,3 +52,7 @@ A fresh REA/Ghidra pass found no direct references to the candidate table at `0x
 ### Allocator dispatch owner trace (2026-10-16)
 
 REA/Ghidra links the constructor at `0x14380` to the object published in `0x2D12B8`: its caller allocates a `0x16C0`-byte object, calls the constructor, then stores the returned pointer in that global. The constructor writes the interior table address `0x28C130` into object offset `+0x23C`. Its 272-byte body and the 5-byte callsite at `0x20BDCC` match XBE raw bytes and the XboxRecomp split. This identifies static ownership of that interior pointer. It does not identify the owner of base address `0x28C120`, prove the full seven-entry table's type, or establish runtime dispatch. No C or target/base object was added; decomp.dev match totals are unchanged. Local evidence remains outside this public repository.
+
+### State-dispatch parent draft (2026-10-16)
+
+The local `sub_00201430` reconstruction now has a semantic C adapter for selectors 2–5 and events 10–12. Its 1,336-byte body matches the raw XBE, derived PE analyzed by REA, and XboxRecomp split. Two indirect calls at `0x2015E5` and `0x2018DD` remain unresolved; helper spills, callback contracts, original ABI, SIMD order, instruction-level review, Xbox build/diff, and runtime are pending. This local status update adds no target/base objects, so the published objdiff report and decomp.dev exact/fuzzy totals do not change. C and detailed evidence remain local.
