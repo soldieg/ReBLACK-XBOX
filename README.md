@@ -10,10 +10,11 @@ The project aims to decompile and reconstruct *BLACK* for the original Xbox, the
 
 - [Progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/)
 - [Documentation index](docs/README.md)
+- [Contributing function reconstructions](docs/CONTRIBUTING.md)
 - [Detailed project status](PROJECT_STATUS.md)
 - [Roadmap](ROADMAP.md)
 - [Reconstruction log](docs/RECONSTRUCTION_LOG.md)
 - [References and tools](docs/REFERENCES.md)
 - [History of the decomp.dev report](DECOMP_DEV.md)
 
-The dashboard updates when a reviewed report snapshot is committed to `main`. Game files, C reconstructions, and local evidence are not published here.
+The dashboard updates when a reviewed report snapshot is committed to `main`. See the [contribution guide](docs/CONTRIBUTING.md) for the function Issue → maintainer review → pull request workflow. Game files and extracted binaries must not be published here.

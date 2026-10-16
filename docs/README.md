@@ -5,6 +5,7 @@ Quick entry points for the ReBlack Xbox project.
 - [Project status](../PROJECT_STATUS.md) — current local workspace, evidence boundaries, and integration state.
 - [Roadmap](../ROADMAP.md) — planned work and priorities.
 - [Progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/) — function-size map and objdiff snapshot.
+- [Contribution guide](CONTRIBUTING.md) — how to propose a function task and submit a reconstruction.
 - [Reconstruction log](RECONSTRUCTION_LOG.md) — dated technical updates moved out of the root README.
 - [References and tools](REFERENCES.md) — related projects, analysis tools, and assistance used.
 - [decomp.dev history](../DECOMP_DEV.md) — background on the former external report flow and its replacement.

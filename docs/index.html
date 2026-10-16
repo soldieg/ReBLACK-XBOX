@@ -142,8 +142,10 @@
       </ol>
       <p id="contribute-no-files"></p>
       <div class="info-links">
-        <a class="info-link" id="issues-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues"></a>
+        <a class="info-link" id="issues-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues/new?template=function-task.yml"></a>
+        <a class="info-link" id="issue-list-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues?q=is%3Aissue+label%3Afunction-task"></a>
         <a class="info-link" id="pulls-link" href="https://github.com/soldieg/ReBLACK-XBOX/pulls"></a>
+        <a class="info-link" id="guide-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/CONTRIBUTING.md"></a>
       </div>
     </div>
   </section>
@@ -251,6 +253,20 @@
     "method-step-one":"methodOne","method-step-two":"methodTwo","method-step-three":"methodThree",
     "status-exact":"exactStatus","status-approximate":"approximateStatus","status-pending":"pendingStatus"
   };
+  const contributionCopy = {
+    en: ["Find a candidate in the dashboard, then open a function Issue with its ID, known size/range, and dependencies. A maintainer confirms the boundaries and readiness before work starts.","Check existing function Issues first. If none fits, submit the function Issue form with public evidence links; do not paste game data.","After a maintainer confirms the task, reconstruct the function or dependency group and record the toolchain and evidence.","Open a pull request linked to the Issue. Report validation separately for each function; unresolved checks stay pending.","Create a function Issue","Browse function Issues","Contributor guide"],
+    "pt-BR": ["Encontre uma candidata no painel e abra um Issue com o ID, tamanho/intervalo conhecido e dependências. Uma pessoa responsável confirma os limites e se a tarefa está pronta antes do início.","Confira os Issues existentes. Se nenhum servir, envie o formulário da função com links de evidências públicas; não cole dados do jogo.","Depois da confirmação da tarefa, reconstrua a função ou grupo de dependências e registre ferramentas e evidências.","Abra uma PR vinculada ao Issue. Informe a validação de cada função separadamente; o que não foi verificado fica pendente.","Criar Issue de função","Ver Issues de funções","Guia de contribuição"],
+    es: ["Busca una candidata en el panel y crea un Issue con su ID, tamaño/rango conocido y dependencias. Una persona responsable confirma los límites y si está lista antes de empezar.","Revisa los Issues existentes. Si ninguno sirve, envía el formulario de función con enlaces a pruebas públicas; no pegues datos del juego.","Cuando se confirme la tarea, reconstruye la función o el grupo de dependencias e indica herramientas y pruebas.","Abre una PR enlazada al Issue. Informa la validación de cada función por separado; lo no comprobado queda pendiente.","Crear Issue de función","Ver Issues de funciones","Guía de contribución"],
+    ru: ["Найдите кандидата на панели и создайте Issue с его ID, известным размером/диапазоном и зависимостями. Сопровождающий подтвердит границы и готовность задачи до начала работы.","Сначала проверьте существующие Issues. Если подходящего нет, отправьте форму функции со ссылками на общедоступные доказательства; не вставляйте игровые данные.","После подтверждения задачи восстановите функцию или группу зависимостей и укажите инструменты и доказательства.","Создайте PR со ссылкой на Issue. Укажите статус проверки каждой функции отдельно; непроверенное оставьте ожидающим.","Создать Issue функции","Список Issues функций","Руководство для участников"],
+    fr: ["Trouvez un candidat dans le tableau et créez une Issue avec son identifiant, sa taille/plage connue et ses dépendances. Un responsable confirme les limites et l’état prêt avant le début.","Vérifiez d’abord les Issues existantes. Sinon, envoyez le formulaire avec des liens vers des preuves publiques ; ne collez aucune donnée du jeu.","Après confirmation, reconstruisez la fonction ou le groupe de dépendances et indiquez les outils et preuves.","Ouvrez une PR liée à l’Issue. Indiquez séparément l’état de validation de chaque fonction ; les contrôles incomplets restent en attente.","Créer une Issue de fonction","Voir les Issues de fonctions","Guide de contribution"],
+    de: ["Suche einen Kandidaten im Dashboard und erstelle ein Issue mit ID, bekannter Größe/Adresse und Abhängigkeiten. Ein Maintainer bestätigt Grenzen und Bearbeitungsstatus vor dem Start.","Prüfe zuerst vorhandene Funktions-Issues. Falls keines passt, reiche das Formular mit öffentlichen Nachweisen ein; füge keine Spieldaten ein.","Nach Bestätigung rekonstruierst du die Funktion oder Abhängigkeitsgruppe und dokumentierst Werkzeuge und Nachweise.","Erstelle einen mit dem Issue verknüpften Pull Request. Gib den Prüfstatus je Funktion an; ungeprüfte Punkte bleiben offen.","Funktions-Issue erstellen","Funktions-Issues ansehen","Beitragsleitfaden"],
+    it: ["Trova una candidata nel dashboard e apri una Issue con ID, dimensione/intervallo noto e dipendenze. Un responsabile conferma limiti e disponibilità prima dell’inizio.","Controlla prima le Issue esistenti. Se non ce n’è una adatta, invia il modulo con link a prove pubbliche; non incollare dati del gioco.","Dopo la conferma, ricostruisci la funzione o il gruppo di dipendenze e indica strumenti e prove.","Apri una PR collegata alla Issue. Indica separatamente lo stato di verifica di ogni funzione; i controlli incompleti restano in sospeso.","Crea Issue funzione","Vedi Issue funzione","Guida ai contributi"],
+    ja: ["ダッシュボードで候補を探し、ID、既知のサイズ/範囲、依存関係を記載したIssueを作成します。作業開始前に担当者が境界と準備状況を確認します。","既存の関数Issueを確認してください。該当がなければ公開証拠へのリンクを添えてフォームを送信し、ゲームデータは貼り付けないでください。","タスク確認後、関数または依存グループを再構築し、使用ツールと証拠を記録します。","IssueにリンクしたPRを作成します。関数ごとに検証状況を記載し、未確認項目は保留にします。","関数Issueを作成","関数Issueを見る","貢献ガイド"],
+    ko: ["대시보드에서 후보를 찾고 ID, 알려진 크기/범위, 의존성을 적은 Issue를 만드세요. 담당자가 경계와 작업 준비 상태를 확인한 뒤 시작합니다.","기존 함수 Issue를 먼저 확인하세요. 맞는 항목이 없으면 공개 증거 링크와 함께 양식을 제출하고 게임 데이터는 붙여 넣지 마세요.","작업 확인 후 함수 또는 의존성 그룹을 재구성하고 사용 도구와 증거를 기록하세요.","Issue에 연결된 PR을 여세요. 함수마다 검증 상태를 따로 적고 미확인 항목은 대기로 남기세요.","함수 Issue 만들기","함수 Issue 보기","기여 안내"],
+    "zh-CN": ["在进度面板中找到候选项，并创建 Issue，填写 ID、已知大小/范围和依赖关系。开始前由维护者确认边界和任务是否就绪。","先查看已有函数 Issue。若没有合适项，请提交表单并附公开证据链接；不要粘贴游戏数据。","任务获确认后，重建函数或依赖组，并记录工具和证据。","创建关联 Issue 的 PR。逐个函数填写验证状态；尚未验证的项目保持待处理。","创建函数 Issue","查看函数 Issues","贡献指南"],
+    ar: ["ابحث عن مرشح في لوحة التقدم وأنشئ Issue يتضمن المعرّف والحجم/النطاق المعروف والاعتماديات. يؤكد المسؤول الحدود وجاهزية المهمة قبل بدء العمل.","تحقق من Issues الموجودة أولاً. إذا لم تجد ما يناسب، أرسل النموذج مع روابط أدلة عامة؛ لا تلصق بيانات اللعبة.","بعد تأكيد المهمة، أعد بناء الدالة أو مجموعة الاعتماديات وسجّل الأدوات والأدلة.","أنشئ PR مرتبطاً بالـ Issue. اذكر حالة التحقق لكل دالة على حدة واترك غير المؤكد قيد الانتظار.","إنشاء Issue لدالة","عرض Issues الدوال","دليل المساهمة"],
+    tr: ["Panoda bir aday bulun ve kimliğini, bilinen boyut/aralığını ve bağımlılıklarını içeren bir Issue açın. Başlamadan önce bir sorumlu sınırları ve görevin hazır olup olmadığını doğrular.","Önce mevcut işlev Issue'larını kontrol edin. Uygun yoksa herkese açık kanıt bağlantılarıyla formu gönderin; oyun verilerini yapıştırmayın.","Görev onaylandıktan sonra işlevi veya bağımlılık grubunu yeniden oluşturun; araçları ve kanıtları kaydedin.","Issue'ya bağlı bir PR açın. Her işlevin doğrulama durumunu ayrı belirtin; incelenmeyenler beklemede kalsın.","İşlev Issue'su oluştur","İşlev Issue'larını gör","Katkı rehberi"]
+  };
 
   function extra(key, values={}) {
     const template = extraMessages[language]?.[X[key]] || extraMessages.en[X[key]] || "";
@@ -269,6 +285,11 @@
   }
   function updateExtraLanguage() {
     for (const [id,key] of Object.entries(extraTextIds)) document.getElementById(id).textContent = extra(key);
+    const copy = contributionCopy[language] || contributionCopy.en;
+    ["contribute-intro","contribute-step-one","contribute-step-two","contribute-step-three"].forEach((id,index)=>document.getElementById(id).textContent=copy[index]);
+    document.getElementById("issues-link").textContent = copy[4];
+    document.getElementById("issue-list-link").textContent = copy[5];
+    document.getElementById("guide-link").textContent = copy[6];
     document.getElementById("page-tabs").setAttribute("aria-label",extra("tabsLabel"));
     document.getElementById("language-note").setAttribute("lang",language);
     document.getElementById("method-status-title").textContent = statusHeadings[language] || statusHeadings.en;

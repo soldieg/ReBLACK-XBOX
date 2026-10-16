@@ -1,0 +1,76 @@
+name: Function task
+description: Propose or request a function or dependency group for reconstruction
+title: "[Function] "
+labels:
+  - function-task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to propose or request work on a function. Dashboard entries are split candidates and may have heuristic boundaries. A maintainer must confirm the function range and dependencies before implementation begins.
+
+  - type: input
+    id: candidate_id
+    attributes:
+      label: Candidate or function ID
+      description: Copy the ID shown by the project progress dashboard.
+      placeholder: sub_00000000
+    validations:
+      required: true
+
+  - type: input
+    id: address_range
+    attributes:
+      label: Address range, if known
+      description: Use hexadecimal start and exclusive end addresses. Leave blank if unknown.
+      placeholder: "0x00000000–0x00000010"
+    validations:
+      required: false
+
+  - type: input
+    id: size
+    attributes:
+      label: Candidate size in bytes, if known
+      placeholder: "16"
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Related functions and shared state
+      description: List known callers, callees, aliases, tables, or shared-state readers/writers. Say "unknown" if not known.
+      placeholder: "sub_00000020 calls this candidate; it reads/writes ..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: What are you proposing?
+      options:
+        - I would like to work on this candidate
+        - I have a reconstruction ready for review
+        - I found a boundary, dependency, or identity issue
+        - I want to propose a related dependency group
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence or references
+      description: Link public tool output, reports, or related issues. Do not attach game files or extracted binary data.
+      placeholder: "Tool/version, evidence ID or report URL, and what it shows"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safe_submission
+    attributes:
+      label: Submission checks
+      options:
+        - label: I will not upload game files, extracted binaries, local file paths, or credentials.
+          required: true
+        - label: I understand that a dashboard candidate is not a confirmed function until its boundaries and dependencies are reviewed.
+          required: true
