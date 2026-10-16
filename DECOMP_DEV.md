@@ -6,7 +6,7 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 
 - Scope: **13,676 XboxRecomp split candidates** from the reviewed manifest. This is a candidate snapshot, not a complete linked-unit inventory.
 - Target side: one MASM object per candidate, assembled from XboxRecomp's byte-preserving split listings.
-- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local static-review tracker (2026-10-16) records **311 complete** and **75 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
+- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local static-review tracker (2026-10-16) records **312 complete** and **75 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
 - objdiff v3.8.2 results: **406 / 2,297,156 exact code bytes (0.0176740%)**, 47 exact functions, and **0.2113089% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
 - The exact-code figure remains below 0.5%; the badge currently rounds it to **0.02%**.
