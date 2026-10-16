@@ -7,6 +7,7 @@
 
 - The local XboxRecomp split tracker contains **13,676 candidates**: **336 complete** at the static reconstruction/review level (2.46%), **152 in progress**, and **13,188 not started**. “Complete” here does not mean Xbox build/diff or runtime validation.
 - A local inventory contains **416 manually reconstructed C files**: 333 map to tracker entries marked complete and 83 to entries marked in progress. These source files and their detailed evidence remain outside this public repository. All 416 are queued for a fresh, source-specific batch build/diff check; earlier isolated results must be matched by source hash before being counted for this inventory.
+- A first host compile pass checked all 416 current C files with MSVC 19.51.36260 x86 (`/W4 /O2 /c`): **401 compiled and 15 failed**. This is only a host compile check; it does not prove Xbox build compatibility or byte equivalence. Xbox-target build/diff remains pending for all 416, and per-function diagnostics stay in the private validation workspace.
 - The dashboard’s **47 exact functions / 406 bytes** and **74 fuzzy-only candidates** are objdiff snapshot results. They do not count the local C files or establish that those current files compile to matching Xbox bytes. The number 303 is not the current complete-function total.
 
 ## Work present in the local workspace
