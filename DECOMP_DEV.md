@@ -6,7 +6,7 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 
 - Scope: **13,676 XboxRecomp split candidates** from the reviewed manifest. This is a candidate snapshot, not a complete linked-unit inventory.
 - Target side: one MASM object per candidate, assembled from XboxRecomp's byte-preserving split listings.
-- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local XboxRecomp split static-review tracker (2026-10-16) records **322 complete** and **75 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
+- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local XboxRecomp split static-review tracker (2026-10-16) records **328 complete** and **76 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
 - objdiff v3.8.2 results: **406 / 2,297,156 exact code bytes (0.0176740%)**, 47 exact functions, and **0.2113089% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
 - The exact-code figure remains below 0.5%; the badge currently rounds it to **0.02%**.
@@ -28,3 +28,7 @@ GitHub Actions does not rebuild the XBE or regenerate the target/base objects. I
 The 47 exact matches show that the compiled C objects contain byte-identical code for those 47 candidate ranges under the recorded local compiler settings. Fuzzy matching measures similar code that is not byte-identical. This does not establish that all original functions or linked objects have been found, nor does it prove runtime behavior or a PC recompilation.
 
 The previous one-function pilot report remains in the project's decomp.dev history. It has been superseded by this 13,676-candidate snapshot for the latest report.
+
+## Local status update (2026-10-16)
+
+The allocator root `sub_000285B9` now has a manual C draft under static review. Focused evidence covers the zero-fill loop and virtual-region header, and the current draft compiles in isolated MSVC x86 builds. Its full static review, callback ABI, exact Xbox link/diff, and runtime validation remain pending. These updates change the local reconstruction tracker only; no new target/base object batch has been published, so the decomp.dev exact and fuzzy match figures above remain unchanged.
