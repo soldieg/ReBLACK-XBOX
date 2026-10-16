@@ -6,7 +6,7 @@ The project is registered at [decomp.dev](https://decomp.dev/soldieg/ReBLACK-XBO
 
 - Scope: **13,676 XboxRecomp split candidates** from the reviewed manifest. This is a candidate snapshot, not a complete linked-unit inventory.
 - Target side: one MASM object per candidate, assembled from XboxRecomp's byte-preserving split listings.
-- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local XboxRecomp split static-review tracker (2026-10-16) records **333 complete** and **77 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
+- Base side: **130** independent MSVC x86 objects built from the available manual C reconstructions. At the time of that report snapshot, 79 files were marked complete and 7 in progress in the local tracker. The current local XboxRecomp split static-review tracker (2026-10-16) records **333 complete** and **78 in progress** out of 13,676 candidate rows; this newer count is not a build/diff result and does not alter the published objdiff report.
 - objdiff v3.8.2 results: **406 / 2,297,156 exact code bytes (0.0176740%)**, 47 exact functions, and **0.2113089% fuzzy match**.
 - Every report unit is marked `complete=false`. This records that the candidate ranges are not proven original linked units.
 - The exact-code figure remains below 0.5%; the badge currently rounds it to **0.02%**.
@@ -36,3 +36,7 @@ The allocator root `sub_000285B9` has a manual C draft under static review. A pa
 ### Follow-up evidence (2026-10-16)
 
 The allocator investigation added a bounded reference check for four candidate `+0x250` writer addresses. REA/Ghidra did not resolve those addresses to procedures or return direct references; this only describes the checked static coverage and does not rule out indirect calls or runtime aliases. No new target/base objects or byte-diff results came from this follow-up. The local tracker remains at **333 complete / 78 in progress** of 13,676 candidates. The published objdiff snapshot therefore remains **47 exact functions, 406 exact code bytes (0.0176740%), and 0.21520935% fuzzy**, with every candidate unit explicitly incomplete.
+
+### Heap-context provenance follow-up (2026-10-16)
+
+Static REA evidence traces the heap context from `0x28195` to global `0x566154`; the creation path uses `NtAllocateVirtualMemory` and initializes 128 list heads at `context+0x180`. The `0x28C270` application-object path is separately rooted in the pool manager at `0x2D12E8`. This supports distinct static provenance, while whole-program/runtime pointer aliasing remains unresolved. The existing C draft was kept unchanged, and the exact SEH frame/handler gap remains open. No new target/base object or byte-diff result was added, so the published decomp.dev exact/fuzzy figures are unchanged. Detailed REA evidence and local game artifacts remain outside this public repository.
