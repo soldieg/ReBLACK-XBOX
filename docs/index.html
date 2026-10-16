@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>ReBlack Xbox — progress snapshot</title>
+  <style>
+    :root { color-scheme: dark; --bg:#10151d; --panel:#18212d; --line:#2d3a4b; --text:#ecf2fa; --muted:#aab7c7; --exact:#27835c; --fuzzy:#c98719; --none:#465568; --accent:#72b7ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { width:min(1200px,100% - 32px); margin:32px auto 56px; }
+    h1 { margin:0; font-size:clamp(1.65rem,4vw,2.4rem); line-height:1.15; }
+    h2 { margin:0; font-size:1.15rem; }
+    p { color:var(--muted); }
+    a { color:var(--accent); }
+    .intro { margin:10px 0 24px; }
+    .scope { border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
+    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
+    .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
+    .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
+    .metric span { color:var(--muted); font-size:.88rem; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:12px; margin:16px 0 10px; }
+    label { display:grid; gap:4px; color:var(--muted); font-size:.88rem; }
+    input,select { min-height:42px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:8px 11px; font:inherit; }
+    #query { width:min(430px,78vw); }
+    #result-count { margin-left:auto; color:var(--muted); font-variant-numeric:tabular-nums; }
+    .legend { display:flex; flex-wrap:wrap; gap:16px; margin:12px 0; color:var(--muted); font-size:.9rem; }
+    .legend span { display:inline-flex; align-items:center; gap:7px; }
+    .swatch { width:13px; height:13px; border-radius:3px; display:inline-block; }
+    .chart-wrap { position:relative; background:#0c1118; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+    canvas { display:block; width:100%; height:min(62vh,620px); min-height:380px; touch-action:pan-y; }
+    .tooltip { display:none; position:absolute; z-index:2; max-width:min(340px,85%); padding:8px 10px; border:1px solid #60738a; border-radius:7px; background:#111a25; box-shadow:0 6px 24px #0008; pointer-events:none; font-size:.84rem; }
+    .tooltip strong,.tooltip span { display:block; overflow-wrap:anywhere; }
+    .tooltip span { color:var(--muted); }
+    .tiles { margin-top:18px; }
+    .tiles summary { cursor:pointer; color:var(--accent); }
+    .tile-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:6px; padding:10px 0; list-style:none; }
+    .tile-list button { width:100%; min-height:42px; display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--text); text-align:left; padding:7px 9px; cursor:pointer; }
+    .tile-list button:hover,.tile-list button:focus-visible { outline:2px solid var(--accent); }
+    .tile-list small { flex:none; color:var(--muted); }
+    .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
+    @media (max-width:850px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:last-child { grid-column:span 2; } }
+    @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-left:0; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>ReBlack Xbox progress</h1>
+    <p class="intro">A repository-owned snapshot of exact and fuzzy matches for BLACK Xbox reconstruction candidates.</p>
+  </header>
+  <div class="scope" id="scope">Loading reviewed report scope…</div>
+  <section class="metrics" aria-label="Project snapshot metrics">
+    <div class="metric"><strong id="exact-percent">—</strong><span>Exact code matched</span></div>
+    <div class="metric"><strong id="fuzzy-percent">—</strong><span>Fuzzy match score</span></div>
+    <div class="metric"><strong id="exact-functions">—</strong><span>Exact functions</span></div>
+    <div class="metric"><strong id="candidate-count">—</strong><span>Split candidates</span></div>
+    <div class="metric"><strong id="byte-count">—</strong><span>Candidate code bytes</span></div>
+  </section>
+  <section aria-labelledby="map-heading">
+    <h2 id="map-heading">Candidate size map</h2>
+    <p>Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors report this snapshot’s match classification, not analysis completeness or runtime behavior.</p>
+    <div class="toolbar">
+      <label>Find a candidate
+        <input id="query" type="search" placeholder="Example: sub_000285B9" autocomplete="off">
+      </label>
+      <label>Classification
+        <select id="classification">
+          <option value="all">All candidates</option>
+          <option value="exact">Exact</option>
+          <option value="fuzzy">Fuzzy only</option>
+          <option value="unmatched">No match in report</option>
+        </select>
+      </label>
+      <span id="result-count" aria-live="polite">Loading candidates…</span>
+    </div>
+    <div class="legend" aria-label="Treemap legend">
+      <span><i class="swatch" style="background:var(--exact)"></i>Exact bytes</span>
+      <span><i class="swatch" style="background:var(--fuzzy)"></i>Fuzzy-only candidate</span>
+      <span><i class="swatch" style="background:var(--none)"></i>No match recorded</span>
+    </div>
+    <div class="chart-wrap" id="chart-wrap">
+      <canvas id="chart" aria-label="Treemap of candidate code sizes; use the search and candidate list to navigate by keyboard"></canvas>
+      <div class="tooltip" id="tooltip" role="status"></div>
+    </div>
+    <details class="tiles">
+      <summary id="list-summary">Candidate list (type to filter; keyboard accessible)</summary>
+      <ul class="tile-list" id="tile-list"></ul>
+      <p id="list-note"></p>
+    </details>
+  </section>
+  <p class="foot">The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately. <a href="https://github.com/soldieg/ReBLACK-XBOX">Repository overview</a> · <a href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/README.md">Documentation index</a></p>
+</main>
+<script>
+(() => {
+  "use strict";
+  const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568"};
+  const fmt = new Intl.NumberFormat("en-US");
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+  const wrap = document.getElementById("chart-wrap");
+  const tooltip = document.getElementById("tooltip");
+  const query = document.getElementById("query");
+  const classification = document.getElementById("classification");
+  let all = [], visible = [], rectangles = [], selected = null;
+
+  function worst(row, side) {
+    if (!row.length) return Infinity;
+    const sum = row.reduce((n, item) => n + item.area, 0);
+    const max = Math.max(...row.map(item => item.area));
+    const min = Math.min(...row.map(item => item.area));
+    return Math.max((side * side * max) / (sum * sum), (sum * sum) / (side * side * min));
+  }
+  function placeRow(row, bounds, out) {
+    const sum = row.reduce((n, item) => n + item.area, 0);
+    if (bounds.w >= bounds.h) {
+      const strip = sum / bounds.h;
+      let y = bounds.y;
+      for (const item of row) {
+        const h = item.area / strip;
+        out.push({item:item.source, x:bounds.x, y, w:strip, h});
+        y += h;
+      }
+      bounds.x += strip; bounds.w = Math.max(0, bounds.w - strip);
+    } else {
+      const strip = sum / bounds.w;
+      let x = bounds.x;
+      for (const item of row) {
+        const w = item.area / strip;
+        out.push({item:item.source, x, y:bounds.y, w, h:strip});
+        x += w;
+      }
+      bounds.y += strip; bounds.h = Math.max(0, bounds.h - strip);
+    }
+  }
+  function layout(items, width, height) {
+    if (!items.length || width <= 0 || height <= 0) return [];
+    const sum = items.reduce((n, item) => n + item.bytes, 0);
+    const remaining = items.map(source => ({source, area:source.bytes * width * height / sum}));
+    remaining.sort((a,b) => b.area - a.area);
+    const out = [], bounds = {x:0,y:0,w:width,h:height};
+    while (remaining.length && bounds.w > 0 && bounds.h > 0) {
+      const row = [];
+      const side = Math.min(bounds.w,bounds.h);
+      while (remaining.length) {
+        const next = remaining[0];
+        if (row.length && worst(row.concat(next),side) > worst(row,side)) break;
+        row.push(remaining.shift());
+      }
+      placeRow(row,bounds,out);
+    }
+    return out;
+  }
+  function resizeAndDraw() {
+    const box = canvas.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const dpr = Math.max(1,window.devicePixelRatio || 1);
+    canvas.width = Math.round(box.width*dpr); canvas.height = Math.round(box.height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    rectangles = layout(visible,box.width,box.height);
+    ctx.clearRect(0,0,box.width,box.height);
+    for (const rect of rectangles) {
+      ctx.fillStyle = colors[rect.item.category];
+      ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
+      if (rect.w > 5 && rect.h > 5) {
+        ctx.strokeStyle = "#10151d"; ctx.lineWidth = .65;
+        ctx.strokeRect(rect.x+.3,rect.y+.3,rect.w-.6,rect.h-.6);
+      }
+      if (selected === rect.item) {
+        ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3;
+        ctx.strokeRect(rect.x+1.5,rect.y+1.5,Math.max(0,rect.w-3),Math.max(0,rect.h-3));
+      }
+    }
+  }
+  function explain(item) {
+    const label = item.category === "exact" ? "100% exact" : item.category === "fuzzy" ? `fuzzy score ${item.fuzzyPercent}%` : "no match recorded";
+    tooltip.replaceChildren();
+    const title=document.createElement("strong"), detail=document.createElement("span");
+    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} bytes · ${label}`;
+    tooltip.append(title,detail);
+  }
+  function showTooltip(item,x,y,pin=false) {
+    if (!item) { tooltip.style.display="none"; return; }
+    explain(item); tooltip.style.display="block";
+    const maxX = wrap.clientWidth - tooltip.offsetWidth - 8;
+    const maxY = wrap.clientHeight - tooltip.offsetHeight - 8;
+    tooltip.style.left = `${Math.max(8,Math.min(x+12,maxX))}px`;
+    tooltip.style.top = `${Math.max(8,Math.min(y+12,maxY))}px`;
+    if (pin) { selected=item; resizeAndDraw(); }
+  }
+  function drawList(matches,filtered) {
+    const list=document.getElementById("tile-list"), note=document.getElementById("list-note");
+    list.replaceChildren();
+    document.getElementById("result-count").textContent = `${fmt.format(matches.length)} candidate${matches.length===1?"":"s"}`;
+    document.getElementById("list-summary").textContent = filtered ? `Matching candidates (${Math.min(matches.length,80)} shown; keyboard accessible)` : "Candidate list (type to filter; keyboard accessible)";
+    note.textContent = matches.length>80 ? `Showing the first 80 matches. Refine the filter to narrow the list.` : filtered ? `${fmt.format(matches.length)} matching candidates.` : "Search or select a classification to make candidates available in this list.";
+    if (!filtered) return;
+    for (const item of matches.slice(0,80)) {
+      const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small");
+      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} B · ${item.category}`;
+      button.type="button"; button.append(name,size);
+      button.addEventListener("focus",()=>{ const i=visible.indexOf(item); if(i>=0){const r=rectangles.find(x=>x.item===item); if(r)showTooltip(item,r.x+r.w/2,r.y+r.h/2);}});
+      button.addEventListener("click",()=>{ selected=item; resizeAndDraw(); showTooltip(item,wrap.clientWidth/2,wrap.clientHeight/2,true); });
+      li.append(button); list.append(li);
+    }
+  }
+  function updateFilter() {
+    const q=query.value.trim().toLowerCase(), category=classification.value;
+    visible=all.filter(item => (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category));
+    selected=null; tooltip.style.display="none";
+    drawList(visible,q.length>0 || category!=="all"); resizeAndDraw();
+  }
+  canvas.addEventListener("pointermove",event=>{
+    const box=canvas.getBoundingClientRect(), x=event.clientX-box.left, y=event.clientY-box.top;
+    let hit=null;
+    for(let i=rectangles.length-1;i>=0;i--){const r=rectangles[i]; if(x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h){hit=r;break;}}
+    if(hit) showTooltip(hit.item,x,y); else if(!selected) showTooltip(null);
+  });
+  canvas.addEventListener("pointerleave",()=>{if(!selected)showTooltip(null);});
+  canvas.addEventListener("click",event=>{
+    const box=canvas.getBoundingClientRect(),x=event.clientX-box.left,y=event.clientY-box.top;
+    const hit=rectangles.find(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h);
+    if(hit){selected=hit.item;showTooltip(hit.item,x,y,true);} else {selected=null;showTooltip(null);resizeAndDraw();}
+  });
+  query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
+  window.addEventListener("resize",resizeAndDraw);
+
+  fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
+    const s=data.summary;
+    document.getElementById("scope").textContent=s.scope;
+    document.getElementById("exact-percent").textContent=`${s.exactCodePercent.toFixed(2)}%`;
+    document.getElementById("fuzzy-percent").textContent=`${s.fuzzyMatchPercent.toFixed(4)}%`;
+    document.getElementById("exact-functions").textContent=fmt.format(s.exactFunctions);
+    document.getElementById("candidate-count").textContent=fmt.format(s.candidateCount);
+    document.getElementById("byte-count").textContent=fmt.format(s.totalCodeBytes);
+    all=data.candidates; updateFilter();
+  }).catch(error=>{
+    document.getElementById("scope").textContent=`Progress data could not be loaded: ${error.message}. Build the Pages folder before previewing this page.`;
+    document.getElementById("result-count").textContent="No report data loaded";
+  });
+})();
+</script>
+</body>
+</html>

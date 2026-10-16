@@ -1,4 +1,4 @@
-name: ReBLACK Xbox decomp.dev report
+name: ReBLACK Xbox progress dashboard
 
 on:
   push:
@@ -6,16 +6,26 @@ on:
     paths:
       - tools/decompdev/progress-source.json
       - tools/decompdev/inventory-approval.json
+      - tools/decompdev/build_dashboard.py
+      - docs/index.html
+      - docs/assets/progress.svg
+      - .github/workflows/progress-dashboard.yml
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+  actions: read
 
 jobs:
-  report:
-    name: Validate and publish sanitized objdiff report
+  dashboard:
+    name: Validate and publish local progress dashboard
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -156,13 +166,10 @@ jobs:
           except (TypeError, ValueError) as error:
               sys.exit(f"Report rejected: {error}")
 
-          output = pathlib.Path("build/report.json")
-          output.parent.mkdir(parents=True, exist_ok=True)
-          output.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
           if report_scope == "pilot":
               summary = pathlib.Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
               summary.write_text(
-                  "## decomp.dev report — INCOMPLETE PILOT\n\n"
+                  "## ReBlack Xbox report — INCOMPLETE PILOT\n\n"
                   "This artifact contains one 85-byte candidate only (3.7906976% fuzzy match). "
                   "It is **not** whole-game progress and must not be treated as a complete inventory.\n\n"
                   "The XBE candidate inventory currently has 16,598 detected functions; the report covers 1 pilot unit.\n",
@@ -173,7 +180,7 @@ jobs:
               summary = pathlib.Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
               measures = report["measures"]
               summary.write_text(
-                  "## decomp.dev report — INCOMPLETE CANDIDATE SNAPSHOT\n\n"
+                  "## ReBlack Xbox report — INCOMPLETE CANDIDATE SNAPSHOT\n\n"
                   f"This report contains {expected:,} XboxRecomp split candidates and {measures.get('total_code')} candidate code bytes. "
                   f"Objdiff measured {measures.get('matched_code', '0')} exact bytes "
                   f"({measures.get('matched_code_percent', 0)}% exact; {measures.get('fuzzy_match_percent', 0)}% fuzzy) "
@@ -186,10 +193,15 @@ jobs:
           else:
               print(f"Validated objdiff v2 complete report: {expected} units; no local paths or extra fields.")
           PY
-      - name: Upload decomp.dev report
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - name: Build local dashboard
+        shell: bash
+        run: python3 tools/decompdev/build_dashboard.py --report tools/decompdev/progress-source.json --output-dir build/pages --badge docs/assets/progress.svg --check-badge
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
-          name: BLACK_report
-          path: build/report.json
-          if-no-files-found: error
-          retention-days: 14
+          path: build/pages
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@f33f41b675f0ab2dc5a6863c9a170fe83af3571e # v4.0.0
