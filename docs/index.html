@@ -12,6 +12,14 @@
     main { width:min(1200px,100% - 32px); margin:32px auto 56px; }
     h1 { margin:0; font-size:clamp(1.65rem,4vw,2.4rem); line-height:1.15; }
     h2 { margin:0; font-size:1.15rem; }
+    .site-header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
+    .lang-control { position:relative; flex:none; }
+    .lang-toggle { min-height:42px; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--text); padding:8px 12px; font:inherit; cursor:pointer; }
+    .lang-toggle:hover,.lang-toggle:focus-visible,.lang-menu button:hover,.lang-menu button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .lang-menu { position:absolute; z-index:5; top:calc(100% + 8px); inset-inline-end:0; width:min(260px,calc(100vw - 32px)); max-height:min(65vh,420px); overflow:auto; padding:6px; border:1px solid var(--line); border-radius:9px; background:var(--panel); box-shadow:0 12px 32px #0008; }
+    .lang-menu[hidden] { display:none; }
+    .lang-menu button { width:100%; display:block; border:0; border-radius:5px; background:transparent; color:var(--text); padding:8px 10px; text-align:start; font:inherit; cursor:pointer; }
+    .lang-menu button[aria-checked="true"] { background:#26384d; }
     p { color:var(--muted); }
     a { color:var(--accent); }
     .intro { margin:10px 0 24px; }
@@ -24,7 +32,7 @@
     label { display:grid; gap:4px; color:var(--muted); font-size:.88rem; }
     input,select { min-height:42px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:8px 11px; font:inherit; }
     #query { width:min(430px,78vw); }
-    #result-count { margin-left:auto; color:var(--muted); font-variant-numeric:tabular-nums; }
+    #result-count { margin-inline-start:auto; color:var(--muted); font-variant-numeric:tabular-nums; }
     .legend { display:flex; flex-wrap:wrap; gap:16px; margin:12px 0; color:var(--muted); font-size:.9rem; }
     .legend span { display:inline-flex; align-items:center; gap:7px; }
     .swatch { width:13px; height:13px; border-radius:3px; display:inline-block; }
@@ -36,49 +44,58 @@
     .tiles { margin-top:18px; }
     .tiles summary { cursor:pointer; color:var(--accent); }
     .tile-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:6px; padding:10px 0; list-style:none; }
-    .tile-list button { width:100%; min-height:42px; display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--text); text-align:left; padding:7px 9px; cursor:pointer; }
+    .tile-list button { width:100%; min-height:42px; display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--text); text-align:start; padding:7px 9px; cursor:pointer; }
     .tile-list button:hover,.tile-list button:focus-visible { outline:2px solid var(--accent); }
     .tile-list small { flex:none; color:var(--muted); }
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
     @media (max-width:850px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:last-child { grid-column:span 2; } }
-    @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-left:0; } }
+    @media (max-width:700px) { .site-header { flex-wrap:wrap; } }
+    @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-inline-start:0; } }
   </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>ReBlack Xbox progress</h1>
-    <p class="intro">A repository-owned snapshot of exact and fuzzy matches for BLACK Xbox reconstruction candidates.</p>
+  <header class="site-header">
+    <div>
+      <h1 id="page-title">ReBlack Xbox progress</h1>
+      <p class="intro" id="intro">A repository-owned snapshot of exact and fuzzy matches for BLACK Xbox reconstruction candidates.</p>
+    </div>
+    <div class="lang-control">
+      <button class="lang-toggle" id="language-toggle" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+        <span aria-hidden="true">🌐</span><span id="language-label">Language</span><span aria-hidden="true">▾</span>
+      </button>
+      <div class="lang-menu" id="language-menu" role="menu" aria-label="Choose page language" hidden></div>
+    </div>
   </header>
-  <div class="scope" id="scope">Loading reviewed report scope…</div>
-  <section class="metrics" aria-label="Project snapshot metrics">
-    <div class="metric"><strong id="exact-percent">—</strong><span>Exact code matched</span></div>
-    <div class="metric"><strong id="fuzzy-percent">—</strong><span>Fuzzy match score</span></div>
-    <div class="metric"><strong id="exact-functions">—</strong><span>Exact functions</span></div>
-    <div class="metric"><strong id="candidate-count">—</strong><span>Split candidates</span></div>
-    <div class="metric"><strong id="byte-count">—</strong><span>Candidate code bytes</span></div>
+  <div class="scope" id="scope" aria-live="polite">Loading reviewed report scope…</div>
+  <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
+    <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Exact code matched</span></div>
+    <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy match score</span></div>
+    <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact functions</span></div>
+    <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
+    <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
-    <p>Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors report this snapshot’s match classification, not analysis completeness or runtime behavior.</p>
+    <p id="map-description">Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors report this snapshot’s match classification, not analysis completeness or runtime behavior.</p>
     <div class="toolbar">
-      <label>Find a candidate
+      <label><span id="search-label">Find a candidate</span>
         <input id="query" type="search" placeholder="Example: sub_000285B9" autocomplete="off">
       </label>
-      <label>Classification
+      <label><span id="classification-label">Classification</span>
         <select id="classification">
-          <option value="all">All candidates</option>
-          <option value="exact">Exact</option>
-          <option value="fuzzy">Fuzzy only</option>
-          <option value="unmatched">No match in report</option>
+          <option value="all" id="filter-all">All candidates</option>
+          <option value="exact" id="filter-exact">Exact</option>
+          <option value="fuzzy" id="filter-fuzzy">Fuzzy only</option>
+          <option value="unmatched" id="filter-unmatched">No match in report</option>
         </select>
       </label>
       <span id="result-count" aria-live="polite">Loading candidates…</span>
     </div>
-    <div class="legend" aria-label="Treemap legend">
-      <span><i class="swatch" style="background:var(--exact)"></i>Exact bytes</span>
-      <span><i class="swatch" style="background:var(--fuzzy)"></i>Fuzzy-only candidate</span>
-      <span><i class="swatch" style="background:var(--none)"></i>No match recorded</span>
+    <div class="legend" id="legend" aria-label="Treemap legend">
+      <span><i class="swatch" style="background:var(--exact)"></i><span id="legend-exact">Exact bytes</span></span>
+      <span><i class="swatch" style="background:var(--fuzzy)"></i><span id="legend-fuzzy">Fuzzy-only candidate</span></span>
+      <span><i class="swatch" style="background:var(--none)"></i><span id="legend-unmatched">No match recorded</span></span>
     </div>
     <div class="chart-wrap" id="chart-wrap">
       <canvas id="chart" aria-label="Treemap of candidate code sizes; use the search and candidate list to navigate by keyboard"></canvas>
@@ -90,13 +107,32 @@
       <p id="list-note"></p>
     </details>
   </section>
-  <p class="foot">The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately. <a href="https://github.com/soldieg/ReBLACK-XBOX">Repository overview</a> · <a href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/README.md">Documentation index</a></p>
+  <p class="foot"><span id="footer-text">The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately.</span> <a id="repo-link" href="https://github.com/soldieg/ReBLACK-XBOX">Repository overview</a> · <a id="docs-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/README.md">Documentation index</a></p>
 </main>
 <script>
 (() => {
   "use strict";
   const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568"};
-  const fmt = new Intl.NumberFormat("en-US");
+  const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
+  const K = Object.fromEntries(keys.map((key,index)=>[key,index]));
+  const messages = {
+    en: ["ReBlack Xbox progress","A repository-owned snapshot of exact and fuzzy matches for BLACK Xbox reconstruction candidates.","Incomplete XboxRecomp split-candidate snapshot; not a complete linked-unit inventory.","Project snapshot metrics","Exact code matched","Fuzzy match score","Exact functions","Split candidates","Candidate code bytes","Candidate size map","Each box is one split candidate; its area follows its code size. Filtering rescales the remaining boxes to fill the map. Colors show this snapshot’s match classification, not analysis completeness or runtime behavior.","Find a candidate","Example: sub_000285B9","Classification","All candidates","Exact","Fuzzy only","No match in report","Loading candidates…","Treemap legend","Exact bytes","Fuzzy-only candidate","No match recorded","Treemap of candidate code sizes; use search and the candidate list to navigate by keyboard","Candidate list (type to filter; keyboard accessible)","Filtered candidate list (up to {limit} shown)","Showing the first {limit} results. Refine the filter to narrow the list.","Filtered results: {count}.","Search or select a classification to show candidates in this list.","The source is the reviewed objdiff v2 report committed in this repository. Tracker completion, static reconstruction, byte comparison, Xbox linking, and runtime evidence are tracked separately.","Repository overview","Documentation index","Loading reviewed report scope…","Progress data could not be loaded: {error}. Build the Pages folder before previewing this page.","No report data loaded","bytes","100% exact match","fuzzy score {percent}%","no match recorded","Results: {count}","Language","Choose page language"],
+    "pt-BR": ["Progresso do ReBlack Xbox","Snapshot do repositório com correspondências exatas e aproximadas das candidatas à reconstrução de BLACK para Xbox.","Snapshot incompleto de candidatas divididas pelo XboxRecomp; não é um inventário completo de unidades vinculadas.","Métricas do snapshot do projeto","Código correspondente exato","Índice de correspondência aproximada","Funções exatas","Candidatas divididas","Bytes de código candidatos","Mapa de tamanho das candidatas","Cada bloco representa uma candidata e sua área corresponde ao tamanho do código. Os filtros redimensionam os blocos. As cores indicam a classificação deste snapshot, não a conclusão da análise nem o comportamento em execução.","Buscar uma função","Exemplo: sub_000285B9","Classificação","Todas as candidatas","Exata","Somente aproximada","Sem correspondência no relatório","Carregando candidatas…","Legenda do mapa","Bytes exatos","Candidata somente aproximada","Sem correspondência registrada","Mapa de tamanho do código; use a busca e a lista de candidatas para navegar pelo teclado","Lista de candidatas (digite para filtrar; acessível pelo teclado)","Lista filtrada (até {limit} exibidas)","Exibindo os primeiros {limit} resultados. Refine o filtro para restringir a lista.","Resultados filtrados: {count}.","Busque ou selecione uma classificação para mostrar candidatas nesta lista.","A fonte é o relatório objdiff v2 revisado e registrado neste repositório. Conclusão do tracker, reconstrução estática, comparação de bytes, vínculo Xbox e evidências em execução são acompanhados separadamente.","Visão geral do repositório","Índice da documentação","Carregando o escopo do relatório…","Não foi possível carregar os dados do progresso: {error}. Gere a pasta Pages antes de visualizar esta página.","Nenhum dado de relatório carregado","bytes","Correspondência 100% exata","índice aproximado {percent}%","nenhuma correspondência registrada","Resultados: {count}","Idioma","Escolha o idioma da página"],
+    es: ["Progreso de ReBlack Xbox","Resumen del repositorio con coincidencias exactas y aproximadas de las candidatas a reconstrucción de BLACK para Xbox.","Resumen incompleto de candidatas divididas por XboxRecomp; no es un inventario completo de unidades enlazadas.","Métricas del resumen del proyecto","Código coincidente exacto","Puntuación de coincidencia aproximada","Funciones exactas","Candidatas divididas","Bytes de código candidatos","Mapa de tamaños de candidatas","Cada bloque representa una candidata y su área sigue el tamaño del código. Los filtros reajustan los bloques. Los colores muestran la clasificación de este resumen, no la finalización del análisis ni el comportamiento en ejecución.","Buscar una función","Ejemplo: sub_000285B9","Clasificación","Todas las candidatas","Exacta","Solo aproximada","Sin coincidencia en el informe","Cargando candidatas…","Leyenda del mapa","Bytes exactos","Candidata solo aproximada","Sin coincidencia registrada","Mapa del tamaño del código; usa la búsqueda y la lista de candidatas para navegar con el teclado","Lista de candidatas (escribe para filtrar; accesible con teclado)","Lista filtrada (hasta {limit} mostradas)","Se muestran los primeros {limit} resultados. Ajusta el filtro para reducir la lista.","Resultados filtrados: {count}.","Busca o selecciona una clasificación para mostrar candidatas en esta lista.","La fuente es el informe objdiff v2 revisado y confirmado en este repositorio. El estado del tracker, la reconstrucción estática, la comparación de bytes, el enlace de Xbox y las pruebas en ejecución se siguen por separado.","Descripción del repositorio","Índice de documentación","Cargando el alcance del informe…","No se pudieron cargar los datos de progreso: {error}. Genera la carpeta Pages antes de previsualizar esta página.","No se cargaron datos del informe","bytes","Coincidencia 100% exacta","puntuación aproximada {percent}%","sin coincidencia registrada","Resultados: {count}","Idioma","Elige el idioma de la página"],
+    ru: ["Прогресс ReBlack Xbox","Снимок репозитория с точными и приблизительными совпадениями для кандидатов на реконструкцию BLACK для Xbox.","Неполный снимок кандидатов XboxRecomp; это не полный список связанных единиц.","Показатели проекта","Точное совпадение кода","Оценка приблизительного совпадения","Точные функции","Кандидаты из разбиения","Байты кода кандидатов","Карта размеров кандидатов","Каждый блок — один кандидат, его площадь соответствует размеру кода. Фильтры перераспределяют блоки. Цвет показывает тип совпадения в этом снимке, а не завершённость анализа или поведение во время выполнения.","Найти функцию","Например: sub_000285B9","Классификация","Все кандидаты","Точное","Только приблизительное","Нет совпадения в отчёте","Загрузка кандидатов…","Легенда карты","Точные байты","Только приблизительное совпадение","Совпадений не найдено","Карта размеров кода; используйте поиск и список кандидатов для навигации с клавиатуры","Список кандидатов (введите текст для фильтрации; доступна навигация с клавиатуры)","Отфильтрованный список (показано до {limit})","Показаны первые {limit} результатов. Уточните фильтр, чтобы сузить список.","Результаты фильтрации: {count}.","Введите запрос или выберите классификацию, чтобы показать кандидатов.","Источник — проверенный отчёт objdiff v2 в этом репозитории. Статус трекера, статическая реконструкция, сравнение байтов, связывание Xbox и данные выполнения отслеживаются отдельно.","Обзор репозитория","Содержание документации","Загрузка области отчёта…","Не удалось загрузить данные: {error}. Сначала соберите папку Pages для предварительного просмотра.","Данные отчёта не загружены","байт","Совпадение 100%","оценка приблизительного совпадения: {percent}%","совпадений нет","Результаты: {count}","Язык","Выберите язык страницы"],
+    fr: ["Progression de ReBlack Xbox","Instantané du dépôt des correspondances exactes et approximatives pour les fonctions candidates de BLACK sur Xbox.","Instantané incomplet des fonctions candidates découpées par XboxRecomp ; ce n’est pas un inventaire complet des unités liées.","Indicateurs du projet","Code correspondant exactement","Score de correspondance approximative","Fonctions exactes","Fonctions candidates découpées","Octets de code candidats","Carte des tailles des fonctions","Chaque bloc représente une candidate et sa surface dépend de la taille de son code. Les filtres réorganisent les blocs. Les couleurs indiquent la correspondance de cet instantané, pas l’avancement de l’analyse ni le comportement à l’exécution.","Rechercher une fonction","Exemple : sub_000285B9","Classification","Toutes les candidates","Exacte","Approximative uniquement","Aucune correspondance dans le rapport","Chargement des candidates…","Légende de la carte","Octets exacts","Candidate approximative uniquement","Aucune correspondance enregistrée","Carte des tailles du code ; utilisez la recherche et la liste pour naviguer au clavier","Liste des candidates (saisir pour filtrer ; navigation au clavier)","Liste filtrée (jusqu’à {limit} affichées)","Affichage des {limit} premiers résultats. Affinez le filtre pour réduire la liste.","Résultats filtrés : {count}.","Recherchez ou choisissez une classification pour afficher les candidates.","La source est le rapport objdiff v2 vérifié et enregistré dans ce dépôt. L’avancement du suivi, la reconstruction statique, la comparaison des octets, l’édition de liens Xbox et les preuves d’exécution sont suivis séparément.","Présentation du dépôt","Index de la documentation","Chargement du périmètre du rapport…","Impossible de charger les données : {error}. Générez le dossier Pages avant l’aperçu.","Aucune donnée de rapport chargée","octets","Correspondance exacte à 100 %","score approximatif : {percent} %","aucune correspondance enregistrée","Résultats : {count}","Langue","Choisir la langue de la page"],
+    de: ["ReBlack Xbox Fortschritt","Repository-Snapshot exakter und näherungsweiser Treffer für BLACK-Xbox-Rekonstruktionskandidaten.","Unvollständiger Snapshot der von XboxRecomp aufgeteilten Kandidaten; kein vollständiges Verzeichnis verknüpfter Einheiten.","Projektkennzahlen","Exakt übereinstimmender Code","Näherungswert der Übereinstimmung","Exakte Funktionen","Aufgeteilte Kandidaten","Kandidatencode in Byte","Größenkarte der Kandidaten","Jeder Kasten steht für einen Kandidaten; seine Fläche entspricht der Codegröße. Filter ordnen die Kästen neu an. Farben zeigen die Trefferklasse dieses Snapshots, nicht den Analysefortschritt oder das Laufzeitverhalten.","Funktion suchen","Beispiel: sub_000285B9","Klassifizierung","Alle Kandidaten","Exakt","Nur näherungsweise","Kein Treffer im Bericht","Kandidaten werden geladen…","Kartenlegende","Exakte Bytes","Nur näherungsweiser Treffer","Kein Treffer gespeichert","Codegrößenkarte; Suche und Kandidatenliste sind per Tastatur bedienbar","Kandidatenliste (zum Filtern tippen; tastaturbedienbar)","Gefilterte Liste (bis zu {limit} angezeigt)","Die ersten {limit} Ergebnisse werden angezeigt. Filter verfeinern, um die Liste einzugrenzen.","Gefilterte Ergebnisse: {count}.","Suche starten oder eine Klassifizierung wählen, um Kandidaten anzuzeigen.","Quelle ist der geprüfte objdiff-v2-Bericht in diesem Repository. Trackerstatus, statische Rekonstruktion, Bytevergleich, Xbox-Verknüpfung und Laufzeitnachweise werden getrennt erfasst.","Repository-Übersicht","Dokumentationsindex","Berichtsumfang wird geladen…","Fortschrittsdaten konnten nicht geladen werden: {error}. Erzeuge vor der Vorschau den Pages-Ordner.","Keine Berichtsdaten geladen","Byte","100 % exakt","Näherungswert: {percent} %","Kein Treffer gespeichert","Ergebnisse: {count}","Sprache","Seitensprache auswählen"],
+    it: ["Progresso di ReBlack Xbox","Snapshot del repository con corrispondenze esatte e approssimative per le candidate alla ricostruzione di BLACK per Xbox.","Snapshot incompleto delle candidate suddivise da XboxRecomp; non è un inventario completo delle unità collegate.","Metriche del progetto","Codice corrispondente esatto","Punteggio di corrispondenza approssimativa","Funzioni esatte","Candidate suddivise","Byte di codice candidati","Mappa delle dimensioni delle candidate","Ogni riquadro rappresenta una candidata e la sua area segue la dimensione del codice. I filtri ridistribuiscono i riquadri. I colori mostrano la classificazione di questo snapshot, non il completamento dell’analisi o il comportamento in esecuzione.","Cerca una funzione","Esempio: sub_000285B9","Classificazione","Tutte le candidate","Esatta","Solo approssimativa","Nessuna corrispondenza nel report","Caricamento candidate…","Legenda della mappa","Byte esatti","Candidata solo approssimativa","Nessuna corrispondenza registrata","Mappa delle dimensioni del codice; usa la ricerca e l’elenco per navigare con la tastiera","Elenco candidate (digita per filtrare; accessibile da tastiera)","Elenco filtrato (fino a {limit} visualizzate)","Visualizzati i primi {limit} risultati. Affina il filtro per restringere l’elenco.","Risultati filtrati: {count}.","Cerca o seleziona una classificazione per mostrare le candidate.","La fonte è il report objdiff v2 verificato e registrato in questo repository. Stato del tracker, ricostruzione statica, confronto dei byte, collegamento Xbox e prove di esecuzione sono monitorati separatamente.","Panoramica del repository","Indice della documentazione","Caricamento dell’ambito del report…","Impossibile caricare i dati: {error}. Genera la cartella Pages prima dell’anteprima.","Nessun dato del report caricato","byte","Corrispondenza esatta al 100%","punteggio approssimativo {percent}%","nessuna corrispondenza registrata","Risultati: {count}","Lingua","Scegli la lingua della pagina"],
+    ja: ["ReBlack Xbox 進捗","BLACK Xbox 再構築候補の完全一致・類似一致を示すリポジトリ内スナップショットです。","XboxRecomp が分割した候補の不完全なスナップショットです。リンク済みユニットの完全な一覧ではありません。","プロジェクト指標","コードの完全一致","類似一致スコア","完全一致した関数","分割候補","候補コードのバイト数","候補サイズマップ","各ボックスは分割候補を表し、面積はコードサイズに対応します。絞り込み後はマップを再配置します。色はこのスナップショットの一致分類を示し、解析の完了度や実行時の動作を示すものではありません。","関数を検索","例: sub_000285B9","分類","すべての候補","完全一致","類似のみ","レポートに一致なし","候補を読み込み中…","マップの凡例","完全一致バイト","類似のみの候補","一致記録なし","候補コードサイズのマップです。検索と候補リストはキーボードで操作できます","候補一覧（入力して絞り込み、キーボード操作可能）","絞り込み結果（最大 {limit} 件を表示）","先頭の {limit} 件を表示しています。条件を追加して絞り込んでください。","絞り込み結果: {count} 件。","検索するか分類を選ぶと候補が表示されます。","このリポジトリに登録された確認済み objdiff v2 レポートを使用しています。トラッカー、静的再構築、バイト比較、Xbox リンク、実行時の証拠は別々に記録しています。","リポジトリ概要","ドキュメント一覧","レポート範囲を読み込み中…","進捗データを読み込めません: {error}。プレビュー前に Pages フォルダーを生成してください。","レポートデータがありません","バイト","100% 完全一致","類似スコア {percent}%","一致記録なし","結果: {count} 件","言語","ページの言語を選択"],
+    ko: ["ReBlack Xbox 진행 상황","BLACK Xbox 재구성 후보의 정확 일치와 유사 일치를 보여 주는 저장소 스냅샷입니다.","XboxRecomp 분할 후보의 일부 스냅샷이며, 링크된 유닛 전체 목록은 아닙니다.","프로젝트 스냅샷 지표","코드 정확 일치","유사 일치 점수","정확 일치 함수","분할 후보","후보 코드 바이트","후보 크기 지도","각 상자는 분할 후보 하나를 나타내며 면적은 코드 크기에 비례합니다. 필터를 적용하면 상자 배치가 다시 조정됩니다. 색상은 이 스냅샷의 일치 분류이며 분석 완료도나 실행 동작을 뜻하지 않습니다.","함수 검색","예: sub_000285B9","분류","모든 후보","정확 일치","유사 일치만","보고서에 일치 없음","후보 불러오는 중…","지도 범례","정확 일치 바이트","유사 일치 후보","일치 기록 없음","후보 코드 크기 지도입니다. 검색 및 후보 목록은 키보드로 탐색할 수 있습니다","후보 목록 (입력하여 필터링; 키보드 사용 가능)","필터 결과 목록 (최대 {limit}개 표시)","처음 {limit}개 결과를 표시합니다. 필터를 좁혀 보세요.","필터 결과: {count}개.","검색하거나 분류를 선택하면 후보가 표시됩니다.","이 저장소에 커밋된 검토된 objdiff v2 보고서를 사용합니다. 트래커 완료, 정적 재구성, 바이트 비교, Xbox 링크 및 런타임 증거는 별도로 기록합니다.","저장소 개요","문서 목차","보고서 범위 불러오는 중…","진행 데이터를 불러오지 못했습니다: {error}. 미리보기 전에 Pages 폴더를 빌드하세요.","보고서 데이터가 없습니다","바이트","100% 정확 일치","유사 점수 {percent}%","일치 기록 없음","결과: {count}개","언어","페이지 언어 선택"],
+    "zh-CN": ["ReBlack Xbox 进度","此存储库快照显示 BLACK Xbox 重建候选项的精确匹配和模糊匹配。","这是 XboxRecomp 拆分候选项的不完整快照，并非完整的链接单元清单。","项目快照指标","精确匹配代码","模糊匹配分数","精确匹配函数","拆分候选项","候选代码字节数","候选项大小图","每个方框代表一个拆分候选项，面积对应代码大小。筛选后会重新排列方框。颜色表示此快照中的匹配分类，不代表分析完成度或运行时行为。","搜索函数","例如：sub_000285B9","分类","所有候选项","精确匹配","仅模糊匹配","报告中无匹配","正在加载候选项…","大小图图例","精确匹配字节","仅模糊匹配候选项","未记录匹配","候选代码大小图；可使用搜索和候选列表通过键盘浏览","候选列表（输入以筛选；支持键盘操作）","筛选结果（最多显示 {limit} 项）","显示前 {limit} 项结果。请缩小筛选范围。","筛选结果：{count} 项。","搜索或选择分类以显示候选项。","数据来源是提交到此存储库的已审核 objdiff v2 报告。跟踪器进度、静态重建、字节比较、Xbox 链接和运行时证据分别记录。","存储库概览","文档索引","正在加载报告范围…","无法加载进度数据：{error}。预览前请先生成 Pages 文件夹。","未加载报告数据","字节","100% 精确匹配","模糊分数 {percent}%","未记录匹配","结果：{count} 项","语言","选择页面语言"],
+    ar: ["تقدم ReBlack Xbox","لقطة من المستودع تعرض التطابقات التامة والتقريبية للوظائف المرشحة لإعادة بناء BLACK على Xbox.","لقطة غير مكتملة للمرشحين المقسمين بواسطة XboxRecomp؛ وليست قائمة كاملة بالوحدات المرتبطة.","مؤشرات المشروع","تطابق تام للكود","درجة التطابق التقريبي","وظائف متطابقة تمامًا","المرشحون المقسمون","بايتات كود المرشحين","خريطة أحجام المرشحين","يمثل كل مربع مرشحًا واحدًا، وتتبع مساحته حجم الكود. تعيد عوامل التصفية ترتيب المربعات. تعرض الألوان تصنيف التطابق في هذه اللقطة، ولا تعني اكتمال التحليل أو سلوك وقت التشغيل.","ابحث عن وظيفة","مثال: sub_000285B9","التصنيف","كل المرشحين","تام","تقريبي فقط","لا يوجد تطابق في التقرير","جارٍ تحميل المرشحين…","مفتاح الخريطة","بايتات متطابقة تمامًا","مرشح بتطابق تقريبي فقط","لم يُسجل تطابق","خريطة أحجام كود المرشحين؛ استخدم البحث والقائمة للتنقل بلوحة المفاتيح","قائمة المرشحين (اكتب للتصفية؛ تدعم لوحة المفاتيح)","القائمة المصفاة (عرض حتى {limit})","يتم عرض أول {limit} نتيجة. ضيق نطاق التصفية لتقليل القائمة.","النتائج المصفاة: {count}.","ابحث أو اختر تصنيفًا لعرض المرشحين في هذه القائمة.","المصدر هو تقرير objdiff v2 المراجع والمحفوظ في هذا المستودع. يتم تتبع حالة القائمة وإعادة البناء الساكنة ومقارنة البايتات وربط Xbox وأدلة التشغيل بشكل منفصل.","نظرة عامة على المستودع","فهرس الوثائق","جارٍ تحميل نطاق التقرير…","تعذر تحميل بيانات التقدم: {error}. أنشئ مجلد Pages قبل المعاينة.","لم يتم تحميل بيانات التقرير","بايت","تطابق تام بنسبة 100٪","درجة تقريبية {percent}٪","لم يُسجل تطابق","النتائج: {count}","اللغة","اختر لغة الصفحة"],
+    tr: ["ReBlack Xbox ilerlemesi","BLACK Xbox yeniden oluşturma adayları için tam ve yaklaşık eşleşmeleri gösteren depo anlık görüntüsü.","XboxRecomp tarafından bölünmüş adayların eksik anlık görüntüsü; bağlantılı birimlerin tam envanteri değildir.","Proje anlık görüntüsü ölçümleri","Tam eşleşen kod","Yaklaşık eşleşme puanı","Tam eşleşen işlevler","Bölünmüş adaylar","Aday kod baytları","Aday boyut haritası","Her kutu bir bölünmüş adayı temsil eder; alanı kod boyutuna göre belirlenir. Filtreler kalan kutuları yeniden ölçeklendirir. Renkler bu anlık görüntünün eşleşme sınıfını gösterir; analiz tamamlanma durumunu veya çalışma zamanı davranışını değil.","İşlev ara","Örnek: sub_000285B9","Sınıflandırma","Tüm adaylar","Tam eşleşme","Yalnızca yaklaşık","Raporda eşleşme yok","Adaylar yükleniyor…","Harita açıklaması","Tam eşleşen baytlar","Yalnızca yaklaşık eşleşen aday","Eşleşme kaydı yok","Aday kod boyutları haritası; arama ve aday listesinde klavyeyle gezinebilirsiniz","Aday listesi (filtrelemek için yazın; klavyeyle kullanılabilir)","Filtrelenmiş liste (en fazla {limit} gösterilir)","İlk {limit} sonuç gösteriliyor. Listeyi daraltmak için filtreyi iyileştirin.","Filtrelenmiş sonuçlar: {count}.","Adayları görmek için arama yapın veya bir sınıflandırma seçin.","Kaynak, bu depoda kayıtlı ve incelenmiş objdiff v2 raporudur. Takip durumu, statik yeniden oluşturma, bayt karşılaştırması, Xbox bağlantısı ve çalışma zamanı kanıtları ayrı izlenir.","Depo genel bakışı","Belgeler dizini","Rapor kapsamı yükleniyor…","İlerleme verileri yüklenemedi: {error}. Önizlemeden önce Pages klasörünü oluşturun.","Rapor verisi yüklenmedi","bayt","%100 tam eşleşme","yaklaşık puan {percent}%","eşleşme kaydı yok","Sonuçlar: {count}","Dil","Sayfa dilini seçin"]
+  };
+  const languages = [
+    ["en","English"],["pt-BR","Português (Brasil)"],["es","Español"],["ru","Русский"],["fr","Français"],["de","Deutsch"],["it","Italiano"],["ja","日本語"],["ko","한국어"],["zh-CN","中文（简体）"],["ar","العربية"],["tr","Türkçe"]
+  ];
+  let language = "en", fmt = new Intl.NumberFormat("en-US"), report = null, loadError = null;
   const canvas = document.getElementById("chart");
   const ctx = canvas.getContext("2d");
   const wrap = document.getElementById("chart-wrap");
@@ -104,6 +140,71 @@
   const query = document.getElementById("query");
   const classification = document.getElementById("classification");
   let all = [], visible = [], rectangles = [], selected = null;
+  const languageToggle = document.getElementById("language-toggle");
+  const languageMenu = document.getElementById("language-menu");
+  const languageLabel = document.getElementById("language-label");
+
+  function msg(key, values={}) {
+    const template = messages[language][K[key]] || messages.en[K[key]];
+    return template.replace(/\{(\w+)\}/g,(_,name)=>values[name] ?? "");
+  }
+  function applyLanguage(code) {
+    language = code;
+    const rtl = code === "ar";
+    document.documentElement.lang = code;
+    document.documentElement.dir = rtl ? "rtl" : "ltr";
+    document.title = msg("pageTitle");
+    fmt = new Intl.NumberFormat(code);
+    const textIds = {
+      "page-title":"pageTitle","intro":"intro","exact-metric":"exactMetric","fuzzy-metric":"fuzzyMetric",
+      "functions-metric":"functionsMetric","candidates-metric":"candidatesMetric","bytes-metric":"bytesMetric","map-heading":"mapTitle",
+      "map-description":"mapDescription","search-label":"searchLabel","classification-label":"classification","filter-all":"allCandidates",
+      "filter-exact":"exact","filter-fuzzy":"fuzzy","filter-unmatched":"unmatched","legend-exact":"exactBytes",
+      "legend-fuzzy":"fuzzyCandidate","legend-unmatched":"noMatchRecorded","list-summary":"listDefault","footer-text":"footer",
+      "repo-link":"repoLink","docs-link":"docsLink"
+    };
+    for (const [id,key] of Object.entries(textIds)) {
+      const el = document.getElementById(id);
+      el.textContent = msg(key);
+    }
+    document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
+    document.getElementById("legend").setAttribute("aria-label",msg("legend"));
+    document.getElementById("scope").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
+    document.getElementById("query").placeholder = msg("searchPlaceholder");
+    document.getElementById("chart").setAttribute("aria-label",msg("chartAria"));
+    languageLabel.textContent = `${msg("languageLabel")}: ${languages.find(item=>item[0]===code)[1]}`;
+    languageMenu.setAttribute("aria-label",msg("languageMenu"));
+    for (const option of languageMenu.querySelectorAll("button")) option.setAttribute("aria-checked",String(option.dataset.language===code));
+    if (report) {
+      document.getElementById("exact-percent").textContent = `${fmt.format(Number(report.summary.exactCodePercent.toFixed(2)))}%`;
+      document.getElementById("fuzzy-percent").textContent = `${fmt.format(Number(report.summary.fuzzyMatchPercent.toFixed(4)))}%`;
+      document.getElementById("exact-functions").textContent = fmt.format(report.summary.exactFunctions);
+      document.getElementById("candidate-count").textContent = fmt.format(report.summary.candidateCount);
+      document.getElementById("byte-count").textContent = fmt.format(report.summary.totalCodeBytes);
+      updateFilter();
+    } else if (loadError) {
+      document.getElementById("result-count").textContent = msg("noData");
+    } else {
+      document.getElementById("result-count").textContent = msg("loadingCandidates");
+    }
+  }
+  for (const [code,name] of languages) {
+    const option = document.createElement("button");
+    option.type = "button"; option.role = "menuitemradio"; option.dataset.language = code; option.textContent = name;
+    option.addEventListener("click",()=>{applyLanguage(code);languageMenu.hidden=true;languageToggle.setAttribute("aria-expanded","false");languageToggle.focus();});
+    languageMenu.append(option);
+  }
+  languageToggle.addEventListener("click",()=>{
+    languageMenu.hidden = !languageMenu.hidden;
+    languageToggle.setAttribute("aria-expanded",String(!languageMenu.hidden));
+    if (!languageMenu.hidden) languageMenu.querySelector(`[data-language="${language}"]`).focus();
+  });
+  document.addEventListener("pointerdown",event=>{
+    if (!event.target.closest(".lang-control")) { languageMenu.hidden=true; languageToggle.setAttribute("aria-expanded","false"); }
+  });
+  languageMenu.addEventListener("keydown",event=>{
+    if (event.key === "Escape") { languageMenu.hidden=true; languageToggle.setAttribute("aria-expanded","false"); languageToggle.focus(); }
+  });
 
   function worst(row, side) {
     if (!row.length) return Infinity;
@@ -174,10 +275,10 @@
     }
   }
   function explain(item) {
-    const label = item.category === "exact" ? "100% exact" : item.category === "fuzzy" ? `fuzzy score ${item.fuzzyPercent}%` : "no match recorded";
+    const label = item.category === "exact" ? msg("tooltipExact") : item.category === "fuzzy" ? msg("tooltipFuzzy",{percent:fmt.format(item.fuzzyPercent)}) : msg("tooltipNone");
     tooltip.replaceChildren();
     const title=document.createElement("strong"), detail=document.createElement("span");
-    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} bytes · ${label}`;
+    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${label}`;
     tooltip.append(title,detail);
   }
   function showTooltip(item,x,y,pin=false) {
@@ -192,13 +293,13 @@
   function drawList(matches,filtered) {
     const list=document.getElementById("tile-list"), note=document.getElementById("list-note");
     list.replaceChildren();
-    document.getElementById("result-count").textContent = `${fmt.format(matches.length)} candidate${matches.length===1?"":"s"}`;
-    document.getElementById("list-summary").textContent = filtered ? `Matching candidates (${Math.min(matches.length,80)} shown; keyboard accessible)` : "Candidate list (type to filter; keyboard accessible)";
-    note.textContent = matches.length>80 ? `Showing the first 80 matches. Refine the filter to narrow the list.` : filtered ? `${fmt.format(matches.length)} matching candidates.` : "Search or select a classification to make candidates available in this list.";
+    document.getElementById("result-count").textContent = msg("resultCount",{count:fmt.format(matches.length)});
+    document.getElementById("list-summary").textContent = filtered ? msg("listFiltered",{limit:Math.min(matches.length,80)}) : msg("listDefault");
+    note.textContent = matches.length>80 ? msg("noteLimit",{limit:80}) : filtered ? msg("noteFiltered",{count:fmt.format(matches.length)}) : msg("noteDefault");
     if (!filtered) return;
     for (const item of matches.slice(0,80)) {
       const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small");
-      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} B · ${item.category}`;
+      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}`;
       button.type="button"; button.append(name,size);
       button.addEventListener("focus",()=>{ const i=visible.indexOf(item); if(i>=0){const r=rectangles.find(x=>x.item===item); if(r)showTooltip(item,r.x+r.w/2,r.y+r.h/2);}});
       button.addEventListener("click",()=>{ selected=item; resizeAndDraw(); showTooltip(item,wrap.clientWidth/2,wrap.clientHeight/2,true); });
@@ -226,18 +327,12 @@
   query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
   window.addEventListener("resize",resizeAndDraw);
 
+  applyLanguage(language);
   fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
-    const s=data.summary;
-    document.getElementById("scope").textContent=s.scope;
-    document.getElementById("exact-percent").textContent=`${s.exactCodePercent.toFixed(2)}%`;
-    document.getElementById("fuzzy-percent").textContent=`${s.fuzzyMatchPercent.toFixed(4)}%`;
-    document.getElementById("exact-functions").textContent=fmt.format(s.exactFunctions);
-    document.getElementById("candidate-count").textContent=fmt.format(s.candidateCount);
-    document.getElementById("byte-count").textContent=fmt.format(s.totalCodeBytes);
-    all=data.candidates; updateFilter();
+    report=data;
+    all=data.candidates; applyLanguage(language);
   }).catch(error=>{
-    document.getElementById("scope").textContent=`Progress data could not be loaded: ${error.message}. Build the Pages folder before previewing this page.`;
-    document.getElementById("result-count").textContent="No report data loaded";
+    loadError=error.message; applyLanguage(language);
   });
 })();
 </script>
