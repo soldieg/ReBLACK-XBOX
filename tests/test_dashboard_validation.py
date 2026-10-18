@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from build_dashboard import address_region, read_exactification_progress, read_validation_index
+from build_dashboard import address_region, read_exactification_functions, read_validation_index
 
 
 class DashboardValidationTests(unittest.TestCase):
@@ -40,35 +40,56 @@ class DashboardValidationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 read_validation_index(path, [{"name": "sub_00011000", "bytes": 62}])
 
-    def test_exactification_progress_reconciles_passes_and_pending_rows(self):
+    def test_exactification_list_reconciles_statuses_to_candidates(self):
         payload = {
             "schemaVersion": 1,
             "snapshotDate": "2026-10-17",
-            "currentExactPasses": 307,
-            "pendingRevalidation": 39,
-            "totalFunctions": 346,
+            "functions": [
+                {"function": "sub_00011000", "address": "0x00011000", "sizeBytes": 62, "status": "current-exact"},
+                {"function": "sub_00011040", "address": "0x00011040", "sizeBytes": 49, "status": "pending-revalidation"},
+            ],
         }
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "exactification-progress.json"
+            path = Path(directory) / "exactification-functions.json"
             path.write_text(json.dumps(payload), encoding="utf-8")
-            result = read_exactification_progress(path)
-        self.assertEqual(result["currentExactPasses"], 307)
-        self.assertEqual(result["pendingRevalidation"], 39)
-        self.assertEqual(result["totalFunctions"], 346)
+            candidates = [
+                {"name": "sub_00011000", "bytes": 62},
+                {"name": "sub_00011040", "bytes": 49},
+            ]
+            result = read_exactification_functions(path, candidates)
+        self.assertEqual(result["currentExactPasses"], 1)
+        self.assertEqual(result["pendingRevalidation"], 1)
+        self.assertEqual(result["totalFunctions"], 2)
+        self.assertEqual(candidates[0]["exactificationStatus"], "current-exact")
+        self.assertEqual(candidates[1]["exactificationStatus"], "pending-revalidation")
 
-    def test_exactification_progress_rejects_inconsistent_counts(self):
+    def test_exactification_list_rejects_size_mismatch(self):
         payload = {
             "schemaVersion": 1,
             "snapshotDate": "2026-10-17",
-            "currentExactPasses": 307,
-            "pendingRevalidation": 38,
-            "totalFunctions": 346,
+            "functions": [
+                {"function": "sub_00011000", "address": "0x00011000", "sizeBytes": 61, "status": "current-exact"},
+            ],
         }
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "exactification-progress.json"
+            path = Path(directory) / "exactification-functions.json"
             path.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaises(ValueError):
-                read_exactification_progress(path)
+                read_exactification_functions(path, [{"name": "sub_00011000", "bytes": 62}])
+
+    def test_exactification_list_rejects_private_fields(self):
+        payload = {
+            "schemaVersion": 1,
+            "snapshotDate": "2026-10-17",
+            "functions": [
+                {"function": "sub_00011000", "address": "0x00011000", "sizeBytes": 62, "status": "current-exact", "evidencePath": "C:\\private\\validation.json"},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "exactification-functions.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                read_exactification_functions(path, [{"name": "sub_00011000", "bytes": 62}])
 
     def test_accepted_record_requires_public_evidence_link(self):
         payload = {"schemaVersion": 1, "functions": [{"id": "sub_00011000", "buildDiff": "pass", "maintainerReview": "accepted", "evidence": ""}]}
