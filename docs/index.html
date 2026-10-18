@@ -38,11 +38,6 @@
     .intro { margin:10px 0 24px; }
     .scope { display:flex; flex-wrap:wrap; gap:4px 18px; border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
     .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
-    .exactification-card { display:grid; grid-template-columns:minmax(220px,1fr) minmax(0,2fr); gap:14px; align-items:center; max-width:none; margin:0 0 24px; padding:15px 18px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:8px; background:var(--panel); }
-    .exactification-card h2 { margin:0 0 3px; }
-    .exactification-count { display:block; font-size:1.45rem; font-variant-numeric:tabular-nums; }
-    .exactification-percent,.exactification-note { color:var(--muted); font-size:.88rem; }
-    .exactification-card p { margin:4px 0; }
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
@@ -82,7 +77,6 @@
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
     @media (max-width:1100px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media (max-width:600px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-    @media (max-width:600px) { .exactification-card { grid-template-columns:1fr; gap:6px; } }
     @media (max-width:360px) { .metrics { grid-template-columns:1fr; } }
     @media (max-width:700px) { .site-header { flex-wrap:wrap; } }
     @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-inline-start:0; } }
@@ -119,18 +113,6 @@
     <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Candidates with exact bytes</span></div>
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
-  </section>
-  <section class="exactification-card" aria-labelledby="exactification-heading">
-    <div>
-      <h2 id="exactification-heading">346-function exactification queue</h2>
-      <strong id="exactification-count" class="exactification-count" aria-live="polite">— / —</strong>
-      <span id="exactification-percent" class="exactification-percent">—</span>
-    </div>
-    <div>
-      <p id="exactification-pending">Loading queue status…</p>
-      <p id="exactification-note" class="exactification-note">Separate from the objdiff snapshot. Exact bytes do not prove semantic C equivalence or Xbox runtime behavior.</p>
-      <a id="exactification-details" href="EXACTIFICATION_PROGRESS.md">Queue details</a>
-    </div>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
@@ -264,47 +246,6 @@
     ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
     tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
   };
-  const exactificationCopy = {
-    en: {
-      heading:"346-function exactification queue",
-      loading:"Loading queue status…",
-      unavailable:"Queue status unavailable",
-      value:function(done,total,percent){return done+" of "+total+" revalidated · "+percent+"%";},
-      pending:function(count){return count+" pending revalidations";},
-      note:"Separate from the objdiff snapshot. Exact bytes do not prove semantic C equivalence or Xbox runtime behavior.",
-      details:"Queue details"
-    },
-    "pt-BR": {
-      heading:"Fila de exatidão de 346 funções",
-      loading:"Carregando estado da fila…",
-      unavailable:"Estado da fila indisponível",
-      value:function(done,total,percent){return done+" de "+total+" revalidadas · "+percent+"%";},
-      pending:function(count){return count+" aguardando revalidação";},
-      note:"Separada do snapshot do objdiff. Bytes exatos não provam equivalência semântica do C nem comportamento em execução no Xbox.",
-      details:"Detalhes da fila"
-    }
-  };
-  function renderExactificationProgress(code) {
-    const copy = exactificationCopy[code] || exactificationCopy.en;
-    document.getElementById("exactification-heading").textContent=copy.heading;
-    document.getElementById("exactification-details").textContent=copy.details;
-    document.getElementById("exactification-note").textContent=copy.note;
-    const queue = report && report.exactification;
-    if (!queue) {
-      document.getElementById("exactification-count").textContent=loadError ? copy.unavailable : "— / —";
-      document.getElementById("exactification-percent").textContent="";
-      document.getElementById("exactification-pending").textContent=loadError ? "" : copy.loading;
-      return;
-    }
-    const number = new Intl.NumberFormat(code);
-    const done = Number(queue.currentExactPasses);
-    const total = Number(queue.totalFunctions);
-    const pending = Number(queue.pendingRevalidation);
-    const percent = total ? number.format(Number((done * 100 / total).toFixed(2))) : "0";
-    document.getElementById("exactification-count").textContent=`${number.format(done)} / ${number.format(total)}`;
-    document.getElementById("exactification-percent").textContent=`${percent}%`;
-    document.getElementById("exactification-pending").textContent=copy.pending(number.format(pending));
-  }
   const progressMetricCopy = {
     en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
     "pt-BR":{exactCode:"Bytes candidatos confirmados por comparação exata",fuzzy:"Índice aproximado do objdiff",functions:"Candidatas com bytes exatos",source:"Este snapshot combina o relatório objdiff v2 revisado com comparações exatas de bytes registradas por candidata. Vínculo Xbox e evidências em execução são acompanhados separadamente."},
@@ -515,7 +456,6 @@
       el.textContent = msg(key);
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
-    renderExactificationProgress(code);
     const progressMetricCopyForLanguage = progressMetricCopy[code] || progressMetricCopy.en;
     document.getElementById("exact-metric").textContent=progressMetricCopyForLanguage.exactCode;
     document.getElementById("fuzzy-metric").textContent=progressMetricCopyForLanguage.fuzzy;
