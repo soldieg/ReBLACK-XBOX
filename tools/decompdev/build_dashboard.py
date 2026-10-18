@@ -9,6 +9,7 @@ import json
 import re
 import shutil
 import sys
+from datetime import date
 from pathlib import Path
 
 
@@ -16,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REPORT = ROOT / "tools/decompdev/progress-source.json"
 DEFAULT_PRIORITIES = ROOT / "docs/data/function-priorities.json"
 DEFAULT_VALIDATIONS = ROOT / "reconstructions/validation-index.json"
+DEFAULT_EXACTIFICATION = ROOT / "docs/data/exactification-progress.json"
 DEFAULT_BADGE = ROOT / "docs/assets/progress.svg"
 DEFAULT_OUTPUT = ROOT / "build/pages"
 
@@ -204,6 +206,30 @@ def read_priorities(path: Path, candidates: list[dict]) -> dict:
     return {"high": high}
 
 
+def read_exactification_progress(path: Path) -> dict:
+    """Load the sanitized current-pass count for the main exactification queue."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schemaVersion") != 1:
+        raise ValueError("Exactification progress must use schemaVersion 1")
+    try:
+        date.fromisoformat(data["snapshotDate"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("Exactification progress snapshotDate must be YYYY-MM-DD") from error
+
+    names = ("currentExactPasses", "pendingRevalidation", "totalFunctions")
+    counts: dict[str, int] = {}
+    for name in names:
+        value = data.get(name)
+        if type(value) is not int or value < 0:
+            raise ValueError(f"Exactification progress {name} must be a nonnegative integer")
+        counts[name] = value
+    if counts["totalFunctions"] <= 0:
+        raise ValueError("Exactification progress totalFunctions must be positive")
+    if counts["currentExactPasses"] + counts["pendingRevalidation"] != counts["totalFunctions"]:
+        raise ValueError("Exactification passes and pending rows must sum to totalFunctions")
+    return {**counts, "snapshotDate": data["snapshotDate"]}
+
+
 def badge_svg(summary: dict) -> str:
     exact = f"{summary['exactCodePercent']:.2f}%"
     left = "BLACK exact code"
@@ -230,6 +256,7 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT, help="validated objdiff report JSON")
     parser.add_argument("--priorities", type=Path, default=DEFAULT_PRIORITIES, help="maintainer-curated public candidate priorities")
     parser.add_argument("--validations", type=Path, default=DEFAULT_VALIDATIONS, help="maintainer-reviewed function build/diff index")
+    parser.add_argument("--exactification", type=Path, default=DEFAULT_EXACTIFICATION, help="sanitized current exactification queue counts")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="static site build directory")
     parser.add_argument("--badge", type=Path, default=DEFAULT_BADGE, help="README badge SVG path")
     parser.add_argument("--check-badge", action="store_true", help="fail if the committed badge is stale; do not change it")
@@ -239,6 +266,7 @@ def main() -> int:
         payload = read_report(args.report)
         payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
         payload["validation"] = read_validation_index(args.validations, payload["candidates"])
+        payload["exactification"] = read_exactification_progress(args.exactification)
         validated_ids = set(payload["validation"]["validatedIds"])
         for candidate in payload["candidates"]:
             candidate["reconstructionValidated"] = candidate["name"] in validated_ids
@@ -263,8 +291,8 @@ def main() -> int:
             f"Built {summary['candidateCount']:,} candidates / {summary['totalCodeBytes']:,} bytes; "
             f"exact {summary['exactFunctions']} functions ({summary['exactCodePercent']:.8f}%); "
             f"fuzzy {summary['fuzzyMatchPercent']:.8f}%; "
-            f"build/diff-validated reconstructions {summary['validatedReconstructionCount']} "
-            f"({summary['validatedReconstructionPercent']:.8f}% of split candidates)."
+            f"exactification {payload['exactification']['currentExactPasses']}/"
+            f"{payload['exactification']['totalFunctions']} current exact passes."
         )
         print(f"Pages files: {args.output_dir}")
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:

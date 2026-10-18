@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from build_dashboard import address_region, read_validation_index
+from build_dashboard import address_region, read_exactification_progress, read_validation_index
 
 
 class DashboardValidationTests(unittest.TestCase):
@@ -39,6 +39,36 @@ class DashboardValidationTests(unittest.TestCase):
             path.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaises(ValueError):
                 read_validation_index(path, [{"name": "sub_00011000", "bytes": 62}])
+
+    def test_exactification_progress_reconciles_passes_and_pending_rows(self):
+        payload = {
+            "schemaVersion": 1,
+            "snapshotDate": "2026-10-17",
+            "currentExactPasses": 307,
+            "pendingRevalidation": 39,
+            "totalFunctions": 346,
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "exactification-progress.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            result = read_exactification_progress(path)
+        self.assertEqual(result["currentExactPasses"], 307)
+        self.assertEqual(result["pendingRevalidation"], 39)
+        self.assertEqual(result["totalFunctions"], 346)
+
+    def test_exactification_progress_rejects_inconsistent_counts(self):
+        payload = {
+            "schemaVersion": 1,
+            "snapshotDate": "2026-10-17",
+            "currentExactPasses": 307,
+            "pendingRevalidation": 38,
+            "totalFunctions": 346,
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "exactification-progress.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                read_exactification_progress(path)
 
     def test_accepted_record_requires_public_evidence_link(self):
         payload = {"schemaVersion": 1, "functions": [{"id": "sub_00011000", "buildDiff": "pass", "maintainerReview": "accepted", "evidence": ""}]}
