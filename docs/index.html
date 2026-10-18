@@ -41,6 +41,10 @@
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
+    .audit-summary { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:14px; align-items:center; margin:-7px 0 24px; padding:13px 15px; border:1px solid var(--line); border-radius:10px; background:#141d28; }
+    .audit-summary strong { display:block; font-size:1.3rem; font-variant-numeric:tabular-nums; }
+    .audit-summary span,.audit-summary p { color:var(--muted); font-size:.88rem; }
+    .audit-summary p { margin:0; }
     .toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:12px; margin:16px 0 10px; }
     label { display:grid; gap:4px; color:var(--muted); font-size:.88rem; }
     input,select { min-height:42px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:8px 11px; font:inherit; }
@@ -75,6 +79,7 @@
     .tile-list small { flex:none; color:var(--muted); }
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
     @media (max-width:850px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:last-child { grid-column:span 2; } }
+    @media (max-width:700px) { .audit-summary { grid-template-columns:1fr; gap:6px; } }
     @media (max-width:700px) { .site-header { flex-wrap:wrap; } }
     @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-inline-start:0; } }
   </style>
@@ -111,6 +116,13 @@
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
     <div class="metric"><strong id="validated-count">—</strong><span id="validated-metric">Reconstructions accepted after build + exact byte diff</span></div>
+  </section>
+  <section class="audit-summary" aria-labelledby="exactification-label">
+    <div>
+      <strong id="exactification-count">307 / 346 · 88.73%</strong>
+      <span id="exactification-label">Revalidated exactification batch</span>
+    </div>
+    <p><span id="exactification-detail">39 awaiting fresh revalidation.</span> <span id="exactification-caveat">Separate from the 13,676-candidate dashboard and its objdiff exact-match count. This confirms recorded machine-code spans, not semantic C equivalence or Xbox runtime behavior.</span> <a id="exactification-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/EXACTIFICATION_PROGRESS.md">Audit details</a></p>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
@@ -257,6 +269,20 @@
     "zh-CN":"已接受的构建和精确字节比较（候选项占比）",
     ar:"عمليات البناء ومقارنة البايتات المقبولة (نسبة المرشحين)",
     tr:"Kabul edilen derleme ve tam bayt karşılaştırması (aday oranı)"
+  };
+  const exactificationCopy = {
+    en:{label:"Revalidated exactification batch",detail:"39 awaiting fresh revalidation.",caveat:"Separate from the 13,676-candidate dashboard and its objdiff exact-match count. This confirms recorded machine-code spans, not semantic C equivalence or Xbox runtime behavior.",link:"Audit details"},
+    "pt-BR":{label:"Lote de funções revalidado",detail:"39 aguardam nova validação.",caveat:"Este lote é separado das 13.676 candidatas do painel e da contagem exata do objdiff. O resultado confirma os trechos de código de máquina registrados, não a equivalência semântica do C nem o comportamento no Xbox.",link:"Detalhes da auditoria"},
+    es:{label:"Lote de funciones revalidado",detail:"39 esperan una nueva validación.",caveat:"Este lote es independiente de las 13.676 candidatas del panel y del recuento exacto de objdiff. Confirma los tramos de código máquina registrados, no la equivalencia semántica de C ni el comportamiento en Xbox.",link:"Detalles de auditoría"},
+    ru:{label:"Повторно проверенная группа функций",detail:"39 ожидают повторной проверки.",caveat:"Эта группа учитывается отдельно от 13 676 кандидатов панели и точных совпадений objdiff. Подтверждены записанные фрагменты машинного кода, но не семантическая эквивалентность C и не работа на Xbox.",link:"Подробности аудита"},
+    fr:{label:"Lot de fonctions revalidées",detail:"39 attendent une nouvelle validation.",caveat:"Ce lot est distinct des 13 676 candidats du tableau et du nombre de correspondances exactes objdiff. Il confirme les plages de code machine enregistrées, pas l’équivalence sémantique du C ni le comportement sur Xbox.",link:"Détails de l’audit"},
+    de:{label:"Erneut geprüfter Funktionsstapel",detail:"39 warten auf eine erneute Prüfung.",caveat:"Dieser Stapel ist getrennt von den 13.676 Dashboard-Kandidaten und den exakten objdiff-Treffern. Bestätigt werden die aufgezeichneten Maschinencodebereiche, nicht die semantische C-Gleichheit oder das Laufzeitverhalten auf Xbox.",link:"Auditdetails"},
+    it:{label:"Lotto di funzioni riverificato",detail:"39 attendono una nuova verifica.",caveat:"Questo lotto è separato dalle 13.676 candidate del pannello e dal conteggio esatto di objdiff. Conferma gli intervalli di codice macchina registrati, non l’equivalenza semantica del C né il comportamento su Xbox.",link:"Dettagli dell’audit"},
+    ja:{label:"再検証済み関数バッチ",detail:"39件は再検証待ちです。",caveat:"このバッチは、ダッシュボードの13,676候補およびobjdiffの完全一致数とは別集計です。記録された機械語範囲の一致を示し、Cの意味的同等性やXboxでの実行動作を示すものではありません。",link:"監査の詳細"},
+    ko:{label:"재검증된 함수 묶음",detail:"39개는 재검증을 기다리고 있습니다.",caveat:"이 묶음은 대시보드의 후보 13,676개 및 objdiff 완전 일치 수와 별도입니다. 기록된 기계어 구간을 확인한 결과이며 C의 의미적 동등성이나 Xbox 실행 동작을 입증하지 않습니다.",link:"감사 세부 정보"},
+    "zh-CN":{label:"已重新验证的函数批次",detail:"39 个仍待重新验证。",caveat:"此批次与仪表板的 13,676 个候选项及 objdiff 精确匹配数分别统计。它确认了已记录的机器码范围，不代表 C 语义等价或 Xbox 运行行为。",link:"审计详情"},
+    ar:{label:"مجموعة الدوال التي أُعيد التحقق منها",detail:"39 دالة بانتظار إعادة التحقق.",caveat:"تُحسب هذه المجموعة بشكل منفصل عن 13,676 مرشحًا في اللوحة وعدد التطابقات الدقيقة في objdiff. تؤكد نطاقات الشيفرة الآلية المسجلة، ولا تثبت التكافؤ الدلالي لـ C أو سلوك التشغيل على Xbox.",link:"تفاصيل التدقيق"},
+    tr:{label:"Yeniden doğrulanan işlev grubu",detail:"39 işlev yeniden doğrulamayı bekliyor.",caveat:"Bu grup, panodaki 13.676 adaydan ve objdiff tam eşleşme sayısından ayrıdır. Kaydedilen makine kodu aralıklarını doğrular; C anlamsal eşdeğerliğini veya Xbox çalışma davranışını kanıtlamaz.",link:"Denetim ayrıntıları"}
   };
   const validationDetailCopy = {
     en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
@@ -455,6 +481,12 @@
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
     document.getElementById("validated-metric").textContent=validationMetricCopy[code] || validationMetricCopy.en;
+    const exactificationCopyForLanguage = exactificationCopy[code] || exactificationCopy.en;
+    document.getElementById("exactification-count").textContent=`${fmt.format(307)} / ${fmt.format(346)} · ${fmt.format(88.73)}%`;
+    document.getElementById("exactification-label").textContent=exactificationCopyForLanguage.label;
+    document.getElementById("exactification-detail").textContent=exactificationCopyForLanguage.detail;
+    document.getElementById("exactification-caveat").textContent=exactificationCopyForLanguage.caveat;
+    document.getElementById("exactification-link").textContent=exactificationCopyForLanguage.link;
     document.getElementById("legend").setAttribute("aria-label",msg("legend"));
     document.getElementById("scope").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
     document.getElementById("query").placeholder = msg("searchPlaceholder");
