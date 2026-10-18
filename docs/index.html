@@ -43,6 +43,7 @@
     .exactification-count { display:block; font-size:1.45rem; font-variant-numeric:tabular-nums; }
     .exactification-percent,.exactification-note { color:var(--muted); font-size:.88rem; }
     .exactification-card p { margin:4px 0; }
+    .semantic-review-card { border-left-color:#8b7cf6; }
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
@@ -130,6 +131,18 @@
       <p id="exactification-pending">Loading queue status…</p>
       <p id="exactification-note" class="exactification-note">Separate from the objdiff snapshot. Exact bytes do not prove semantic C equivalence or Xbox runtime behavior.</p>
       <a id="exactification-details" href="EXACTIFICATION_PROGRESS.md">Queue details</a>
+    </div>
+  </section>
+  <section class="exactification-card semantic-review-card" aria-labelledby="semantic-review-heading">
+    <div>
+      <h2 id="semantic-review-heading">Semantic review of under-80% functions</h2>
+      <strong id="semantic-review-count" class="exactification-count" aria-live="polite">— / —</strong>
+      <span id="semantic-review-promoted" class="exactification-percent">—</span>
+    </div>
+    <div>
+      <p id="semantic-review-pending">Loading semantic review status…</p>
+      <p id="semantic-review-note" class="exactification-note">Separate from the 346-function exactification queue. An ObjDiff score of 80% or higher is a review threshold, not exact equivalence.</p>
+      <a id="semantic-review-details" href="SEMANTIC_REVIEW_PROGRESS.md">Review details</a>
     </div>
   </section>
   <section aria-labelledby="map-heading">
@@ -284,6 +297,10 @@
       details:"Detalhes da fila"
     }
   };
+  const semanticReviewCopy = {
+    en:{heading:"Semantic review of under-80% functions",loading:"Loading semantic review status…",unavailable:"Semantic review status unavailable",counts:function(reviewed,total,below){return reviewed+" of "+total+" reviewed · "+below+" still below 80% or not comparable.";},promoted:function(count){return count+" raised to 80% or higher";},note:"Separate from the 346-function exactification queue. An ObjDiff score of 80% or higher is a review threshold, not exact equivalence.",details:"Review details"},
+    "pt-BR":{heading:"Revisão semântica das funções abaixo de 80%",loading:"Carregando estado da revisão semântica…",unavailable:"Estado da revisão semântica indisponível",counts:function(reviewed,total,below){return reviewed+" de "+total+" revisadas · "+below+" ainda abaixo de 80% ou sem ABI comparável.";},promoted:function(count){return count+" chegaram a 80% ou mais";},note:"Fila separada da exatidificação das 346 funções. ObjDiff de 80% ou mais é um limite de revisão, não prova equivalência exata.",details:"Detalhes da revisão"}
+  };
   function renderExactificationProgress(code) {
     const copy = exactificationCopy[code] || exactificationCopy.en;
     document.getElementById("exactification-heading").textContent=copy.heading;
@@ -304,6 +321,24 @@
     document.getElementById("exactification-count").textContent=`${number.format(done)} / ${number.format(total)}`;
     document.getElementById("exactification-percent").textContent=`${percent}%`;
     document.getElementById("exactification-pending").textContent=copy.pending(number.format(pending));
+  }
+  function renderSemanticReviewProgress(code) {
+    const copy = semanticReviewCopy[code] || semanticReviewCopy.en;
+    document.getElementById("semantic-review-heading").textContent=copy.heading;
+    document.getElementById("semantic-review-details").textContent=copy.details;
+    document.getElementById("semantic-review-note").textContent=copy.note;
+    const review = report && report.semanticReview;
+    if (!review) {
+      document.getElementById("semantic-review-count").textContent="— / —";
+      document.getElementById("semantic-review-promoted").textContent="";
+      document.getElementById("semantic-review-pending").textContent=loadError ? copy.unavailable : copy.loading;
+      return;
+    }
+    const number = new Intl.NumberFormat(code);
+    const counts = review.counts;
+    document.getElementById("semantic-review-count").textContent=`${number.format(counts.reviewed)} / ${number.format(counts.total)}`;
+    document.getElementById("semantic-review-promoted").textContent=copy.promoted(number.format(counts.raisedTo80OrHigher));
+    document.getElementById("semantic-review-pending").textContent=copy.counts(number.format(counts.reviewed),number.format(counts.total),number.format(counts.below80OrNotComparable));
   }
   const progressMetricCopy = {
     en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
@@ -516,6 +551,7 @@
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
     renderExactificationProgress(code);
+    renderSemanticReviewProgress(code);
     const progressMetricCopyForLanguage = progressMetricCopy[code] || progressMetricCopy.en;
     document.getElementById("exact-metric").textContent=progressMetricCopyForLanguage.exactCode;
     document.getElementById("fuzzy-metric").textContent=progressMetricCopyForLanguage.fuzzy;

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-18",
+  "counts": {
+    "total": 26,
+    "reviewed": 10,
+    "raisedTo80OrHigher": 3,
+    "below80OrNotComparable": 7,
+    "notYetReviewed": 16
+  }
+}
