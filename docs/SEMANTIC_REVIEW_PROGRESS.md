@@ -5,10 +5,10 @@
 
 | Status | Count |
 | --- | ---: |
-| Reviewed | 12/26 |
-| Raised to 80% or higher | 4 |
+| Reviewed | 13/26 |
+| Raised to 80% or higher | 5 |
 | Still below 80% or ABI not comparable | 8 |
-| Not yet reviewed | 14 |
+| Not yet reviewed | 13 |
 
 ## Reviewed entries
 
@@ -21,6 +21,7 @@
 | `sub_0002B2B0` | 47.35% | 81.3% | Reached review threshold |
 | `sub_000351F0` | 42.05263% | 54.416668% | Corrected global-context reload semantics; paused below threshold |
 | `sub_00087C30` | 41.363636% | 99.666664% | Assembly-assisted triage; helper-call relocation remains unresolved, so this is not a pure-C match |
+| `sub_000352C0` | 38.741177% | 98.65385% | Assembly-assisted instruction mirror; pure-C remains 61.439026%, so this is not pure-C equivalence |
 | `sub_0008AB20` | 20.203007% | 20.203007% | Paused; inline probe did not change score |
 | `sub_0008A490` | 19.290323% | 36.31818% | Paused below threshold |
 | `sub_00089830` | 0.561798% | 0.561798% | Paused below threshold |
@@ -29,4 +30,4 @@
 
 An 80% ObjDiff score is a triage threshold only. It does not establish exact equivalence, a complete Xbox link, runtime behavior, or gameplay validation. Exact byte passes and Package Hub approval remain separate evidence gates.
 
-The remaining queue stays ordered by baseline score and dependency group. Resume with the next unreviewed entry after the already timeboxed `sub_00033C70` and the reviewed dependency groups. The current dependency group for `sub_000352C0` is still in progress and is not included in the reviewed count.
+The static dependency review for `sub_000352C0` is included above; callback targets, Xbox full link, and runtime remain pending. Resume with `sub_00042AB0` (62 bytes), the next unreviewed entry in the semantic queue.
