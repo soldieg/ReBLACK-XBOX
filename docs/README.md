@@ -5,7 +5,6 @@ Quick entry points for the ReBlack Xbox project.
 - [Project status](../PROJECT_STATUS.md) — current local workspace, evidence boundaries, and integration state.
 - [Roadmap](../ROADMAP.md) — planned work and priorities.
 - [Progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/) — function-size map and objdiff snapshot.
-- [Semantic review progress](SEMANTIC_REVIEW_PROGRESS.md) — separate queue for the under-80% review pass.
 - [346-function exactification queue](EXACTIFICATION_PROGRESS.md) — separate revalidation count, pending total, and evidence limits.
 - [Contribution guide](CONTRIBUTING.md) — how to propose a function task and submit a reconstruction.
 - [Reconstruction log](RECONSTRUCTION_LOG.md) — dated technical updates moved out of the root README.

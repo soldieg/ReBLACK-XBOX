@@ -18,7 +18,6 @@ DEFAULT_REPORT = ROOT / "tools/decompdev/progress-source.json"
 DEFAULT_PRIORITIES = ROOT / "docs/data/function-priorities.json"
 DEFAULT_VALIDATIONS = ROOT / "reconstructions/validation-index.json"
 DEFAULT_EXACTIFICATION_FUNCTIONS = ROOT / "docs/data/exactification-functions.json"
-DEFAULT_SEMANTIC_REVIEW_PROGRESS = ROOT / "docs/data/semantic-review-progress.json"
 DEFAULT_BADGE = ROOT / "docs/assets/progress.svg"
 DEFAULT_OUTPUT = ROOT / "build/pages"
 
@@ -266,30 +265,6 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
     }
 
 
-def read_semantic_review_progress(path: Path) -> dict:
-    """Load sanitized aggregate status for the separate semantic-review queue."""
-    data = json.loads(path.read_text(encoding="utf-8"))
-    if data.get("schemaVersion") != 1:
-        raise ValueError("Semantic review progress must use schemaVersion 1")
-    try:
-        date.fromisoformat(data["snapshotDate"])
-    except (KeyError, TypeError, ValueError) as error:
-        raise ValueError("Semantic review snapshotDate must be YYYY-MM-DD") from error
-    expected = {"total", "reviewed", "raisedTo80OrHigher", "below80OrNotComparable", "notYetReviewed"}
-    counts = data.get("counts")
-    if not isinstance(counts, dict) or set(counts) != expected:
-        raise ValueError("Semantic review progress has missing or unapproved count fields")
-    if any(type(value) is not int or value < 0 for value in counts.values()):
-        raise ValueError("Semantic review counts must be nonnegative integers")
-    if counts["reviewed"] != counts["raisedTo80OrHigher"] + counts["below80OrNotComparable"]:
-        raise ValueError("Semantic review reviewed count does not reconcile")
-    if counts["total"] != counts["reviewed"] + counts["notYetReviewed"]:
-        raise ValueError("Semantic review total does not reconcile")
-    if counts["total"] == 0 or counts["raisedTo80OrHigher"] > counts["reviewed"]:
-        raise ValueError("Semantic review counts are outside the approved range")
-    return {"snapshotDate": data["snapshotDate"], "counts": counts}
-
-
 def badge_svg(summary: dict) -> str:
     exact = f"{summary['exactCodePercent']:.2f}%"
     left = "BLACK exact code"
@@ -317,7 +292,6 @@ def main() -> int:
     parser.add_argument("--priorities", type=Path, default=DEFAULT_PRIORITIES, help="maintainer-curated public candidate priorities")
     parser.add_argument("--validations", type=Path, default=DEFAULT_VALIDATIONS, help="maintainer-reviewed function build/diff index")
     parser.add_argument("--exactification-functions", type=Path, default=DEFAULT_EXACTIFICATION_FUNCTIONS, help="sanitized per-function exactification statuses")
-    parser.add_argument("--semantic-review-progress", type=Path, default=DEFAULT_SEMANTIC_REVIEW_PROGRESS, help="sanitized aggregate status for the separate semantic-review queue")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="static site build directory")
     parser.add_argument("--badge", type=Path, default=DEFAULT_BADGE, help="README badge SVG path")
     parser.add_argument("--check-badge", action="store_true", help="fail if the committed badge is stale; do not change it")
@@ -328,7 +302,6 @@ def main() -> int:
         payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
         payload["validation"] = read_validation_index(args.validations, payload["candidates"])
         payload["exactification"] = read_exactification_functions(args.exactification_functions, payload["candidates"])
-        payload["semanticReview"] = read_semantic_review_progress(args.semantic_review_progress)
         # The dashboard has one exact-byte progress measure. Combine objdiff
         # exact candidates with freshly byte-compared function records by
         # candidate identity, so overlaps are counted once.
@@ -359,7 +332,6 @@ def main() -> int:
         args.output_dir.mkdir(parents=True, exist_ok=True)
         (args.output_dir / "data").mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / "docs/index.html", args.output_dir / "index.html")
-        shutil.copy2(ROOT / "docs/SEMANTIC_REVIEW_PROGRESS.md", args.output_dir / "SEMANTIC_REVIEW_PROGRESS.md")
         (args.output_dir / "data/progress.json").write_text(
             json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"
         )
