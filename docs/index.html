@@ -256,13 +256,11 @@
     ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
     tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
   };
-  let exactificationProgress = null;
   const exactificationCopy = {
     en: {
       heading:"346-function exactification queue",
       loading:"Loading queue status…",
       unavailable:"Queue status unavailable",
-      pendingLoading:"Loading pending count…",
       value:function(done,total,percent){return done+" of "+total+" revalidated · "+percent+"%";},
       pending:function(count){return count+" pending revalidations";},
       note:"Separate from the objdiff candidate snapshot; this is not a whole-game completion percentage.",
@@ -272,7 +270,6 @@
       heading:"Fila de exatidão de 346 funções",
       loading:"Carregando estado da fila…",
       unavailable:"Estado da fila indisponível",
-      pendingLoading:"Carregando pendências…",
       value:function(done,total,percent){return done+" de "+total+" revalidadas · "+percent+"%";},
       pending:function(count){return count+" aguardando revalidação";},
       note:"Fila separada do snapshot objdiff; este número não representa a conclusão do jogo.",
@@ -284,20 +281,21 @@
     document.getElementById("exactification-heading").textContent=copy.heading;
     document.getElementById("exactification-details").textContent=copy.details;
     document.getElementById("exactification-note").textContent=copy.note;
-    if (!exactificationProgress) {
-      document.getElementById("exactification-count").textContent=exactificationLoadFailed ? copy.unavailable : copy.loading;
-      document.getElementById("exactification-pending").textContent=exactificationLoadFailed ? "" : copy.pendingLoading;
+    const queue = report && report.exactification;
+    if (!queue) {
+      document.getElementById("exactification-count").textContent=loadError ? copy.unavailable : copy.loading;
+      document.getElementById("exactification-pending").textContent=loadError ? "" : copy.loading;
       return;
     }
     const number = new Intl.NumberFormat(code);
-    const rows = Array.isArray(exactificationProgress.functions) ? exactificationProgress.functions : [];
-    const done = rows.filter(item=>item.status==="current-exact").length;
-    const total = rows.length;
-    const pending = rows.filter(item=>item.status==="pending-revalidation").length;
+    const done = Number(queue.currentExactPasses);
+    const total = Number(queue.totalFunctions);
+    const pending = Number(queue.pendingRevalidation);
     const percent = total ? number.format(Number((done * 100 / total).toFixed(2))) : "0";
     document.getElementById("exactification-count").textContent=copy.value(number.format(done),number.format(total),percent);
     document.getElementById("exactification-pending").textContent=copy.pending(number.format(pending));
-  }  const progressMetricCopy = {
+  }
+  const progressMetricCopy = {
     en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
     "pt-BR":{exactCode:"Bytes candidatos confirmados por comparação exata",fuzzy:"Índice aproximado do objdiff",functions:"Candidatas com bytes exatos",source:"Este snapshot combina o relatório objdiff v2 revisado com comparações exatas de bytes registradas por candidata. Vínculo Xbox e evidências em execução são acompanhados separadamente."},
     es:{exactCode:"Bytes candidatos confirmados por comparación exacta",fuzzy:"Puntuación aproximada de objdiff",functions:"Candidatas con bytes exactos",source:"Este resumen combina el informe objdiff v2 revisado con comparaciones exactas de bytes registradas por candidata. El enlace de Xbox y las pruebas en ejecución se siguen por separado."},
@@ -886,15 +884,7 @@
   window.addEventListener("resize",resizeAndDraw);
 
   applyLanguage(language);
-  fetch("data/exactification-functions.json").then(response=>{if(!response.ok)throw new Error("HTTP "+response.status);return response.json();}).then(data=>{
-    exactificationProgress=data;
-    renderExactificationProgress(language);
-  }).catch(()=>{
-    exactificationProgress=null;
-
-    exactificationLoadFailed=true;
-    renderExactificationProgress(language);
-  });  fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
+  fetch("data/progress.json").then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{
     report=data;
     all=data.candidates; populateRegions(); applyLanguage(language); renderQueue();
   }).catch(error=>{
