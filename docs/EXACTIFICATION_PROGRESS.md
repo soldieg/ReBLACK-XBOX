@@ -1,22 +1,22 @@
 # 346-function exactification queue
 
-**Snapshot date:** 2026-10-17
+**Snapshot date:** 2026-10-18
 
-The progress page reads sanitized per-function records from `docs/data/exactification-functions.json`. The dashboard generator checks each function ID, address, size, and status against the existing candidate map, then calculates the queue totals from those records. Updating this file and pushing it to `main` triggers the GitHub Pages workflow.
+The progress page shows this queue in a separate card. Its counts are generated from the sanitized per-function records in `docs/data/exactification-functions.json`; the card does not change the objdiff exact-match count or percentage.
 
-The public file contains function IDs, addresses, sizes, and queue status only. It does not contain reconstructed source, game bytes, binaries, local evidence paths, or private hashes. This 346-function queue remains a distinct validation source from the 13,676-candidate objdiff snapshot; the page keeps those measurements labeled separately.
+The public function list contains only function IDs, addresses, sizes, and queue status. It contains no reconstructed source, game bytes, binaries, local evidence paths, or private hashes. This queue is a separate measure from the 13,676-candidate objdiff snapshot.
 
 | Queue status | Count |
 | --- | ---: |
-| Freshly revalidated exact passes | 307 |
-| Recorded results awaiting fresh revalidation | 39 |
+| Freshly revalidated exact passes | 319 |
+| Recorded results awaiting fresh revalidation | 27 |
 | Batch rows classified as nonexact | 0 |
 | **Total batch** | **346** |
 
-That is 307/346 (**88.73%**) revalidated, with 39/346 (**11.27%**) still pending fresh validation.
+That is 319/346 (**92.20%**) revalidated, with 27/346 (**7.80%**) awaiting fresh validation. The 27 pending rows are historical exact records that have not yet been revalidated in this pass; they are not classified as nonexact.
 
-“Exact pass” here means the function passed the project's current source-specific byte and objdiff checks and its status was reconciled into the queue. An independent audit on 2026-10-17 checked all 307 current records: each points to a unique function address and validation record, each recorded compiled COFF `.text` section matches the original XBE span byte for byte, all 307 spans match, and none overlap. The recorded Xbox image and object hashes also matched.
+The 319 current passes comprise 307 records independently audited on 2026-10-17 and 12 additional exact passes recorded on 2026-10-18. The audit of the original 307 checked unique function identities and validation records, byte-for-byte equality between each compiled COFF `.text` span and its XBE span, non-overlapping spans, and matching recorded XBE/object hashes. The additional 12 were compiled with MSVC x86, scored 100% in the recorded ObjDiff comparisons, and matched their XBE raw spans, derived-PE mappings, XboxRecomp reference objects, and split bytes over the verified function spans.
 
-This confirms exact machine-code reproduction for those recorded spans. It does not prove that the readable semantic C reconstruction is equivalent: 290 of the 307 canonical C files currently emit the exact bytes directly, while 17 use a separate exact source. Xbox full linking, runtime behavior, and visible gameplay remain unverified. The 39 pending rows are historical exact records awaiting fresh revalidation; they are not counted as current passes.
+These results confirm exact machine-code reproduction for the recorded spans. They do not prove that readable semantic C is equivalent, nor do they establish Xbox full linking, runtime behavior, or visible gameplay. The dashboard's separate objdiff snapshot currently reports **63 exact candidate matches / 811 bytes** among 13,676 split candidates; those objdiff figures are not combined with the 319-function queue count.
 
-The page shows the queue status in its existing scope banner and marks each matching candidate in the map details. The separate objdiff metrics remain 63 exact candidate matches / 811 bytes among 13,676 split candidates; the 307 queue passes are not added to that count or byte percentage. The public function list contains only IDs, addresses, sizes, and queue status; it does not include source code, binaries, target bytes, or private evidence.
+To refresh the page, update the sanitized function statuses, run `python tools/decompdev/build_dashboard.py`, review the generated preview, then commit the updated data and page changes. GitHub Actions validates the report and publishes the dashboard from the commit. Detailed C sources, binaries, target bytes, and local evidence remain outside this repository.

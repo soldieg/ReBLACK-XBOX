@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "snapshotDate": "2026-10-17",
+  "snapshotDate": "2026-10-18",
   "functions": [
     {
       "function": "sub_00016620",
@@ -18,7 +18,7 @@
       "function": "sub_00026FE9",
       "address": "0x00026FE9",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000270D0",
@@ -138,7 +138,7 @@
       "function": "sub_0002ACF0",
       "address": "0x0002ACF0",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0002ADB0",
@@ -180,7 +180,7 @@
       "function": "sub_0002C640",
       "address": "0x0002C640",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0002DD90",
@@ -192,7 +192,7 @@
       "function": "sub_0002F420",
       "address": "0x0002F420",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0002FCB0",
@@ -606,13 +606,13 @@
       "function": "sub_00046A20",
       "address": "0x00046A20",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00047730",
       "address": "0x00047730",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000504C0",
@@ -1182,7 +1182,7 @@
       "function": "sub_000841C0",
       "address": "0x000841C0",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00084290",
@@ -1872,7 +1872,7 @@
       "function": "sub_00093F40",
       "address": "0x00093F40",
       "sizeBytes": 6,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00093F50",
@@ -1926,7 +1926,7 @@
       "function": "sub_000A0B80",
       "address": "0x000A0B80",
       "sizeBytes": 7,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000A2DF8",
@@ -1980,7 +1980,7 @@
       "function": "sub_000AB4A0",
       "address": "0x000AB4A0",
       "sizeBytes": 7,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000AC3A0",
@@ -2052,13 +2052,13 @@
       "function": "sub_002180FD",
       "address": "0x002180FD",
       "sizeBytes": 4,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00222EDE",
       "address": "0x00222EDE",
       "sizeBytes": 4,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00229691",

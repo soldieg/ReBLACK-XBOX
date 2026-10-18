@@ -37,12 +37,16 @@
     a { color:var(--accent); }
     .intro { margin:10px 0 24px; }
     .scope { display:flex; flex-wrap:wrap; gap:4px 18px; border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
-    .scope .progress-status { color:var(--text); }
     .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
     .metric small { display:block; margin-top:4px; color:var(--muted); font-size:.8rem; }
+    .exactification-card { display:grid; grid-template-columns:minmax(220px,1fr) minmax(0,2fr); gap:14px; align-items:center; margin:0 0 24px; padding:15px 18px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:8px; background:var(--panel); }
+    .exactification-card h2 { margin:0 0 3px; }
+    .exactification-count { display:block; font-size:1.45rem; font-variant-numeric:tabular-nums; }
+    .exactification-percent,.exactification-note { color:var(--muted); font-size:.88rem; }
+    .exactification-card p { margin:4px 0; }
     .toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:12px; margin:16px 0 10px; }
     label { display:grid; gap:4px; color:var(--muted); font-size:.88rem; }
     input,select { min-height:42px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:8px 11px; font:inherit; }
@@ -79,6 +83,7 @@
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
     @media (max-width:1100px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media (max-width:600px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:600px) { .exactification-card { grid-template-columns:1fr; gap:6px; } }
     @media (max-width:360px) { .metrics { grid-template-columns:1fr; } }
     @media (max-width:700px) { .site-header { flex-wrap:wrap; } }
     @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-inline-start:0; } }
@@ -108,13 +113,25 @@
     <a id="language-request-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues/new">Request this language</a>
   </div>
   <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
-  <div class="scope" id="scope" aria-live="polite"><span id="scope-text">Loading reviewed report scope…</span><span class="progress-status" id="exactification-status"></span></div>
+  <div class="scope" id="scope" aria-live="polite"><span id="scope-text">Loading reviewed report scope…</span></div>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
     <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Code bytes matched exactly by objdiff</span></div>
     <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy objdiff score</span></div>
     <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact objdiff candidate matches</span></div>
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
+  </section>
+  <section class="exactification-card" aria-labelledby="exactification-card-title">
+    <div>
+      <h2 id="exactification-card-title">346-function exactification queue</h2>
+      <strong class="exactification-count" id="exactification-card-count" aria-live="polite">— / —</strong>
+      <span class="exactification-percent" id="exactification-card-percent">—</span>
+    </div>
+    <div>
+      <p id="exactification-card-pending">Loading queue status…</p>
+      <p class="exactification-note" id="exactification-card-note">Separate from the objdiff snapshot. Exact bytes do not prove semantic C equivalence or Xbox runtime behavior.</p>
+      <a href="EXACTIFICATION_PROGRESS.md" id="exactification-card-link">Queue details</a>
+    </div>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
@@ -284,6 +301,20 @@
     "zh-CN":{status:"精确重建队列：{current}/{total}（{percent}%）；{pending} 个待重新验证。",exactCode:"objdiff 精确匹配的候选代码字节",fuzzy:"objdiff 近似得分",functions:"objdiff 候选函数精确匹配数"},
     ar:{status:"قائمة إعادة البناء الدقيقة: {current}/{total} ({percent}٪)، والمتبقي لإعادة التحقق: {pending}.",exactCode:"بايتات المرشحين المطابقة تمامًا في objdiff",fuzzy:"نتيجة objdiff التقريبية",functions:"تطابقات مرشحي objdiff الدقيقة"},
     tr:{status:"Tam eşleştirme kuyruğu: {current}/{total} ({percent}%); {pending} yeniden doğrulamayı bekliyor.",exactCode:"objdiff ile tam eşleşen aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"objdiff tam eşleşen aday işlevler"}
+  };
+  const exactificationCardCopy = {
+    en:{title:"346-function exactification queue",pending:"{count} functions remain pending fresh revalidation.",note:"Separate from the objdiff snapshot. Exact bytes do not prove semantic C equivalence or Xbox runtime behavior.",link:"Queue details",loading:"Loading queue status…"},
+    "pt-BR":{title:"Fila de exatidificação de 346 funções",pending:"{count} funções ainda aguardam revalidação.",note:"Separada do snapshot do objdiff. Bytes exatos não provam equivalência semântica do C nem comportamento em execução no Xbox.",link:"Detalhes da fila",loading:"Carregando estado da fila…"},
+    es:{title:"Cola de exactificación de 346 funciones",pending:"Quedan {count} funciones pendientes de revalidación.",note:"Separada del resumen de objdiff. Los bytes exactos no prueban equivalencia semántica de C ni el comportamiento en Xbox.",link:"Detalles de la cola",loading:"Cargando estado de la cola…"},
+    ru:{title:"Очередь точной проверки: 346 функций",pending:"Ожидают повторной проверки: {count}.",note:"Отдельно от снимка objdiff. Точное совпадение байтов не доказывает семантическую эквивалентность C или работу на Xbox.",link:"Сведения об очереди",loading:"Загрузка состояния очереди…"},
+    fr:{title:"File d’exactification de 346 fonctions",pending:"{count} fonctions restent à revérifier.",note:"Distincte de l’instantané objdiff. L’égalité des octets ne prouve ni l’équivalence sémantique du C ni le comportement sur Xbox.",link:"Détails de la file",loading:"Chargement de l’état de la file…"},
+    de:{title:"Exaktifizierungswarteschlange mit 346 Funktionen",pending:"{count} Funktionen müssen noch erneut geprüft werden.",note:"Getrennt vom objdiff-Snapshot. Gleiche Bytes beweisen weder semantische C-Gleichheit noch Laufzeitverhalten auf Xbox.",link:"Details zur Warteschlange",loading:"Warteschlangenstatus wird geladen…"},
+    it:{title:"Coda di exactification di 346 funzioni",pending:"{count} funzioni attendono una nuova verifica.",note:"Separata dallo snapshot objdiff. Byte identici non provano l’equivalenza semantica del C né il comportamento su Xbox.",link:"Dettagli della coda",loading:"Caricamento dello stato della coda…"},
+    ja:{title:"346関数の完全一致確認キュー",pending:"再検証待ち: {count} 関数。",note:"objdiffスナップショットとは別集計です。バイト一致はCの意味的同等性やXboxでの実行動作を証明しません。",link:"キューの詳細",loading:"キューの状態を読み込み中…"},
+    ko:{title:"346개 함수 바이트 일치 검증 대기열",pending:"재검증 대기 함수: {count}개.",note:"objdiff 스냅샷과 별도입니다. 바이트 일치만으로 C 의미 동등성이나 Xbox 실행 동작이 입증되지는 않습니다.",link:"대기열 세부 정보",loading:"대기열 상태를 불러오는 중…"},
+    "zh-CN":{title:"346 个函数的精确验证队列",pending:"仍有 {count} 个函数等待重新验证。",note:"与 objdiff 快照分开统计。字节完全相同不代表 C 语义等价或 Xbox 运行行为已验证。",link:"队列详情",loading:"正在加载队列状态…"},
+    ar:{title:"قائمة التحقق الدقيق من 346 دالة",pending:"الدوال التي تنتظر إعادة التحقق: {count}.",note:"تُحسب منفصلة عن لقطة objdiff. تطابق البايتات لا يثبت التكافؤ الدلالي لـ C أو سلوك التشغيل على Xbox.",link:"تفاصيل القائمة",loading:"جارٍ تحميل حالة القائمة…"},
+    tr:{title:"346 işlevlik kesinleştirme kuyruğu",pending:"Yeniden doğrulama bekleyen işlev sayısı: {count}.",note:"objdiff anlık görüntüsünden ayrı tutulur. Bayt eşleşmesi C anlamsal eşdeğerliğini veya Xbox çalışma davranışını kanıtlamaz.",link:"Kuyruk ayrıntıları",loading:"Kuyruk durumu yükleniyor…"}
   };
   const validationDetailCopy = {
     en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
@@ -503,14 +534,25 @@
     languageMenu.setAttribute("aria-label",msg("languageMenu"));
     updateExtraLanguage();
     updateMapUi();
+    const exactificationCardCopyForLanguage = exactificationCardCopy[code] || exactificationCardCopy.en;
+    document.getElementById("exactification-card-title").textContent=exactificationCardCopyForLanguage.title;
+    document.getElementById("exactification-card-note").textContent=exactificationCardCopyForLanguage.note;
+    document.getElementById("exactification-card-link").textContent=exactificationCardCopyForLanguage.link;
+    if (report?.exactification) {
+      const queue=report.exactification;
+      const exactificationPercent=100*queue.currentExactPasses/queue.totalFunctions;
+      document.getElementById("exactification-card-count").textContent=`${fmt.format(queue.currentExactPasses)} / ${fmt.format(queue.totalFunctions)}`;
+      document.getElementById("exactification-card-percent").textContent=`${fmt.format(Number(exactificationPercent.toFixed(2)))}%`;
+      document.getElementById("exactification-card-pending").textContent=exactificationCardCopyForLanguage.pending.replace("{count}",fmt.format(queue.pendingRevalidation));
+    } else {
+      document.getElementById("exactification-card-count").textContent="— / —";
+      document.getElementById("exactification-card-percent").textContent="—";
+      document.getElementById("exactification-card-pending").textContent=exactificationCardCopyForLanguage.loading;
+    }
     if (report) {
       document.getElementById("exact-percent").textContent = `${fmt.format(Number(report.summary.exactCodePercent.toFixed(2)))}%`;
       document.getElementById("fuzzy-percent").textContent = `${fmt.format(Number(report.summary.fuzzyMatchPercent.toFixed(4)))}%`;
       document.getElementById("exact-functions").textContent = fmt.format(report.summary.exactFunctions);
-      const exactification = report.exactification;
-      const exactificationPercent = 100 * exactification.currentExactPasses / exactification.totalFunctions;
-      const statusValues = {current:fmt.format(exactification.currentExactPasses),total:fmt.format(exactification.totalFunctions),percent:fmt.format(Number(exactificationPercent.toFixed(2))),pending:fmt.format(exactification.pendingRevalidation)};
-      document.getElementById("exactification-status").textContent = progressMetricCopyForLanguage.status.replace(/\{(\w+)\}/g,(_,key)=>statusValues[key] ?? "");
       document.getElementById("candidate-count").textContent = fmt.format(report.summary.candidateCount);
       document.getElementById("byte-count").textContent = fmt.format(report.summary.totalCodeBytes);
       updateFilter();
