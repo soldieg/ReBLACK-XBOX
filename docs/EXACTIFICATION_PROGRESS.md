@@ -2,9 +2,9 @@
 
 **Snapshot date:** 2026-10-17
 
-The progress page reads sanitized per-function records from `docs/data/exactification-functions.json`. The dashboard generator checks each function ID, address, size, and status against the existing candidate map, then calculates the queue totals from those records. Updating this file and pushing it to `main` triggers the GitHub Pages workflow.
+The dashboard generator checks each function ID, address, size, and status in `docs/data/exactification-functions.json` against the existing candidate map. Current exact rows are merged into the existing exact-byte candidate classification by function ID; a candidate already exact in objdiff is counted once. Pending rows do not add an exact match. Updating this file and pushing it to `main` triggers the GitHub Pages workflow.
 
-The public file contains function IDs, addresses, sizes, and queue status only. It does not contain reconstructed source, game bytes, binaries, local evidence paths, or private hashes. This 346-function queue remains a distinct validation source from the 13,676-candidate objdiff snapshot; the page keeps those measurements labeled separately.
+The public file contains function IDs, addresses, sizes, and queue status only. It does not contain reconstructed source, game bytes, binaries, local evidence paths, or private hashes. The 346-function list supplies per-candidate validation records to the 13,676-candidate snapshot; it is not displayed as a separate progress measure.
 
 | Queue status | Count |
 | --- | ---: |
@@ -19,4 +19,4 @@ That is 307/346 (**88.73%**) revalidated, with 39/346 (**11.27%**) still pending
 
 This confirms exact machine-code reproduction for those recorded spans. It does not prove that the readable semantic C reconstruction is equivalent: 290 of the 307 canonical C files currently emit the exact bytes directly, while 17 use a separate exact source. Xbox full linking, runtime behavior, and visible gameplay remain unverified. The 39 pending rows are historical exact records awaiting fresh revalidation; they are not counted as current passes.
 
-The page shows the queue status in its existing scope banner and marks each matching candidate in the map details. The separate objdiff metrics remain 63 exact candidate matches / 811 bytes among 13,676 split candidates; the 307 queue passes are not added to that count or byte percentage. The public function list contains only IDs, addresses, sizes, and queue status; it does not include source code, binaries, target bytes, or private evidence.
+The current dashboard combines the 63 objdiff-exact candidates (811 bytes) with the 307 current byte-exact records (42,769 bytes). Twenty-five candidates (456 bytes) occur in both sources, so the page counts **345 unique exact candidates / 43,124 bytes** among 13,676 candidates, or **1.8773%** of candidate code bytes. This is a deduplicated union, not a separate queue card. The 39 pending rows do not contribute new exact status. The public function list contains only IDs, addresses, sizes, and status; it does not include source code, binaries, target bytes, or private evidence.
