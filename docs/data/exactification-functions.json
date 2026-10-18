@@ -588,7 +588,7 @@
       "function": "sub_00043050",
       "address": "0x00043050",
       "sizeBytes": 16,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00043770",
@@ -630,7 +630,7 @@
       "function": "sub_00051A80",
       "address": "0x00051A80",
       "sizeBytes": 10,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000547C0",
@@ -828,7 +828,7 @@
       "function": "sub_0007EF40",
       "address": "0x0007EF40",
       "sizeBytes": 12,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0007F3E0",
@@ -858,7 +858,7 @@
       "function": "sub_00080610",
       "address": "0x00080610",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00080E20",
@@ -1176,7 +1176,7 @@
       "function": "sub_000833A0",
       "address": "0x000833A0",
       "sizeBytes": 15,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000841C0",
@@ -1188,7 +1188,7 @@
       "function": "sub_00084290",
       "address": "0x00084290",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00084B10",
@@ -1788,79 +1788,79 @@
       "function": "sub_0008C310",
       "address": "0x0008C310",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DB60",
       "address": "0x0008DB60",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DB90",
       "address": "0x0008DB90",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DC10",
       "address": "0x0008DC10",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DC40",
       "address": "0x0008DC40",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DCA0",
       "address": "0x0008DCA0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DF60",
       "address": "0x0008DF60",
       "sizeBytes": 14,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008DFF0",
       "address": "0x0008DFF0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008E4E0",
       "address": "0x0008E4E0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0008E5B0",
       "address": "0x0008E5B0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00090650",
       "address": "0x00090650",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00091970",
       "address": "0x00091970",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00092CC0",
       "address": "0x00092CC0",
       "sizeBytes": 10,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_00093F10",
@@ -1890,19 +1890,19 @@
       "function": "sub_00097F70",
       "address": "0x00097F70",
       "sizeBytes": 10,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0009B400",
       "address": "0x0009B400",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0009B410",
       "address": "0x0009B410",
       "sizeBytes": 8,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0009BA50",
@@ -1986,31 +1986,31 @@
       "function": "sub_000AC3A0",
       "address": "0x000AC3A0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000AC3B0",
       "address": "0x000AC3B0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000AC3C0",
       "address": "0x000AC3C0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000AD0C0",
       "address": "0x000AD0C0",
       "sizeBytes": 16,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_000AD0D0",
       "address": "0x000AD0D0",
       "sizeBytes": 11,
-      "status": "pending-revalidation"
+      "status": "current-exact"
     },
     {
       "function": "sub_0013E0E0",
