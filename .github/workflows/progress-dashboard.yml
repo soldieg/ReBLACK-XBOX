@@ -9,6 +9,8 @@ on:
       - tools/decompdev/build_dashboard.py
       - docs/data/function-priorities.json
       - docs/data/exactification-functions.json
+      - docs/data/semantic-review-progress.json
+      - docs/SEMANTIC_REVIEW_PROGRESS.md
       - reconstructions/validation-index.json
       - tools/decompdev/validate_public_contributions.py
       - docs/index.html
