@@ -9,6 +9,7 @@ The project aims to decompile and reconstruct *BLACK* for the original Xbox, the
 ## Quick links
 
 - [Progress dashboard](https://soldieg.github.io/ReBLACK-XBOX/)
+- [346-function exactification queue status](docs/EXACTIFICATION_PROGRESS.md)
 - [Documentation index](docs/README.md)
 - [Contributing function reconstructions](docs/CONTRIBUTING.md)
 - [Detailed project status](PROJECT_STATUS.md)
