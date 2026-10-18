@@ -249,6 +249,12 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
         record = records.get(candidate["name"].lower())
         if record:
             candidate["exactificationStatus"] = record["status"]
+        if record and record["status"] == "current-exact":
+            # Merge the independently byte-compared function into the existing
+            # candidate classification. The candidate may already be exact in
+            # objdiff; assigning the same category deduplicates it naturally.
+            candidate["category"] = "exact"
+            candidate["exactPercent"] = 100.0
 
     return {
         "currentExactPasses": counts["current-exact"],
@@ -296,6 +302,20 @@ def main() -> int:
         payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
         payload["validation"] = read_validation_index(args.validations, payload["candidates"])
         payload["exactification"] = read_exactification_functions(args.exactification_functions, payload["candidates"])
+        # The dashboard has one exact-byte progress measure. Combine objdiff
+        # exact candidates with freshly byte-compared function records by
+        # candidate identity, so overlaps are counted once.
+        categories = {"exact": 0, "fuzzy": 0, "unmatched": 0}
+        exact_bytes = 0
+        for candidate in payload["candidates"]:
+            categories[candidate["category"]] += 1
+            if candidate["category"] == "exact":
+                exact_bytes += candidate["bytes"]
+        summary = payload["summary"]
+        summary["exactFunctions"] = categories["exact"]
+        summary["exactCodeBytes"] = exact_bytes
+        summary["exactCodePercent"] = 100 * exact_bytes / summary["totalCodeBytes"]
+        summary["categories"] = categories
         validated_ids = set(payload["validation"]["validatedIds"])
         for candidate in payload["candidates"]:
             candidate["reconstructionValidated"] = candidate["name"] in validated_ids
@@ -319,9 +339,7 @@ def main() -> int:
         print(
             f"Built {summary['candidateCount']:,} candidates / {summary['totalCodeBytes']:,} bytes; "
             f"exact {summary['exactFunctions']} functions ({summary['exactCodePercent']:.8f}%); "
-            f"fuzzy {summary['fuzzyMatchPercent']:.8f}%; "
-            f"exactification {payload['exactification']['currentExactPasses']}/"
-            f"{payload['exactification']['totalFunctions']} current exact passes."
+            f"fuzzy objdiff {summary['fuzzyMatchPercent']:.8f}%."
         )
         print(f"Pages files: {args.output_dir}")
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
