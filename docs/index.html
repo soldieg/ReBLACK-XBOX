@@ -9,7 +9,7 @@
     :root { color-scheme: dark; --bg:#10151d; --panel:#18212d; --line:#2d3a4b; --text:#ecf2fa; --muted:#aab7c7; --exact:#27835c; --fuzzy:#c98719; --none:#465568; --accent:#72b7ff; }
     * { box-sizing:border-box; }
     body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
-    main { width:min(1200px,100% - 32px); margin:32px auto 56px; }
+    main { width:min(1600px,calc(100% - 48px)); margin:32px auto 56px; }
     h1 { margin:0; font-size:clamp(1.65rem,4vw,2.4rem); line-height:1.15; }
     h2 { margin:0; font-size:1.15rem; }
     .site-header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
@@ -37,14 +37,11 @@
     a { color:var(--accent); }
     .intro { margin:10px 0 24px; }
     .scope { border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
-    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
+    .metrics { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
-    .audit-summary { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:14px; align-items:center; margin:-7px 0 24px; padding:13px 15px; border:1px solid var(--line); border-radius:10px; background:#141d28; }
-    .audit-summary strong { display:block; font-size:1.3rem; font-variant-numeric:tabular-nums; }
-    .audit-summary span,.audit-summary p { color:var(--muted); font-size:.88rem; }
-    .audit-summary p { margin:0; }
+    .metric small { display:block; margin-top:4px; color:var(--muted); font-size:.8rem; }
     .toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:12px; margin:16px 0 10px; }
     label { display:grid; gap:4px; color:var(--muted); font-size:.88rem; }
     input,select { min-height:42px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:8px 11px; font:inherit; }
@@ -78,8 +75,9 @@
     .tile-list button:hover,.tile-list button:focus-visible { outline:2px solid var(--accent); }
     .tile-list small { flex:none; color:var(--muted); }
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
-    @media (max-width:850px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:last-child { grid-column:span 2; } }
-    @media (max-width:700px) { .audit-summary { grid-template-columns:1fr; gap:6px; } }
+    @media (max-width:1100px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:600px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:360px) { .metrics { grid-template-columns:1fr; } }
     @media (max-width:700px) { .site-header { flex-wrap:wrap; } }
     @media (max-width:540px) { main { width:calc(100% - 22px); margin-top:22px; } .metrics { gap:7px; } .metric { padding:10px; min-height:80px; } .metric strong { font-size:1.2rem; } canvas { min-height:430px; height:60vh; } #result-count { width:100%; margin-inline-start:0; } }
   </style>
@@ -110,19 +108,12 @@
   <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
   <div class="scope" id="scope" aria-live="polite">Loading reviewed report scope…</div>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
-    <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Exact code matched</span></div>
-    <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy match score</span></div>
-    <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact functions</span></div>
+    <div class="metric"><strong id="exactification-count">—</strong><span id="exactification-metric">Current exact passes in the 346-function queue</span><small id="exactification-pending">—</small></div>
+    <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Code bytes matched exactly by objdiff</span></div>
+    <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy objdiff score</span></div>
+    <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact objdiff candidate matches</span></div>
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
-    <div class="metric"><strong id="validated-count">—</strong><span id="validated-metric">Reconstructions accepted after build + exact byte diff</span></div>
-  </section>
-  <section class="audit-summary" aria-labelledby="exactification-label">
-    <div>
-      <strong id="exactification-count">307 / 346 · 88.73%</strong>
-      <span id="exactification-label">Revalidated exactification batch</span>
-    </div>
-    <p><span id="exactification-detail">39 awaiting fresh revalidation.</span> <span id="exactification-caveat">Separate from the 13,676-candidate dashboard and its objdiff exact-match count. This confirms recorded machine-code spans, not semantic C equivalence or Xbox runtime behavior.</span> <a id="exactification-link" href="https://github.com/soldieg/ReBLACK-XBOX/blob/main/docs/EXACTIFICATION_PROGRESS.md">Audit details</a></p>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
@@ -256,33 +247,19 @@
     ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
     tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
   };
-  const validationMetricCopy = {
-    en:"Accepted build + exact byte diff (share of split candidates)",
-    "pt-BR":"Build + diff exato aceitos (proporção das candidatas)",
-    es:"Build + diff exacto aceptados (proporción de candidatas)",
-    ru:"Принятые сборки и точные сравнения байтов (доля кандидатов)",
-    fr:"Build et comparaison exacte acceptés (part des candidats)",
-    de:"Akzeptierter Build und exakter Bytevergleich (Anteil der Kandidaten)",
-    it:"Build e confronto esatto accettati (quota delle candidate)",
-    ja:"ビルドと完全なバイト比較の承認数（候補に対する割合）",
-    ko:"승인된 빌드 및 정확한 바이트 비교 (후보 대비 비율)",
-    "zh-CN":"已接受的构建和精确字节比较（候选项占比）",
-    ar:"عمليات البناء ومقارنة البايتات المقبولة (نسبة المرشحين)",
-    tr:"Kabul edilen derleme ve tam bayt karşılaştırması (aday oranı)"
-  };
-  const exactificationCopy = {
-    en:{label:"Revalidated exactification batch",detail:"39 awaiting fresh revalidation.",caveat:"Separate from the 13,676-candidate dashboard and its objdiff exact-match count. This confirms recorded machine-code spans, not semantic C equivalence or Xbox runtime behavior.",link:"Audit details"},
-    "pt-BR":{label:"Lote de funções revalidado",detail:"39 aguardam nova validação.",caveat:"Este lote é separado das 13.676 candidatas do painel e da contagem exata do objdiff. O resultado confirma os trechos de código de máquina registrados, não a equivalência semântica do C nem o comportamento no Xbox.",link:"Detalhes da auditoria"},
-    es:{label:"Lote de funciones revalidado",detail:"39 esperan una nueva validación.",caveat:"Este lote es independiente de las 13.676 candidatas del panel y del recuento exacto de objdiff. Confirma los tramos de código máquina registrados, no la equivalencia semántica de C ni el comportamiento en Xbox.",link:"Detalles de auditoría"},
-    ru:{label:"Повторно проверенная группа функций",detail:"39 ожидают повторной проверки.",caveat:"Эта группа учитывается отдельно от 13 676 кандидатов панели и точных совпадений objdiff. Подтверждены записанные фрагменты машинного кода, но не семантическая эквивалентность C и не работа на Xbox.",link:"Подробности аудита"},
-    fr:{label:"Lot de fonctions revalidées",detail:"39 attendent une nouvelle validation.",caveat:"Ce lot est distinct des 13 676 candidats du tableau et du nombre de correspondances exactes objdiff. Il confirme les plages de code machine enregistrées, pas l’équivalence sémantique du C ni le comportement sur Xbox.",link:"Détails de l’audit"},
-    de:{label:"Erneut geprüfter Funktionsstapel",detail:"39 warten auf eine erneute Prüfung.",caveat:"Dieser Stapel ist getrennt von den 13.676 Dashboard-Kandidaten und den exakten objdiff-Treffern. Bestätigt werden die aufgezeichneten Maschinencodebereiche, nicht die semantische C-Gleichheit oder das Laufzeitverhalten auf Xbox.",link:"Auditdetails"},
-    it:{label:"Lotto di funzioni riverificato",detail:"39 attendono una nuova verifica.",caveat:"Questo lotto è separato dalle 13.676 candidate del pannello e dal conteggio esatto di objdiff. Conferma gli intervalli di codice macchina registrati, non l’equivalenza semantica del C né il comportamento su Xbox.",link:"Dettagli dell’audit"},
-    ja:{label:"再検証済み関数バッチ",detail:"39件は再検証待ちです。",caveat:"このバッチは、ダッシュボードの13,676候補およびobjdiffの完全一致数とは別集計です。記録された機械語範囲の一致を示し、Cの意味的同等性やXboxでの実行動作を示すものではありません。",link:"監査の詳細"},
-    ko:{label:"재검증된 함수 묶음",detail:"39개는 재검증을 기다리고 있습니다.",caveat:"이 묶음은 대시보드의 후보 13,676개 및 objdiff 완전 일치 수와 별도입니다. 기록된 기계어 구간을 확인한 결과이며 C의 의미적 동등성이나 Xbox 실행 동작을 입증하지 않습니다.",link:"감사 세부 정보"},
-    "zh-CN":{label:"已重新验证的函数批次",detail:"39 个仍待重新验证。",caveat:"此批次与仪表板的 13,676 个候选项及 objdiff 精确匹配数分别统计。它确认了已记录的机器码范围，不代表 C 语义等价或 Xbox 运行行为。",link:"审计详情"},
-    ar:{label:"مجموعة الدوال التي أُعيد التحقق منها",detail:"39 دالة بانتظار إعادة التحقق.",caveat:"تُحسب هذه المجموعة بشكل منفصل عن 13,676 مرشحًا في اللوحة وعدد التطابقات الدقيقة في objdiff. تؤكد نطاقات الشيفرة الآلية المسجلة، ولا تثبت التكافؤ الدلالي لـ C أو سلوك التشغيل على Xbox.",link:"تفاصيل التدقيق"},
-    tr:{label:"Yeniden doğrulanan işlev grubu",detail:"39 işlev yeniden doğrulamayı bekliyor.",caveat:"Bu grup, panodaki 13.676 adaydan ve objdiff tam eşleşme sayısından ayrıdır. Kaydedilen makine kodu aralıklarını doğrular; C anlamsal eşdeğerliğini veya Xbox çalışma davranışını kanıtlamaz.",link:"Denetim ayrıntıları"}
+  const progressMetricCopy = {
+    en:{exactification:"Current exact passes in the 346-function queue",pending:"pending revalidation",exactCode:"Candidate bytes matched exactly by objdiff",fuzzy:"Fuzzy objdiff score",functions:"Exact objdiff candidate matches"},
+    "pt-BR":{exactification:"Passes exatos atuais na fila de 346 funções",pending:"aguardam revalidação",exactCode:"Bytes candidatos com correspondência exata no objdiff",fuzzy:"Índice aproximado do objdiff",functions:"Correspondências exatas de candidatas no objdiff"},
+    es:{exactification:"Pases exactos actuales en la cola de 346 funciones",pending:"pendientes de revalidación",exactCode:"Bytes candidatos con coincidencia exacta en objdiff",fuzzy:"Puntuación aproximada de objdiff",functions:"Coincidencias exactas de candidatas en objdiff"},
+    ru:{exactification:"Текущие точные результаты в очереди из 346 функций",pending:"ожидают повторной проверки",exactCode:"Байты кандидатов с точным совпадением objdiff",fuzzy:"Приблизительная оценка objdiff",functions:"Точные совпадения кандидатов objdiff"},
+    fr:{exactification:"Correspondances exactes actuelles sur 346 fonctions",pending:"en attente de nouvelle vérification",exactCode:"Octets candidats correspondant exactement selon objdiff",fuzzy:"Score approximatif objdiff",functions:"Correspondances exactes de candidats objdiff"},
+    de:{exactification:"Aktuelle exakte Treffer in der 346-Funktionen-Warteschlange",pending:"warten auf erneute Prüfung",exactCode:"Kandidatenbytes mit exaktem objdiff-Treffer",fuzzy:"Näherungswert von objdiff",functions:"Exakte objdiff-Kandidatentreffer"},
+    it:{exactification:"Pass esatti attuali nella coda di 346 funzioni",pending:"in attesa di nuova verifica",exactCode:"Byte candidati con corrispondenza esatta in objdiff",fuzzy:"Punteggio approssimativo objdiff",functions:"Corrispondenze esatte dei candidati objdiff"},
+    ja:{exactification:"346関数キューの現在の完全一致",pending:"件は再検証待ち",exactCode:"objdiffで完全一致した候補コードのバイト数",fuzzy:"objdiffの近似スコア",functions:"objdiffの候補関数完全一致数"},
+    ko:{exactification:"346개 함수 대기열의 현재 정확 일치",pending:"개 재검증 대기",exactCode:"objdiff에서 정확히 일치한 후보 코드 바이트",fuzzy:"objdiff 근사 점수",functions:"objdiff 후보 함수 정확 일치 수"},
+    "zh-CN":{exactification:"346 个函数队列中当前精确通过数",pending:"个待重新验证",exactCode:"objdiff 精确匹配的候选代码字节",fuzzy:"objdiff 近似得分",functions:"objdiff 候选函数精确匹配数"},
+    ar:{exactification:"النتائج الدقيقة الحالية في قائمة 346 دالة",pending:"بانتظار إعادة التحقق",exactCode:"بايتات المرشحين المطابقة تمامًا في objdiff",fuzzy:"نتيجة objdiff التقريبية",functions:"تطابقات مرشحي objdiff الدقيقة"},
+    tr:{exactification:"346 işlevlik sıradaki güncel tam eşleşmeler",pending:"yeniden doğrulamayı bekliyor",exactCode:"objdiff ile tam eşleşen aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"objdiff tam eşleşen aday işlevler"}
   };
   const validationDetailCopy = {
     en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
@@ -480,13 +457,11 @@
       el.textContent = msg(key);
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
-    document.getElementById("validated-metric").textContent=validationMetricCopy[code] || validationMetricCopy.en;
-    const exactificationCopyForLanguage = exactificationCopy[code] || exactificationCopy.en;
-    document.getElementById("exactification-count").textContent=`${fmt.format(307)} / ${fmt.format(346)} · ${fmt.format(88.73)}%`;
-    document.getElementById("exactification-label").textContent=exactificationCopyForLanguage.label;
-    document.getElementById("exactification-detail").textContent=exactificationCopyForLanguage.detail;
-    document.getElementById("exactification-caveat").textContent=exactificationCopyForLanguage.caveat;
-    document.getElementById("exactification-link").textContent=exactificationCopyForLanguage.link;
+    const progressMetricCopyForLanguage = progressMetricCopy[code] || progressMetricCopy.en;
+    document.getElementById("exactification-metric").textContent=progressMetricCopyForLanguage.exactification;
+    document.getElementById("exact-metric").textContent=progressMetricCopyForLanguage.exactCode;
+    document.getElementById("fuzzy-metric").textContent=progressMetricCopyForLanguage.fuzzy;
+    document.getElementById("functions-metric").textContent=progressMetricCopyForLanguage.functions;
     document.getElementById("legend").setAttribute("aria-label",msg("legend"));
     document.getElementById("scope").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
     document.getElementById("query").placeholder = msg("searchPlaceholder");
@@ -499,9 +474,12 @@
       document.getElementById("exact-percent").textContent = `${fmt.format(Number(report.summary.exactCodePercent.toFixed(2)))}%`;
       document.getElementById("fuzzy-percent").textContent = `${fmt.format(Number(report.summary.fuzzyMatchPercent.toFixed(4)))}%`;
       document.getElementById("exact-functions").textContent = fmt.format(report.summary.exactFunctions);
+      const exactification = report.exactification;
+      const exactificationPercent = 100 * exactification.currentExactPasses / exactification.totalFunctions;
+      document.getElementById("exactification-count").textContent = `${fmt.format(exactification.currentExactPasses)} / ${fmt.format(exactification.totalFunctions)} · ${fmt.format(Number(exactificationPercent.toFixed(2)))}%`;
+      document.getElementById("exactification-pending").textContent = `${fmt.format(exactification.pendingRevalidation)} ${progressMetricCopyForLanguage.pending}`;
       document.getElementById("candidate-count").textContent = fmt.format(report.summary.candidateCount);
       document.getElementById("byte-count").textContent = fmt.format(report.summary.totalCodeBytes);
-      document.getElementById("validated-count").textContent = `${fmt.format(report.summary.validatedReconstructionCount || 0)} · ${fmt.format(Number((report.summary.validatedReconstructionPercent || 0).toFixed(2)))}%`;
       updateFilter();
     } else if (loadError) {
       document.getElementById("result-count").textContent = msg("noData");

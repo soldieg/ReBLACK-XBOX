@@ -2,6 +2,8 @@
 
 **Snapshot date:** 2026-10-17
 
+The progress page reads its 346-function queue count from `docs/data/exactification-progress.json`. Updating that sanitized count file and pushing it to `main` triggers the GitHub Pages workflow; the page is generated from that data instead of maintaining a second hard-coded count.
+
 This is a status snapshot for the private exactification batch of 346 previously recorded function results. It is separate from the public objdiff dashboard, which reports a 13,676-candidate split inventory.
 
 | Queue status | Count |
