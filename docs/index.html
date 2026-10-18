@@ -36,8 +36,9 @@
     p { color:var(--muted); }
     a { color:var(--accent); }
     .intro { margin:10px 0 24px; }
-    .scope { border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
-    .metrics { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
+    .scope { display:flex; flex-wrap:wrap; gap:4px 18px; border-left:3px solid var(--accent); background:var(--panel); border-radius:4px 10px 10px 4px; padding:12px 16px; margin:18px 0 24px; color:var(--muted); }
+    .scope .progress-status { color:var(--text); }
+    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:18px 0 22px; }
     .metric { min-height:94px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 15px; }
     .metric strong { display:block; font-size:1.45rem; line-height:1.25; font-variant-numeric:tabular-nums; }
     .metric span { color:var(--muted); font-size:.88rem; }
@@ -106,9 +107,8 @@
     <a id="language-request-link" href="https://github.com/soldieg/ReBLACK-XBOX/issues/new">Request this language</a>
   </div>
   <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
-  <div class="scope" id="scope" aria-live="polite">Loading reviewed report scope…</div>
+  <div class="scope" id="scope" aria-live="polite"><span id="scope-text">Loading reviewed report scope…</span><span class="progress-status" id="exactification-status"></span></div>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
-    <div class="metric"><strong id="exactification-count">—</strong><span id="exactification-metric">Current exact passes in the 346-function queue</span><small id="exactification-pending">—</small></div>
     <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Code bytes matched exactly by objdiff</span></div>
     <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy objdiff score</span></div>
     <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Exact objdiff candidate matches</span></div>
@@ -229,8 +229,8 @@
   "use strict";
   const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568", claimed:"#1671c5", review:"#d63d45"};
   const uiCopy = {
-    en: {sizeZoom:"Zoom by size", allSizes:"All sizes", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4,096 bytes", large:"Over 4,096 bytes", availability:"Availability", available:"Available", claimed:"Claimed", review:"Review requested", exactState:"Exact byte match", fuzzyState:"Approximate match", unmatchedState:"No match recorded", availableState:"Available to claim", claimedState:"Claimed in an open function issue", reviewState:"Review requested; a maintainer must assess it. The existing byte-match record is unchanged.", claimAction:"Claim this function", openTask:"View active task", reviewAction:"Report a problem or suggest an improvement", viewReview:"View review issue", queueTitle:"Function work queue", queueIntro:"The maintainer-curated high-priority list appears first. Open function issues mark candidates as claimed. A review report stays red until a maintainer records a decision.", priorityQueue:"High-priority candidates", activeQueue:"Other active tasks", reviewQueue:"Under review", findQueue:"Find a function to work on", queuePlaceholder:"Search by candidate ID", queueEmpty:"No active issues in this group.", priorityEmpty:"No candidates are marked high priority yet.", queueNeedSearch:"Type an ID to find available candidates.", queueNoResults:"No matching candidates.", issueLoadError:"Could not load GitHub issue status. The map still shows byte-match data; task colors are unavailable.", sizeZoomHelp:"Size filters rescale the selected group to fill the map. They do not imply that one function contains another.", overlayHelp:"Green, amber, and gray show byte-match classification. Blue marks an open work issue; red marks a review awaiting a maintainer decision."},
-    "pt-BR": {sizeZoom:"Ampliar por tamanho", allSizes:"Todos os tamanhos", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4.096 bytes", large:"Mais de 4.096 bytes", availability:"Disponibilidade", available:"Disponíveis", claimed:"Assumidas", review:"Revisão solicitada", exactState:"Correspondência exata de bytes", fuzzyState:"Correspondência aproximada", unmatchedState:"Sem correspondência registrada", availableState:"Disponível para alguém assumir", claimedState:"Assumida em um Issue aberto de função", reviewState:"Revisão solicitada; uma pessoa mantenedora precisa analisar. O registro de bytes exatos continua inalterado.", claimAction:"Assumir esta função", openTask:"Ver tarefa ativa", reviewAction:"Apontar problema ou sugerir melhoria", viewReview:"Ver Issue de revisão", queueTitle:"Fila de funções", queueIntro:"A lista de alta prioridade escolhida pelos mantenedores aparece primeiro. Issues abertos de função marcam candidatas assumidas. Um apontamento continua vermelho até um mantenedor registrar a decisão.", priorityQueue:"Candidatas prioritárias", activeQueue:"Outras tarefas ativas", reviewQueue:"Em revisão", findQueue:"Encontre uma função para trabalhar", queuePlaceholder:"Buscar pelo ID da candidata", queueEmpty:"Não há Issues ativos neste grupo.", priorityEmpty:"Ainda não há candidatas marcadas como prioritárias.", queueNeedSearch:"Digite um ID para encontrar candidatas disponíveis.", queueNoResults:"Nenhuma candidata encontrada.", issueLoadError:"Não foi possível carregar o estado dos Issues do GitHub. O mapa ainda mostra a correspondência de bytes, mas as cores de tarefa estão indisponíveis.", sizeZoomHelp:"Os filtros redimensionam o grupo selecionado para preencher o mapa. Eles não indicam que uma função contém outra.", overlayHelp:"Verde, âmbar e cinza indicam a classificação por bytes. Azul marca uma tarefa aberta; vermelho marca uma revisão aguardando decisão de um mantenedor."}
+    en: {sizeZoom:"Zoom by size", allSizes:"All sizes", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4,096 bytes", large:"Over 4,096 bytes", availability:"Availability", available:"Available", claimed:"Claimed", review:"Review requested", exactState:"Exact byte match", fuzzyState:"Approximate match", unmatchedState:"No match recorded", availableState:"Available to claim", claimedState:"Claimed in an open function issue", reviewState:"Review requested; a maintainer must assess it. The existing byte-match record is unchanged.", claimAction:"Claim this function", openTask:"View active task", reviewAction:"Report a problem or suggest an improvement", viewReview:"View review issue", queueTitle:"Function work queue", queueIntro:"The maintainer-curated high-priority list appears first. Open function issues mark candidates as claimed. A review report stays red until a maintainer records a decision.", priorityQueue:"High-priority candidates", activeQueue:"Other active tasks", reviewQueue:"Under review", findQueue:"Find a function to work on", queuePlaceholder:"Search by candidate ID", queueEmpty:"No active issues in this group.", priorityEmpty:"No candidates are marked high priority yet.", queueNeedSearch:"Type an ID to find available candidates.", queueNoResults:"No matching candidates.", issueLoadError:"Could not load GitHub issue status. The map still shows byte-match data; task colors are unavailable.", sizeZoomHelp:"Size filters rescale the selected group to fill the map. They do not imply that one function contains another.", overlayHelp:"Green, amber, and gray show byte-match classification. Blue marks an open work issue; red marks a review awaiting a maintainer decision.", exactificationExact:"Exactification queue: current exact pass", exactificationPending:"Exactification queue: pending revalidation"},
+    "pt-BR": {sizeZoom:"Ampliar por tamanho", allSizes:"Todos os tamanhos", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4.096 bytes", large:"Mais de 4.096 bytes", availability:"Disponibilidade", available:"Disponíveis", claimed:"Assumidas", review:"Revisão solicitada", exactState:"Correspondência exata de bytes", fuzzyState:"Correspondência aproximada", unmatchedState:"Sem correspondência registrada", availableState:"Disponível para alguém assumir", claimedState:"Assumida em um Issue aberto de função", reviewState:"Revisão solicitada; uma pessoa mantenedora precisa analisar. O registro de bytes exatos continua inalterado.", claimAction:"Assumir esta função", openTask:"Ver tarefa ativa", reviewAction:"Apontar problema ou sugerir melhoria", viewReview:"Ver Issue de revisão", queueTitle:"Fila de funções", queueIntro:"A lista de alta prioridade escolhida pelos mantenedores aparece primeiro. Issues abertos de função marcam candidatas assumidas. Um apontamento continua vermelho até um mantenedor registrar a decisão.", priorityQueue:"Candidatas prioritárias", activeQueue:"Outras tarefas ativas", reviewQueue:"Em revisão", findQueue:"Encontre uma função para trabalhar", queuePlaceholder:"Buscar pelo ID da candidata", queueEmpty:"Não há Issues ativos neste grupo.", priorityEmpty:"Ainda não há candidatas marcadas como prioritárias.", queueNeedSearch:"Digite um ID para encontrar candidatas disponíveis.", queueNoResults:"Nenhuma candidata encontrada.", issueLoadError:"Não foi possível carregar o estado dos Issues do GitHub. O mapa ainda mostra a correspondência de bytes, mas as cores de tarefa estão indisponíveis.", sizeZoomHelp:"Os filtros redimensionam o grupo selecionado para preencher o mapa. Eles não indicam que uma função contém outra.", overlayHelp:"Verde, âmbar e cinza indicam a classificação por bytes. Azul marca uma tarefa aberta; vermelho marca uma revisão aguardando decisão de um mantenedor.", exactificationExact:"Fila de exatidificação: passe exato atual", exactificationPending:"Fila de exatidificação: aguardando revalidação"}
   };
   const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
   const regionCopy = {
@@ -248,18 +248,18 @@
     tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
   };
   const progressMetricCopy = {
-    en:{exactification:"Current exact passes in the 346-function queue",pending:"pending revalidation",exactCode:"Candidate bytes matched exactly by objdiff",fuzzy:"Fuzzy objdiff score",functions:"Exact objdiff candidate matches"},
-    "pt-BR":{exactification:"Passes exatos atuais na fila de 346 funções",pending:"aguardam revalidação",exactCode:"Bytes candidatos com correspondência exata no objdiff",fuzzy:"Índice aproximado do objdiff",functions:"Correspondências exatas de candidatas no objdiff"},
-    es:{exactification:"Pases exactos actuales en la cola de 346 funciones",pending:"pendientes de revalidación",exactCode:"Bytes candidatos con coincidencia exacta en objdiff",fuzzy:"Puntuación aproximada de objdiff",functions:"Coincidencias exactas de candidatas en objdiff"},
-    ru:{exactification:"Текущие точные результаты в очереди из 346 функций",pending:"ожидают повторной проверки",exactCode:"Байты кандидатов с точным совпадением objdiff",fuzzy:"Приблизительная оценка objdiff",functions:"Точные совпадения кандидатов objdiff"},
-    fr:{exactification:"Correspondances exactes actuelles sur 346 fonctions",pending:"en attente de nouvelle vérification",exactCode:"Octets candidats correspondant exactement selon objdiff",fuzzy:"Score approximatif objdiff",functions:"Correspondances exactes de candidats objdiff"},
-    de:{exactification:"Aktuelle exakte Treffer in der 346-Funktionen-Warteschlange",pending:"warten auf erneute Prüfung",exactCode:"Kandidatenbytes mit exaktem objdiff-Treffer",fuzzy:"Näherungswert von objdiff",functions:"Exakte objdiff-Kandidatentreffer"},
-    it:{exactification:"Pass esatti attuali nella coda di 346 funzioni",pending:"in attesa di nuova verifica",exactCode:"Byte candidati con corrispondenza esatta in objdiff",fuzzy:"Punteggio approssimativo objdiff",functions:"Corrispondenze esatte dei candidati objdiff"},
-    ja:{exactification:"346関数キューの現在の完全一致",pending:"件は再検証待ち",exactCode:"objdiffで完全一致した候補コードのバイト数",fuzzy:"objdiffの近似スコア",functions:"objdiffの候補関数完全一致数"},
-    ko:{exactification:"346개 함수 대기열의 현재 정확 일치",pending:"개 재검증 대기",exactCode:"objdiff에서 정확히 일치한 후보 코드 바이트",fuzzy:"objdiff 근사 점수",functions:"objdiff 후보 함수 정확 일치 수"},
-    "zh-CN":{exactification:"346 个函数队列中当前精确通过数",pending:"个待重新验证",exactCode:"objdiff 精确匹配的候选代码字节",fuzzy:"objdiff 近似得分",functions:"objdiff 候选函数精确匹配数"},
-    ar:{exactification:"النتائج الدقيقة الحالية في قائمة 346 دالة",pending:"بانتظار إعادة التحقق",exactCode:"بايتات المرشحين المطابقة تمامًا في objdiff",fuzzy:"نتيجة objdiff التقريبية",functions:"تطابقات مرشحي objdiff الدقيقة"},
-    tr:{exactification:"346 işlevlik sıradaki güncel tam eşleşmeler",pending:"yeniden doğrulamayı bekliyor",exactCode:"objdiff ile tam eşleşen aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"objdiff tam eşleşen aday işlevler"}
+    en:{status:"Exactification queue: {current}/{total} passes ({percent}%); {pending} awaiting revalidation.",exactCode:"Candidate bytes matched exactly by objdiff",fuzzy:"Fuzzy objdiff score",functions:"Exact objdiff candidate matches"},
+    "pt-BR":{status:"Fila de exatidificação: {current}/{total} passes ({percent}%); {pending} aguardam revalidação.",exactCode:"Bytes candidatos com correspondência exata no objdiff",fuzzy:"Índice aproximado do objdiff",functions:"Correspondências exatas de candidatas no objdiff"},
+    es:{status:"Cola de exactificación: {current}/{total} pases ({percent}%); {pending} esperan revalidación.",exactCode:"Bytes candidatos con coincidencia exacta en objdiff",fuzzy:"Puntuación aproximada de objdiff",functions:"Coincidencias exactas de candidatas en objdiff"},
+    ru:{status:"Очередь точной сборки: {current}/{total} ({percent}%); ожидают повторной проверки: {pending}.",exactCode:"Байты кандидатов с точным совпадением objdiff",fuzzy:"Приблизительная оценка objdiff",functions:"Точные совпадения кандидатов objdiff"},
+    fr:{status:"File de reconstruction exacte : {current}/{total} ({percent} %) ; {pending} en attente de nouvelle vérification.",exactCode:"Octets candidats correspondant exactement selon objdiff",fuzzy:"Score approximatif objdiff",functions:"Correspondances exactes de candidats objdiff"},
+    de:{status:"Warteschlange: {current}/{total} exakte Durchläufe ({percent} %); {pending} warten auf erneute Prüfung.",exactCode:"Kandidatenbytes mit exaktem objdiff-Treffer",fuzzy:"Näherungswert von objdiff",functions:"Exakte objdiff-Kandidatentreffer"},
+    it:{status:"Coda di ricostruzione esatta: {current}/{total} pass ({percent}%); {pending} in attesa di nuova verifica.",exactCode:"Byte candidati con corrispondenza esatta in objdiff",fuzzy:"Punteggio approssimativo objdiff",functions:"Corrispondenze esatte dei candidati objdiff"},
+    ja:{status:"正確一致キュー: {current}/{total} ({percent}%)、再検証待ち: {pending}件。",exactCode:"objdiffで完全一致した候補コードのバイト数",fuzzy:"objdiffの近似スコア",functions:"objdiffの候補関数完全一致数"},
+    ko:{status:"정확 일치 대기열: {current}/{total}개 ({percent}%), 재검증 대기 {pending}개.",exactCode:"objdiff에서 정확히 일치한 후보 코드 바이트",fuzzy:"objdiff 근사 점수",functions:"objdiff 후보 함수 정확 일치 수"},
+    "zh-CN":{status:"精确重建队列：{current}/{total}（{percent}%）；{pending} 个待重新验证。",exactCode:"objdiff 精确匹配的候选代码字节",fuzzy:"objdiff 近似得分",functions:"objdiff 候选函数精确匹配数"},
+    ar:{status:"قائمة إعادة البناء الدقيقة: {current}/{total} ({percent}٪)، والمتبقي لإعادة التحقق: {pending}.",exactCode:"بايتات المرشحين المطابقة تمامًا في objdiff",fuzzy:"نتيجة objdiff التقريبية",functions:"تطابقات مرشحي objdiff الدقيقة"},
+    tr:{status:"Tam eşleştirme kuyruğu: {current}/{total} ({percent}%); {pending} yeniden doğrulamayı bekliyor.",exactCode:"objdiff ile tam eşleşen aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"objdiff tam eşleşen aday işlevler"}
   };
   const validationDetailCopy = {
     en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
@@ -458,12 +458,11 @@
     }
     document.getElementById("metrics").setAttribute("aria-label",msg("metrics"));
     const progressMetricCopyForLanguage = progressMetricCopy[code] || progressMetricCopy.en;
-    document.getElementById("exactification-metric").textContent=progressMetricCopyForLanguage.exactification;
     document.getElementById("exact-metric").textContent=progressMetricCopyForLanguage.exactCode;
     document.getElementById("fuzzy-metric").textContent=progressMetricCopyForLanguage.fuzzy;
     document.getElementById("functions-metric").textContent=progressMetricCopyForLanguage.functions;
     document.getElementById("legend").setAttribute("aria-label",msg("legend"));
-    document.getElementById("scope").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
+    document.getElementById("scope-text").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
     document.getElementById("query").placeholder = msg("searchPlaceholder");
     document.getElementById("chart").setAttribute("aria-label",msg("chartAria"));
     languageLabel.textContent = `${msg("languageLabel")}: ${languages.find(item=>item[0]===code)[1]}`;
@@ -476,8 +475,8 @@
       document.getElementById("exact-functions").textContent = fmt.format(report.summary.exactFunctions);
       const exactification = report.exactification;
       const exactificationPercent = 100 * exactification.currentExactPasses / exactification.totalFunctions;
-      document.getElementById("exactification-count").textContent = `${fmt.format(exactification.currentExactPasses)} / ${fmt.format(exactification.totalFunctions)} · ${fmt.format(Number(exactificationPercent.toFixed(2)))}%`;
-      document.getElementById("exactification-pending").textContent = `${fmt.format(exactification.pendingRevalidation)} ${progressMetricCopyForLanguage.pending}`;
+      const statusValues = {current:fmt.format(exactification.currentExactPasses),total:fmt.format(exactification.totalFunctions),percent:fmt.format(Number(exactificationPercent.toFixed(2))),pending:fmt.format(exactification.pendingRevalidation)};
+      document.getElementById("exactification-status").textContent = progressMetricCopyForLanguage.status.replace(/\{(\w+)\}/g,(_,key)=>statusValues[key] ?? "");
       document.getElementById("candidate-count").textContent = fmt.format(report.summary.candidateCount);
       document.getElementById("byte-count").textContent = fmt.format(report.summary.totalCodeBytes);
       updateFilter();
@@ -592,6 +591,9 @@
     if (state?.tasks.length) return "claimed";
     return issueStatusLoaded && !issueStatusError ? "available" : "unknown";
   }
+  function exactificationState(item) {
+    return item.exactificationStatus === "current-exact" ? ui("exactificationExact") : item.exactificationStatus === "pending-revalidation" ? ui("exactificationPending") : "";
+  }
   function populateRegions() {
     const previous=regionZoom.value, option=document.createElement("option");
     option.value="all"; option.id="region-all"; option.textContent=regionCopy[language].all;
@@ -679,7 +681,8 @@
     document.getElementById("candidate-detail-title").textContent=item.name;
     const base=item.category==="exact" ? msg("exact") : item.category==="fuzzy" ? msg("fuzzy") : msg("unmatched");
     const task=state==="review" ? ui("reviewState") : state==="claimed" ? ui("claimedState") : state==="available" ? ui("availableState") : ui("issueLoadError");
-    document.getElementById("candidate-detail-status").textContent=`${base} · ${task}`;
+    const exactification=exactificationState(item);
+    document.getElementById("candidate-detail-status").textContent=`${base} · ${task}${exactification ? ` · ${exactification}` : ""}`;
     document.getElementById("candidate-detail-size").textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}`;
     document.getElementById("candidate-validation").textContent=(validationDetailCopy[language] || validationDetailCopy.en)[item.reconstructionValidated ? "accepted" : "pending"];
     actions.replaceChildren();
@@ -779,7 +782,8 @@
     tooltip.replaceChildren();
     const title=document.createElement("strong"), detail=document.createElement("span");
     const state=candidateState(item), stateLabel=state==="review" ? ui("review") : state==="claimed" ? ui("claimed") : state==="available" ? ui("available") : ui("issueLoadError");
-    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${label} · ${stateLabel}`;
+    const exactification=exactificationState(item);
+    title.textContent=item.name; detail.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${label} · ${stateLabel}${exactification ? ` · ${exactification}` : ""}`;
     tooltip.append(title,detail);
   }
   function showTooltip(item,x,y,pin=false) {
@@ -801,7 +805,8 @@
     for (const item of matches.slice(0,80)) {
       const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small");
       const state=candidateState(item), stateText=state==="review" ? ui("review") : state==="claimed" ? ui("claimed") : state==="available" ? ui("available") : "";
-      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}${stateText ? ` · ${stateText}` : ""}`;
+      const exactification=exactificationState(item);
+      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}${stateText ? ` · ${stateText}` : ""}${exactification ? ` · ${exactification}` : ""}`;
       button.type="button"; button.append(name,size);
       button.addEventListener("focus",()=>{ const i=visible.indexOf(item); if(i>=0){const r=rectangles.find(x=>x.item===item); if(r)showTooltip(item,r.x+r.w/2,r.y+r.h/2);}});
       button.addEventListener("click",()=>{ selected=item; resizeAndDraw(); showTooltip(item,wrap.clientWidth/2,wrap.clientHeight/2,true); });

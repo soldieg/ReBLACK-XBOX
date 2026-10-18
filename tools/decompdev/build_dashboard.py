@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REPORT = ROOT / "tools/decompdev/progress-source.json"
 DEFAULT_PRIORITIES = ROOT / "docs/data/function-priorities.json"
 DEFAULT_VALIDATIONS = ROOT / "reconstructions/validation-index.json"
-DEFAULT_EXACTIFICATION = ROOT / "docs/data/exactification-progress.json"
+DEFAULT_EXACTIFICATION_FUNCTIONS = ROOT / "docs/data/exactification-functions.json"
 DEFAULT_BADGE = ROOT / "docs/assets/progress.svg"
 DEFAULT_OUTPUT = ROOT / "build/pages"
 
@@ -206,28 +206,57 @@ def read_priorities(path: Path, candidates: list[dict]) -> dict:
     return {"high": high}
 
 
-def read_exactification_progress(path: Path) -> dict:
-    """Load the sanitized current-pass count for the main exactification queue."""
+def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
+    """Load sanitized per-function exactification statuses and reconcile them to the map."""
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != 1:
-        raise ValueError("Exactification progress must use schemaVersion 1")
+        raise ValueError("Exactification functions must use schemaVersion 1")
     try:
         date.fromisoformat(data["snapshotDate"])
     except (KeyError, TypeError, ValueError) as error:
-        raise ValueError("Exactification progress snapshotDate must be YYYY-MM-DD") from error
+        raise ValueError("Exactification functions snapshotDate must be YYYY-MM-DD") from error
+    rows = data.get("functions")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("Exactification functions must contain a nonempty function list")
 
-    names = ("currentExactPasses", "pendingRevalidation", "totalFunctions")
-    counts: dict[str, int] = {}
-    for name in names:
-        value = data.get(name)
-        if type(value) is not int or value < 0:
-            raise ValueError(f"Exactification progress {name} must be a nonnegative integer")
-        counts[name] = value
-    if counts["totalFunctions"] <= 0:
-        raise ValueError("Exactification progress totalFunctions must be positive")
-    if counts["currentExactPasses"] + counts["pendingRevalidation"] != counts["totalFunctions"]:
-        raise ValueError("Exactification passes and pending rows must sum to totalFunctions")
-    return {**counts, "snapshotDate": data["snapshotDate"]}
+    candidate_by_name = {item["name"].lower(): item for item in candidates}
+    records: dict[str, dict] = {}
+    counts = {"current-exact": 0, "pending-revalidation": 0}
+    for index, item in enumerate(rows):
+        if not isinstance(item, dict) or set(item) != {"function", "address", "sizeBytes", "status"}:
+            raise ValueError(f"Exactification function {index} has unapproved or missing fields")
+        name, address, size, status = item["function"], item["address"], item["sizeBytes"], item["status"]
+        match = re.fullmatch(r"sub_([0-9a-fA-F]{8})", name) if isinstance(name, str) else None
+        if not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}":
+            raise ValueError(f"Exactification function {index} has an invalid ID/address pair")
+        key = name.lower()
+        if key in records:
+            raise ValueError(f"Exactification functions contain duplicate ID {name}")
+        if type(size) is not int or size <= 0:
+            raise ValueError(f"Exactification function {name} must have a positive integer sizeBytes")
+        if not isinstance(status, str) or status not in counts:
+            raise ValueError(f"Exactification function {name} has an unsupported status")
+        candidate = candidate_by_name.get(key)
+        if candidate is None:
+            raise ValueError(f"Exactification function {name} is absent from the candidate map")
+        if candidate["bytes"] != size:
+            raise ValueError(f"Exactification function {name} size does not match the candidate map")
+        safe = {"function": name, "address": address, "sizeBytes": size, "status": status}
+        records[key] = safe
+        counts[status] += 1
+
+    for candidate in candidates:
+        record = records.get(candidate["name"].lower())
+        if record:
+            candidate["exactificationStatus"] = record["status"]
+
+    return {
+        "currentExactPasses": counts["current-exact"],
+        "pendingRevalidation": counts["pending-revalidation"],
+        "totalFunctions": len(records),
+        "snapshotDate": data["snapshotDate"],
+        "functions": list(records.values()),
+    }
 
 
 def badge_svg(summary: dict) -> str:
@@ -256,7 +285,7 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT, help="validated objdiff report JSON")
     parser.add_argument("--priorities", type=Path, default=DEFAULT_PRIORITIES, help="maintainer-curated public candidate priorities")
     parser.add_argument("--validations", type=Path, default=DEFAULT_VALIDATIONS, help="maintainer-reviewed function build/diff index")
-    parser.add_argument("--exactification", type=Path, default=DEFAULT_EXACTIFICATION, help="sanitized current exactification queue counts")
+    parser.add_argument("--exactification-functions", type=Path, default=DEFAULT_EXACTIFICATION_FUNCTIONS, help="sanitized per-function exactification statuses")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="static site build directory")
     parser.add_argument("--badge", type=Path, default=DEFAULT_BADGE, help="README badge SVG path")
     parser.add_argument("--check-badge", action="store_true", help="fail if the committed badge is stale; do not change it")
@@ -266,7 +295,7 @@ def main() -> int:
         payload = read_report(args.report)
         payload["priorities"] = read_priorities(args.priorities, payload["candidates"])
         payload["validation"] = read_validation_index(args.validations, payload["candidates"])
-        payload["exactification"] = read_exactification_progress(args.exactification)
+        payload["exactification"] = read_exactification_functions(args.exactification_functions, payload["candidates"])
         validated_ids = set(payload["validation"]["validatedIds"])
         for candidate in payload["candidates"]:
             candidate["reconstructionValidated"] = candidate["name"] in validated_ids
