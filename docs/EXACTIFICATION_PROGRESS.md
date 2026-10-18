@@ -11,8 +11,10 @@ This is a status snapshot for the private exactification batch of 346 previously
 | Batch rows classified as nonexact | 0 |
 | **Total batch** | **346** |
 
-That is 307/346 (**88.73%**) revalidated, with 39/346 (**11.27%**) still pending. Two 4-byte DSound entries are currently undergoing validation and remain in the pending count until their evidence and trackers are reconciled.
+That is 307/346 (**88.73%**) revalidated, with 39/346 (**11.27%**) still pending fresh validation.
 
-“Exact pass” here means the function passed the project's current source-specific byte and objdiff checks and its status was reconciled into the queue. It does not establish whole-game completion, Xbox linking, runtime behavior, or visible gameplay. The 39 pending rows are historical exact records awaiting fresh revalidation; they are not counted as current passes.
+“Exact pass” here means the function passed the project's current source-specific byte and objdiff checks and its status was reconciled into the queue. An independent audit on 2026-10-17 checked all 307 current records: each points to a unique function address and validation record, each recorded compiled COFF `.text` section matches the original XBE span byte for byte, all 307 spans match, and none overlap. The recorded Xbox image and object hashes also matched.
 
-These queue figures do not change the decomp.dev/objdiff dashboard totals. That dashboard uses a different denominator and is refreshed only from its sanitized report and matching approval record. No source code, binaries, target bytes, or private evidence are included in this status snapshot.
+This confirms exact machine-code reproduction for those recorded spans. It does not prove that the readable semantic C reconstruction is equivalent: 290 of the 307 canonical C files currently emit the exact bytes directly, while 17 use a separate exact source. Xbox full linking, runtime behavior, and visible gameplay remain unverified. The 39 pending rows are historical exact records awaiting fresh revalidation; they are not counted as current passes.
+
+These queue figures do not change the public candidate dashboard, which reports 63 exact candidate matches / 811 bytes among 13,676 split candidates. It uses a separate sanitized objdiff snapshot and denominator; the 307 queue revalidations must not be added to that figure. No source code, binaries, target bytes, or private evidence are included in this status snapshot.
