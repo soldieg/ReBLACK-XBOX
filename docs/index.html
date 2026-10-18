@@ -51,6 +51,7 @@
     .legend { display:flex; flex-wrap:wrap; gap:16px; margin:12px 0; color:var(--muted); font-size:.9rem; }
     .legend span { display:inline-flex; align-items:center; gap:7px; }
     .swatch { width:13px; height:13px; border-radius:3px; display:inline-block; }
+    .swatch-queue { background:transparent; border:2px solid currentColor; box-sizing:border-box; }
     .candidate-detail { margin:14px 0; padding:16px; border:1px solid var(--line); border-radius:9px; background:var(--panel); }
     .candidate-detail[hidden] { display:none; }
     .candidate-detail h3 { margin:0 0 6px; }
@@ -151,6 +152,13 @@
           <option value="review" id="availability-review">Under review</option>
         </select>
       </label>
+      <label><span id="exactification-filter-label">Exactification progress</span>
+        <select id="exactification-filter" aria-label="Exactification progress">
+          <option value="all">All candidates</option>
+          <option value="current-exact">Current exact passes</option>
+          <option value="pending-revalidation">Awaiting revalidation</option>
+        </select>
+      </label>
       <span id="result-count" aria-live="polite">Loading candidates…</span>
     </div>
     <div class="legend" id="legend" aria-label="Treemap legend">
@@ -159,6 +167,8 @@
       <span><i class="swatch" style="background:var(--none)"></i><span id="legend-unmatched">No match recorded</span></span>
       <span><i class="swatch" style="background:#1671c5"></i><span id="legend-claimed">Claimed</span></span>
       <span><i class="swatch" style="background:#d63d45"></i><span id="legend-review">Review requested</span></span>
+      <span style="color:#16a085"><i class="swatch swatch-queue"></i><span id="legend-current-exact">Current exactification pass</span></span>
+      <span style="color:#9b59b6"><i class="swatch swatch-queue"></i><span id="legend-pending-revalidation">Awaiting revalidation</span></span>
     </div>
     <div class="chart-wrap" id="chart-wrap">
       <canvas id="chart" aria-label="Treemap of candidate code sizes; use the search and candidate list to navigate by keyboard"></canvas>
@@ -227,10 +237,24 @@
 <script>
 (() => {
   "use strict";
-  const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568", claimed:"#1671c5", review:"#d63d45"};
+  const colors = {exact:"#27835c", fuzzy:"#c98719", unmatched:"#465568", claimed:"#1671c5", review:"#d63d45", currentExact:"#16a085", pendingRevalidation:"#9b59b6"};
   const uiCopy = {
     en: {sizeZoom:"Zoom by size", allSizes:"All sizes", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4,096 bytes", large:"Over 4,096 bytes", availability:"Availability", available:"Available", claimed:"Claimed", review:"Review requested", exactState:"Exact byte match", fuzzyState:"Approximate match", unmatchedState:"No match recorded", availableState:"Available to claim", claimedState:"Claimed in an open function issue", reviewState:"Review requested; a maintainer must assess it. The existing byte-match record is unchanged.", claimAction:"Claim this function", openTask:"View active task", reviewAction:"Report a problem or suggest an improvement", viewReview:"View review issue", queueTitle:"Function work queue", queueIntro:"The maintainer-curated high-priority list appears first. Open function issues mark candidates as claimed. A review report stays red until a maintainer records a decision.", priorityQueue:"High-priority candidates", activeQueue:"Other active tasks", reviewQueue:"Under review", findQueue:"Find a function to work on", queuePlaceholder:"Search by candidate ID", queueEmpty:"No active issues in this group.", priorityEmpty:"No candidates are marked high priority yet.", queueNeedSearch:"Type an ID to find available candidates.", queueNoResults:"No matching candidates.", issueLoadError:"Could not load GitHub issue status. The map still shows byte-match data; task colors are unavailable.", sizeZoomHelp:"Size filters rescale the selected group to fill the map. They do not imply that one function contains another.", overlayHelp:"Green, amber, and gray show byte-match classification. Blue marks an open work issue; red marks a review awaiting a maintainer decision.", exactificationExact:"Exactification queue: current exact pass", exactificationPending:"Exactification queue: pending revalidation"},
     "pt-BR": {sizeZoom:"Ampliar por tamanho", allSizes:"Todos os tamanhos", tiny:"1–16 bytes", small:"17–256 bytes", medium:"257–4.096 bytes", large:"Mais de 4.096 bytes", availability:"Disponibilidade", available:"Disponíveis", claimed:"Assumidas", review:"Revisão solicitada", exactState:"Correspondência exata de bytes", fuzzyState:"Correspondência aproximada", unmatchedState:"Sem correspondência registrada", availableState:"Disponível para alguém assumir", claimedState:"Assumida em um Issue aberto de função", reviewState:"Revisão solicitada; uma pessoa mantenedora precisa analisar. O registro de bytes exatos continua inalterado.", claimAction:"Assumir esta função", openTask:"Ver tarefa ativa", reviewAction:"Apontar problema ou sugerir melhoria", viewReview:"Ver Issue de revisão", queueTitle:"Fila de funções", queueIntro:"A lista de alta prioridade escolhida pelos mantenedores aparece primeiro. Issues abertos de função marcam candidatas assumidas. Um apontamento continua vermelho até um mantenedor registrar a decisão.", priorityQueue:"Candidatas prioritárias", activeQueue:"Outras tarefas ativas", reviewQueue:"Em revisão", findQueue:"Encontre uma função para trabalhar", queuePlaceholder:"Buscar pelo ID da candidata", queueEmpty:"Não há Issues ativos neste grupo.", priorityEmpty:"Ainda não há candidatas marcadas como prioritárias.", queueNeedSearch:"Digite um ID para encontrar candidatas disponíveis.", queueNoResults:"Nenhuma candidata encontrada.", issueLoadError:"Não foi possível carregar o estado dos Issues do GitHub. O mapa ainda mostra a correspondência de bytes, mas as cores de tarefa estão indisponíveis.", sizeZoomHelp:"Os filtros redimensionam o grupo selecionado para preencher o mapa. Eles não indicam que uma função contém outra.", overlayHelp:"Verde, âmbar e cinza indicam a classificação por bytes. Azul marca uma tarefa aberta; vermelho marca uma revisão aguardando decisão de um mantenedor.", exactificationExact:"Fila de exatidificação: passe exato atual", exactificationPending:"Fila de exatidificação: aguardando revalidação"}
+  };
+  const exactificationMapCopy = {
+    en:{label:"Exactification progress",all:"All candidates",current:"Current exact passes",pending:"Awaiting revalidation",currentLegend:"Current exactification pass",pendingLegend:"Awaiting revalidation",help:"Teal and purple markers show exactification-queue status; use the filter to inspect those functions. They do not change the objdiff classification."},
+    "pt-BR":{label:"Progresso da exatidificação",all:"Todas as candidatas",current:"Passes exatos atuais",pending:"Aguardam revalidação",currentLegend:"Passe exato atual da fila",pendingLegend:"Aguardando revalidação",help:"As marcas verde-azuladas e roxas mostram o estado da fila de exatidificação. Use o filtro para ver essas funções; isso não altera a classificação do objdiff."},
+    es:{label:"Progreso de exactificación",all:"Todas las candidatas",current:"Pases exactos actuales",pending:"Esperan revalidación",currentLegend:"Pase exacto actual de la cola",pendingLegend:"En espera de revalidación",help:"Las marcas verde azulado y morado muestran el estado de la cola de exactificación. Usa el filtro para ver esas funciones; no cambia la clasificación de objdiff."},
+    ru:{label:"Ход точной проверки",all:"Все кандидаты",current:"Текущие точные проходы",pending:"Ожидают перепроверки",currentLegend:"Текущий точный проход",pendingLegend:"Ожидает перепроверки",help:"Бирюзовые и фиолетовые отметки показывают состояние очереди точной проверки. Используйте фильтр, чтобы просмотреть эти функции; классификация objdiff не меняется."},
+    fr:{label:"Avancement de la vérification exacte",all:"Tous les candidats",current:"Passages exacts actuels",pending:"En attente de revalidation",currentLegend:"Passage exact actuel",pendingLegend:"En attente de revalidation",help:"Les marqueurs turquoise et violets indiquent l’état de la file de vérification exacte. Utilisez le filtre pour afficher ces fonctions ; la classification objdiff reste inchangée."},
+    de:{label:"Fortschritt der Exaktprüfung",all:"Alle Kandidaten",current:"Aktuelle exakte Durchläufe",pending:"Warten auf erneute Prüfung",currentLegend:"Aktueller exakter Durchlauf",pendingLegend:"Wartet auf erneute Prüfung",help:"Türkise und violette Markierungen zeigen den Status der Exaktprüfungswarteschlange. Mit dem Filter lassen sich diese Funktionen anzeigen; die objdiff-Klassifizierung bleibt unverändert."},
+    it:{label:"Avanzamento della verifica esatta",all:"Tutte le candidate",current:"Passaggi esatti attuali",pending:"In attesa di nuova verifica",currentLegend:"Passaggio esatto attuale",pendingLegend:"In attesa di nuova verifica",help:"Gli indicatori verde acqua e viola mostrano lo stato della coda di verifica esatta. Usa il filtro per visualizzare queste funzioni; la classificazione objdiff non cambia."},
+    ja:{label:"正確一致の進捗",all:"すべての候補",current:"現在の正確一致",pending:"再検証待ち",currentLegend:"現在の正確一致パス",pendingLegend:"再検証待ち",help:"青緑と紫の印は正確一致キューの状態を示します。フィルターで該当関数を表示できます。objdiffの分類は変更されません。"},
+    ko:{label:"정확성 확인 진행",all:"모든 후보",current:"현재 정확 통과",pending:"재검증 대기",currentLegend:"현재 정확 통과",pendingLegend:"재검증 대기",help:"청록색과 보라색 표시는 정확성 확인 대기열 상태입니다. 필터로 해당 함수를 볼 수 있으며 objdiff 분류는 바뀌지 않습니다."},
+    "zh-CN":{label:"精确验证进度",all:"所有候选项",current:"当前精确通过",pending:"等待重新验证",currentLegend:"当前精确通过项",pendingLegend:"等待重新验证",help:"青绿色和紫色标记显示精确验证队列状态。使用筛选器查看这些函数；objdiff 分类不会改变。"},
+    ar:{label:"تقدم التحقق الدقيق",all:"كل المرشحين",current:"عمليات اجتياز دقيقة حالية",pending:"بانتظار إعادة التحقق",currentLegend:"اجتياز دقيق حالي",pendingLegend:"بانتظار إعادة التحقق",help:"تشير العلامات الفيروزية والبنفسجية إلى حالة قائمة التحقق الدقيق. استخدم عامل التصفية لعرض هذه الدوال؛ ولا يتغير تصنيف objdiff."},
+    tr:{label:"Kesinleştirme ilerlemesi",all:"Tüm adaylar",current:"Güncel tam eşleşmeler",pending:"Yeniden doğrulama bekliyor",currentLegend:"Güncel kesinleştirme geçişi",pendingLegend:"Yeniden doğrulama bekliyor",help:"Turkuaz ve mor işaretler kesinleştirme kuyruğunun durumunu gösterir. Bu işlevleri görmek için filtreyi kullanın; objdiff sınıflandırması değişmez."}
   };
   const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
   const regionCopy = {
@@ -341,6 +365,7 @@
   const sizeZoom = document.getElementById("size-zoom");
   const regionZoom = document.getElementById("region-zoom");
   const availability = document.getElementById("availability");
+  const exactificationFilter = document.getElementById("exactification-filter");
   let all = [], visible = [], rectangles = [], selected = null, issueStates = new Map(), issueStatusLoaded = false, issueStatusError = false;
   const languageToggle = document.getElementById("language-toggle");
   const languageMenu = document.getElementById("language-menu");
@@ -427,6 +452,15 @@
     const labels = {"size-zoom-label":"sizeZoom","size-all":"allSizes","size-tiny":"tiny","size-small":"small","size-medium":"medium","size-large":"large","availability-label":"availability","availability-free":"available","availability-claimed":"claimed","availability-review":"review","legend-claimed":"claimed","legend-review":"review","queue-title":"queueTitle","queue-intro":"queueIntro","queue-search-label":"findQueue"};
     for (const [id,key] of Object.entries(labels)) document.getElementById(id).textContent=ui(key);
     document.getElementById("availability-all").textContent=msg("allCandidates");
+    const queueCopy=exactificationMapCopy[language] || exactificationMapCopy.en;
+    document.getElementById("exactification-filter-label").textContent=queueCopy.label;
+    exactificationFilter.setAttribute("aria-label",queueCopy.label);
+    const queue=report?.exactification;
+    exactificationFilter.querySelector('[value="all"]').textContent=queueCopy.all;
+    exactificationFilter.querySelector('[value="current-exact"]').textContent=`${queueCopy.current}${queue ? ` (${fmt.format(queue.currentExactPasses)})` : ""}`;
+    exactificationFilter.querySelector('[value="pending-revalidation"]').textContent=`${queueCopy.pending}${queue ? ` (${fmt.format(queue.pendingRevalidation)})` : ""}`;
+    document.getElementById("legend-current-exact").textContent=queueCopy.currentLegend;
+    document.getElementById("legend-pending-revalidation").textContent=queueCopy.pendingLegend;
     document.getElementById("region-zoom-label").textContent=regionCopy[language].label;
     document.getElementById("region-all").textContent=regionCopy[language].all;
     document.getElementById("region-help").textContent=regionCopy[language].help;
@@ -435,7 +469,7 @@
     availability.setAttribute("aria-label",ui("availability"));
     document.getElementById("queue-query").placeholder=ui("queuePlaceholder");
     document.getElementById("size-zoom-label").title=ui("sizeZoomHelp");
-    document.getElementById("map-description").textContent=`${msg("mapDescription")} ${ui("overlayHelp")}`;
+    document.getElementById("map-description").textContent=`${msg("mapDescription")} ${ui("overlayHelp")} ${queueCopy.help}`;
   }
   function applyLanguage(code) {
     language = code;
@@ -617,7 +651,9 @@
       region, name:region, members,
       bytes:members.reduce((total,item)=>total+item.bytes,0),
       category:members.some(item=>item.category==="fuzzy") ? "fuzzy" : members.some(item=>item.category==="unmatched") ? "unmatched" : "exact",
-      state:members.some(item=>candidateState(item)==="review") ? "review" : members.some(item=>candidateState(item)==="claimed") ? "claimed" : "available"
+      state:members.some(item=>candidateState(item)==="review") ? "review" : members.some(item=>candidateState(item)==="claimed") ? "claimed" : "available",
+      currentExactCount:members.filter(item=>item.exactificationStatus==="current-exact").length,
+      pendingRevalidationCount:members.filter(item=>item.exactificationStatus==="pending-revalidation").length
     })).sort((a,b)=>a.region.localeCompare(b.region));
   }
   function candidateIssueIds(issue) {
@@ -671,7 +707,7 @@
   }
   function selectCandidate(item) {
     showView("progress");
-    query.value=item.name; classification.value="all"; sizeZoom.value="all"; regionZoom.value=item.addressRegion || "Unknown"; availability.value="all";
+    query.value=item.name; classification.value="all"; sizeZoom.value="all"; regionZoom.value=item.addressRegion || "Unknown"; availability.value="all"; exactificationFilter.value="all";
     updateFilter(); selected=item; resizeAndDraw(); renderCandidateDetails(item);
     document.getElementById("candidate-detail").scrollIntoView({behavior:"smooth",block:"nearest"});
   }
@@ -756,11 +792,30 @@
     ctx.clearRect(0,0,box.width,box.height);
     for (const rect of rectangles) {
       const state = rect.item.members ? rect.item.state : candidateState(rect.item);
-      ctx.fillStyle = state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
+      const queueMode=exactificationFilter.value!=="all";
+      const queueStatus=rect.item.members
+        ? (rect.item.currentExactCount ? "current-exact" : rect.item.pendingRevalidationCount ? "pending-revalidation" : "")
+        : rect.item.exactificationStatus;
+      const queueColor=queueStatus==="current-exact" ? colors.currentExact : queueStatus==="pending-revalidation" ? colors.pendingRevalidation : null;
+      ctx.fillStyle = queueMode ? (queueColor || colors.unmatched) : state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
       ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
       if (rect.w > 5 && rect.h > 5) {
         ctx.strokeStyle = "#10151d"; ctx.lineWidth = .65;
         ctx.strokeRect(rect.x+.3,rect.y+.3,rect.w-.6,rect.h-.6);
+      }
+      if (!queueMode && rect.item.members && rect.w>6 && rect.h>5) {
+        const total=rect.item.currentExactCount+rect.item.pendingRevalidationCount;
+        if (total) {
+          const barY=rect.y+1, barHeight=Math.min(4,Math.max(2,rect.h*.035));
+          const currentWidth=rect.w*rect.item.currentExactCount/total;
+          ctx.fillStyle=colors.currentExact; ctx.fillRect(rect.x,barY,currentWidth,barHeight);
+          if (rect.item.pendingRevalidationCount) {
+            ctx.fillStyle=colors.pendingRevalidation; ctx.fillRect(rect.x+currentWidth,barY,rect.w-currentWidth,barHeight);
+          }
+        }
+      } else if (!queueMode && !rect.item.members && queueColor && rect.w>3 && rect.h>3) {
+        ctx.strokeStyle=queueColor; ctx.lineWidth=Math.min(2,Math.max(1,Math.min(rect.w,rect.h)*.12));
+        ctx.strokeRect(rect.x+ctx.lineWidth/2,rect.y+ctx.lineWidth/2,Math.max(0,rect.w-ctx.lineWidth),Math.max(0,rect.h-ctx.lineWidth));
       }
       if (selected === rect.item) {
         ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3;
@@ -772,9 +827,11 @@
     if (item.members) {
       const detail=document.createElement("span"), title=document.createElement("strong");
       const template=regionCopy[language].tip;
+      const queueCopy=exactificationMapCopy[language] || exactificationMapCopy.en;
       tooltip.replaceChildren();
       title.textContent=`${item.region} · ${fmt.format(item.members.length)} ${msg("candidatesMetric")}`;
-      detail.textContent=template.replace("{region}",item.region).replace("{count}",fmt.format(item.members.length)).replace("{bytes}",fmt.format(item.bytes));
+      const queueStats=[item.currentExactCount&&`${queueCopy.current}: ${fmt.format(item.currentExactCount)}`,item.pendingRevalidationCount&&`${queueCopy.pending}: ${fmt.format(item.pendingRevalidationCount)}`].filter(Boolean).join(" · ");
+      detail.textContent=`${template.replace("{region}",item.region).replace("{count}",fmt.format(item.members.length)).replace("{bytes}",fmt.format(item.bytes))}${queueStats ? ` · ${queueStats}` : ""}`;
       tooltip.append(title,detail);
       return;
     }
@@ -814,16 +871,17 @@
     }
   }
   function updateFilter() {
-    const q=query.value.trim().toLowerCase(), category=classification.value, range=sizeZoom.value, status=availability.value;
+    const q=query.value.trim().toLowerCase(), category=classification.value, range=sizeZoom.value, status=availability.value, queueStatus=exactificationFilter.value;
     const inRange=item=>range==="all" || (range==="tiny" && item.bytes<=16) || (range==="small" && item.bytes>=17 && item.bytes<=256) || (range==="medium" && item.bytes>=257 && item.bytes<=4096) || (range==="large" && item.bytes>4096);
     visible=all.filter(item => {
       const state=candidateState(item);
       const inRegion=regionZoom.value==="all" || item.addressRegion===regionZoom.value;
-      return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && inRegion && (status==="all" || (status==="available" && state==="available") || state===status);
+      const inQueue=queueStatus==="all" || item.exactificationStatus===queueStatus;
+      return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && inRegion && inQueue && (status==="all" || (status==="available" && state==="available") || state===status);
     });
     selected=null; tooltip.style.display="none";
     document.getElementById("candidate-detail").hidden=true;
-    drawList(visible,q.length>0 || category!=="all" || range!=="all" || regionZoom.value!=="all" || status!=="all"); resizeAndDraw();
+    drawList(visible,q.length>0 || category!=="all" || range!=="all" || regionZoom.value!=="all" || status!=="all" || queueStatus!=="all"); resizeAndDraw();
   }
   canvas.addEventListener("pointermove",event=>{
     const box=canvas.getBoundingClientRect(), x=event.clientX-box.left, y=event.clientY-box.top;
@@ -840,6 +898,7 @@
   });
   query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
   sizeZoom.addEventListener("change",updateFilter); regionZoom.addEventListener("change",updateFilter); availability.addEventListener("change",updateFilter);
+  exactificationFilter.addEventListener("change",updateFilter);
   document.getElementById("queue-query").addEventListener("input",renderAvailableCandidates);
   window.addEventListener("resize",resizeAndDraw);
 
