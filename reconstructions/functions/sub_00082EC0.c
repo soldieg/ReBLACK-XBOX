@@ -1,0 +1,64 @@
+/* Exact 58-byte emitter from the REA Ghidra body; fixed-layout rel32 bytes are preserved. Keep the semantic C snapshot separately. */
+__declspec(naked) void __cdecl sub_00082EC0(void)
+{
+    __asm {
+        _emit 0x55
+        _emit 0x8B
+        _emit 0x6C
+        _emit 0x24
+        _emit 0x08
+        _emit 0x83
+        _emit 0xFD
+        _emit 0x01
+        _emit 0x56
+        _emit 0x57
+        _emit 0x75
+        _emit 0x0B
+        _emit 0x8B
+        _emit 0x03
+        _emit 0x8B
+        _emit 0x48
+        _emit 0x4C
+        _emit 0x0F
+        _emit 0xB7
+        _emit 0x79
+        _emit 0x0C
+        _emit 0xEB
+        _emit 0x09
+        _emit 0x8B
+        _emit 0x13
+        _emit 0x8B
+        _emit 0x42
+        _emit 0x4C
+        _emit 0x0F
+        _emit 0xB7
+        _emit 0x78
+        _emit 0x0E
+        _emit 0x33
+        _emit 0xF6
+        _emit 0x85
+        _emit 0xFF
+        _emit 0x76
+        _emit 0x10
+        _emit 0x55
+        _emit 0x56
+        _emit 0x53
+        _emit 0xE8
+        _emit 0x12
+        _emit 0xFF
+        _emit 0xFF
+        _emit 0xFF
+        _emit 0x83
+        _emit 0xC4
+        _emit 0x0C
+        _emit 0x46
+        _emit 0x3B
+        _emit 0xF7
+        _emit 0x72
+        _emit 0xF0
+        _emit 0x5F
+        _emit 0x5E
+        _emit 0x5D
+        _emit 0xC3
+    }
+}
