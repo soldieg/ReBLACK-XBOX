@@ -2078,5 +2078,37 @@
       "sizeBytes": 3,
       "status": "current-exact"
     }
+  ],
+  "additionalExactFunctions": [
+    {
+      "function": "sub_00026FD2",
+      "address": "0x00026FD2",
+      "sizeBytes": 23,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_000A37E0",
+      "address": "0x000A37E0",
+      "sizeBytes": 9,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_000A39F1",
+      "address": "0x000A39F1",
+      "sizeBytes": 9,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_000A7299",
+      "address": "0x000A7299",
+      "sizeBytes": 18,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_000A734B",
+      "address": "0x000A734B",
+      "sizeBytes": 46,
+      "status": "current-exact"
+    }
   ]
 }
