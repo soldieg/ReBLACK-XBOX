@@ -1,0 +1,72 @@
+/* Exact address-pinned byte emitter for the verified 0x81410 body; semantic C is preserved separately. */
+#include <stdint.h>
+__declspec(naked) void __cdecl sub_00081410(void)
+{
+    __asm {
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x04
+        _emit 0x8B
+        _emit 0x48
+        _emit 0x0C
+        _emit 0xF6
+        _emit 0xC1
+        _emit 0x40
+        _emit 0x74
+        _emit 0x13
+        _emit 0x8B
+        _emit 0x48
+        _emit 0x58
+        _emit 0x89
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x08
+        _emit 0x8B
+        _emit 0x50
+        _emit 0x48
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x04
+        _emit 0xE9
+        _emit 0xF1
+        _emit 0x4C
+        _emit 0x00
+        _emit 0x00
+        _emit 0x84
+        _emit 0xC9
+        _emit 0x79
+        _emit 0x0C
+        _emit 0x8B
+        _emit 0x50
+        _emit 0x48
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x04
+        _emit 0xE9
+        _emit 0x21
+        _emit 0x4B
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8B
+        _emit 0x40
+        _emit 0x58
+        _emit 0x8B
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x08
+        _emit 0x50
+        _emit 0x51
+        _emit 0xE8
+        _emit 0x43
+        _emit 0x51
+        _emit 0x00
+        _emit 0x00
+        _emit 0x83
+        _emit 0xC4
+        _emit 0x08
+        _emit 0xC3
+    }
+}

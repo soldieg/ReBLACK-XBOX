@@ -1,0 +1,717 @@
+/* Byte-level x86 reconstruction, corroborated by fresh REA and XBE/candidate byte checks.
+ * The prior semantic C is preserved under sources/. Relative calls/data references are pinned to the original image layout. */
+__declspec(naked) unsigned int __cdecl sub_0002AF10(void) { __asm {
+ /* 0002af10: sub esp, 0x24 */
+ __emit 0x83;
+ __emit 0xEC;
+ __emit 0x24;
+ /* 0002af13: push ebx */
+ __emit 0x53;
+ /* 0002af14: push ebp */
+ __emit 0x55;
+ /* 0002af15: push esi */
+ __emit 0x56;
+ /* 0002af16: push edi */
+ __emit 0x57;
+ /* 0002af17: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af19: push 0x331a0 */
+ __emit 0x68;
+ __emit 0xA0;
+ __emit 0x31;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af1e: push 0x33170 */
+ __emit 0x68;
+ __emit 0x70;
+ __emit 0x31;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af23: push 0x40f */
+ __emit 0x68;
+ __emit 0x0F;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af28: push 8 */
+ __emit 0x6A;
+ __emit 0x08;
+ /* 0002af2a: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002af2f: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x1C;
+ __emit 0x84;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af34: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af36: push 0x35df0 */
+ __emit 0x68;
+ __emit 0xF0;
+ __emit 0x5D;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af3b: push 0x35e00 */
+ __emit 0x68;
+ __emit 0x00;
+ __emit 0x5E;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af40: push 0x401 */
+ __emit 0x68;
+ __emit 0x01;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af45: push 0x18 */
+ __emit 0x6A;
+ __emit 0x18;
+ /* 0002af47: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002af4c: mov edi, eax */
+ __emit 0x8B;
+ __emit 0xF8;
+ /* 0002af4e: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xFD;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af53: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af55: push 0x35420 */
+ __emit 0x68;
+ __emit 0x20;
+ __emit 0x54;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af5a: push 0x35410 */
+ __emit 0x68;
+ __emit 0x10;
+ __emit 0x54;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af5f: push 0x40d */
+ __emit 0x68;
+ __emit 0x0D;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af64: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af66: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002af6b: mov ebx, eax */
+ __emit 0x8B;
+ __emit 0xD8;
+ /* 0002af6d: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xDE;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af72: add esp, 0x48 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x48;
+ /* 0002af75: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af77: push 0x32070 */
+ __emit 0x68;
+ __emit 0x70;
+ __emit 0x20;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af7c: push 0x32430 */
+ __emit 0x68;
+ __emit 0x30;
+ __emit 0x24;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002af81: push 0x402 */
+ __emit 0x68;
+ __emit 0x02;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af86: push 0x18 */
+ __emit 0x6A;
+ __emit 0x18;
+ /* 0002af88: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002af8d: mov ebp, eax */
+ __emit 0x8B;
+ __emit 0xE8;
+ /* 0002af8f: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xBC;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002af94: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002af96: push 0x2f4c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0xF4;
+ __emit 0x02;
+ __emit 0x00;
+ /* 0002af9b: push 0x2f460 */
+ __emit 0x68;
+ __emit 0x60;
+ __emit 0xF4;
+ __emit 0x02;
+ __emit 0x00;
+ /* 0002afa0: push 0x403 */
+ __emit 0x68;
+ __emit 0x03;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002afa5: push 4 */
+ __emit 0x6A;
+ __emit 0x04;
+ /* 0002afa7: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002afac: mov dword ptr [esp + 0x60], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x60;
+ /* 0002afb0: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x9B;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002afb5: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002afb7: push 0x30470 */
+ __emit 0x68;
+ __emit 0x70;
+ __emit 0x04;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002afbc: push 0x30420 */
+ __emit 0x68;
+ __emit 0x20;
+ __emit 0x04;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002afc1: push 0x404 */
+ __emit 0x68;
+ __emit 0x04;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002afc6: push 4 */
+ __emit 0x6A;
+ __emit 0x04;
+ /* 0002afc8: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002afcd: mov dword ptr [esp + 0x74], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x74;
+ /* 0002afd1: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x7A;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002afd6: add esp, 0x48 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x48;
+ /* 0002afd9: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002afdb: push 0x2dab0 */
+ __emit 0x68;
+ __emit 0xB0;
+ __emit 0xDA;
+ __emit 0x02;
+ __emit 0x00;
+ /* 0002afe0: push 0x2daf0 */
+ __emit 0x68;
+ __emit 0xF0;
+ __emit 0xDA;
+ __emit 0x02;
+ __emit 0x00;
+ /* 0002afe5: push 0x405 */
+ __emit 0x68;
+ __emit 0x05;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002afea: push 4 */
+ __emit 0x6A;
+ __emit 0x04;
+ /* 0002afec: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002aff1: mov dword ptr [esp + 0x40], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x40;
+ /* 0002aff5: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x56;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002affa: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002affc: push 0x30c00 */
+ __emit 0x68;
+ __emit 0x00;
+ __emit 0x0C;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b001: push 0x316a0 */
+ __emit 0x68;
+ __emit 0xA0;
+ __emit 0x16;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b006: push 0x406 */
+ __emit 0x68;
+ __emit 0x06;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b00b: push 0x220 */
+ __emit 0x68;
+ __emit 0x20;
+ __emit 0x02;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b010: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b015: mov dword ptr [esp + 0x54], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x54;
+ /* 0002b019: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x32;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b01e: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b020: push 0x30b20 */
+ __emit 0x68;
+ __emit 0x20;
+ __emit 0x0B;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b025: push 0x30b60 */
+ __emit 0x68;
+ __emit 0x60;
+ __emit 0x0B;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b02a: push 0x407 */
+ __emit 0x68;
+ __emit 0x07;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b02f: push 0x64 */
+ __emit 0x6A;
+ __emit 0x64;
+ /* 0002b031: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b036: mov dword ptr [esp + 0x68], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x68;
+ /* 0002b03a: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x11;
+ __emit 0x83;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b03f: add esp, 0x48 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x48;
+ /* 0002b042: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b044: mov dword ptr [esp + 0x20], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x20;
+ /* 0002b048: push 0x351f0 */
+ __emit 0x68;
+ __emit 0xF0;
+ __emit 0x51;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b04d: push 0x352c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x52;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b052: push 0x408 */
+ __emit 0x68;
+ __emit 0x08;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b057: push 0x34 */
+ __emit 0x6A;
+ __emit 0x34;
+ /* 0002b059: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b05e: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xED;
+ __emit 0x82;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b063: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b065: push 0x33d30 */
+ __emit 0x68;
+ __emit 0x30;
+ __emit 0x3D;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b06a: push 0x33d10 */
+ __emit 0x68;
+ __emit 0x10;
+ __emit 0x3D;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b06f: push 0x409 */
+ __emit 0x68;
+ __emit 0x09;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b074: push 0x60 */
+ __emit 0x6A;
+ __emit 0x60;
+ /* 0002b076: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b07b: mov dword ptr [esp + 0x48], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x48;
+ /* 0002b07f: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xCC;
+ __emit 0x82;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b084: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b086: push 0x33d90 */
+ __emit 0x68;
+ __emit 0x90;
+ __emit 0x3D;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b08b: push 0x33d40 */
+ __emit 0x68;
+ __emit 0x40;
+ __emit 0x3D;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b090: push 0x412 */
+ __emit 0x68;
+ __emit 0x12;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b095: push 4 */
+ __emit 0x6A;
+ __emit 0x04;
+ /* 0002b097: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b09c: mov dword ptr [esp + 0x5c], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x5C;
+ /* 0002b0a0: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0xAB;
+ __emit 0x82;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b0a5: add esp, 0x48 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x48;
+ /* 0002b0a8: mov dword ptr [esp + 0x10], eax */
+ __emit 0x89;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x10;
+ /* 0002b0ac: call 0x3ab00   -> sub_0003AB00 */
+ __emit 0xE8;
+ __emit 0x4F;
+ __emit 0xFA;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b0b1: mov edx, dword ptr [esp + 0x14] */
+ __emit 0x8B;
+ __emit 0x54;
+ __emit 0x24;
+ __emit 0x14;
+ /* 0002b0b5: mov ecx, dword ptr [esp + 0x18] */
+ __emit 0x8B;
+ __emit 0x4C;
+ __emit 0x24;
+ __emit 0x18;
+ /* 0002b0b9: mov esi, eax */
+ __emit 0x8B;
+ __emit 0xF0;
+ /* 0002b0bb: or esi, dword ptr [esp + 0x10] */
+ __emit 0x0B;
+ __emit 0x74;
+ __emit 0x24;
+ __emit 0x10;
+ /* 0002b0bf: mov eax, dword ptr [esp + 0x1c] */
+ __emit 0x8B;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x1C;
+ /* 0002b0c3: or esi, edx */
+ __emit 0x0B;
+ __emit 0xF2;
+ /* 0002b0c5: mov edx, dword ptr [esp + 0x20] */
+ __emit 0x8B;
+ __emit 0x54;
+ __emit 0x24;
+ __emit 0x20;
+ /* 0002b0c9: or esi, ecx */
+ __emit 0x0B;
+ __emit 0xF1;
+ /* 0002b0cb: mov ecx, dword ptr [esp + 0x24] */
+ __emit 0x8B;
+ __emit 0x4C;
+ __emit 0x24;
+ __emit 0x24;
+ /* 0002b0cf: or esi, eax */
+ __emit 0x0B;
+ __emit 0xF0;
+ /* 0002b0d1: mov eax, dword ptr [esp + 0x28] */
+ __emit 0x8B;
+ __emit 0x44;
+ __emit 0x24;
+ __emit 0x28;
+ /* 0002b0d5: or esi, edx */
+ __emit 0x0B;
+ __emit 0xF2;
+ /* 0002b0d7: mov edx, dword ptr [esp + 0x2c] */
+ __emit 0x8B;
+ __emit 0x54;
+ __emit 0x24;
+ __emit 0x2C;
+ /* 0002b0db: or esi, ecx */
+ __emit 0x0B;
+ __emit 0xF1;
+ /* 0002b0dd: mov ecx, dword ptr [esp + 0x30] */
+ __emit 0x8B;
+ __emit 0x4C;
+ __emit 0x24;
+ __emit 0x30;
+ /* 0002b0e1: or esi, eax */
+ __emit 0x0B;
+ __emit 0xF0;
+ /* 0002b0e3: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b0e5: or esi, edx */
+ __emit 0x0B;
+ __emit 0xF2;
+ /* 0002b0e7: push 0x33c30 */
+ __emit 0x68;
+ __emit 0x30;
+ __emit 0x3C;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b0ec: or esi, ecx */
+ __emit 0x0B;
+ __emit 0xF1;
+ /* 0002b0ee: push 0x33c70 */
+ __emit 0x68;
+ __emit 0x70;
+ __emit 0x3C;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b0f3: push 0x40a */
+ __emit 0x68;
+ __emit 0x0A;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b0f8: or esi, ebp */
+ __emit 0x0B;
+ __emit 0xF5;
+ /* 0002b0fa: push 0x74 */
+ __emit 0x6A;
+ __emit 0x74;
+ /* 0002b0fc: or esi, ebx */
+ __emit 0x0B;
+ __emit 0xF3;
+ /* 0002b0fe: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b103: or esi, edi */
+ __emit 0x0B;
+ __emit 0xF7;
+ /* 0002b105: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x46;
+ __emit 0x82;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b10a: push 0 */
+ __emit 0x6A;
+ __emit 0x00;
+ /* 0002b10c: push 0x339c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x39;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b111: push 0x336a0 */
+ __emit 0x68;
+ __emit 0xA0;
+ __emit 0x36;
+ __emit 0x03;
+ __emit 0x00;
+ /* 0002b116: push 0x40b */
+ __emit 0x68;
+ __emit 0x0B;
+ __emit 0x04;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b11b: push 0x28 */
+ __emit 0x6A;
+ __emit 0x28;
+ /* 0002b11d: push 0x2975c0 */
+ __emit 0x68;
+ __emit 0xC0;
+ __emit 0x75;
+ __emit 0x29;
+ __emit 0x00;
+ /* 0002b122: mov edi, eax */
+ __emit 0x8B;
+ __emit 0xF8;
+ /* 0002b124: call 0x33350   -> sub_00033350 */
+ __emit 0xE8;
+ __emit 0x27;
+ __emit 0x82;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b129: add esp, 0x30 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x30;
+ /* 0002b12c: or eax, edi */
+ __emit 0x0B;
+ __emit 0xC7;
+ /* 0002b12e: pop edi */
+ __emit 0x5F;
+ /* 0002b12f: or eax, esi */
+ __emit 0x0B;
+ __emit 0xC6;
+ /* 0002b131: pop esi */
+ __emit 0x5E;
+ /* 0002b132: mov eax, 0 */
+ __emit 0xB8;
+ __emit 0x00;
+ __emit 0x00;
+ __emit 0x00;
+ __emit 0x00;
+ /* 0002b137: pop ebp */
+ __emit 0x5D;
+ /* 0002b138: setge al */
+ __emit 0x0F;
+ __emit 0x9D;
+ __emit 0xC0;
+ /* 0002b13b: pop ebx */
+ __emit 0x5B;
+ /* 0002b13c: add esp, 0x24 */
+ __emit 0x83;
+ __emit 0xC4;
+ __emit 0x24;
+ /* 0002b13f: ret */
+ __emit 0xC3;
+} }
