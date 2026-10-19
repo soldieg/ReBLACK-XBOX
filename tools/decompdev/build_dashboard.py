@@ -218,6 +218,9 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
     rows = data.get("functions")
     if not isinstance(rows, list) or not rows:
         raise ValueError("Exactification functions must contain a nonempty function list")
+    additional_rows = data.get("additionalExactFunctions", [])
+    if not isinstance(additional_rows, list):
+        raise ValueError("Additional exact functions must be a list")
 
     candidate_by_name = {item["name"].lower(): item for item in candidates}
     records: dict[str, dict] = {}
@@ -245,6 +248,25 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
         records[key] = safe
         counts[status] += 1
 
+    additional_names: set[str] = set()
+    for index, item in enumerate(additional_rows):
+        if not isinstance(item, dict) or set(item) != {"function", "address", "sizeBytes", "status"}:
+            raise ValueError(f"Additional exact function {index} has unapproved or missing fields")
+        name, address, size, status = item["function"], item["address"], item["sizeBytes"], item["status"]
+        match = re.fullmatch(r"sub_([0-9a-fA-F]{8})", name) if isinstance(name, str) else None
+        if not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}":
+            raise ValueError(f"Additional exact function {index} has an invalid ID/address pair")
+        key = name.lower()
+        if key in records or key in additional_names:
+            raise ValueError(f"Additional exact functions contain duplicate ID {name}")
+        if type(size) is not int or size <= 0 or status != "current-exact":
+            raise ValueError(f"Additional exact function {name} must have a positive size and current-exact status")
+        candidate = candidate_by_name.get(key)
+        if candidate is None or candidate["bytes"] != size:
+            raise ValueError(f"Additional exact function {name} does not match a candidate ID and size")
+        records[key] = {"function": name, "address": address, "sizeBytes": size, "status": status}
+        additional_names.add(key)
+
     for candidate in candidates:
         record = records.get(candidate["name"].lower())
         if record:
@@ -259,7 +281,8 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
     return {
         "currentExactPasses": counts["current-exact"],
         "pendingRevalidation": counts["pending-revalidation"],
-        "totalFunctions": len(records),
+        "totalFunctions": len(rows),
+        "additionalExactPasses": len(additional_names),
         "snapshotDate": data["snapshotDate"],
         "functions": list(records.values()),
     }
