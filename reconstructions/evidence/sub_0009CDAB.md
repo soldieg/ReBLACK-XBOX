@@ -1,17 +1,19 @@
-# sub_0009CDAB — exact-byte reconstruction evidence
+# `sub_0009CDAB`
 
-- **Target range:** `0x0009CDAB–0x0009CDAE` (inclusive), 4 bytes.
-- **Submitted source SHA-256:** `E0518D9BEB4F5E8D3DAAD06F851AD417BA7A29EC51C398E33F94945A4FAD6FD3`.
-- **Reconstruction form:** address-pinned x86 byte emitter. The source is intended to reproduce this function body exactly; it is not a claim of semantic C equivalence.
-- **Static byte review:** PASS — recorded REA/body evidence; compiled bytes equal the XBE, mapped XboxRecomp reference object, and split span; ObjDiff 3.8.2 reports 100%.
-- **Isolated compile:** PASS — MSVC 19.51.36260 x86; options: `/TC /c /O2 /GS- /Zl /Gd /Gy`.
-- **Xbox full link/runtime:** not run.
-- **Review tracking:** Related GitHub Issue: [#14](https://github.com/soldieg/ReBLACK-XBOX/issues/14). This batch is published on branch `codex/exact-functions-batch-20261018`; maintainers should review function boundaries and evidence before updating the validation index.
+- Function range: `0x0009CDAB–0x0009CDAE` (4 bytes).
+- Public source SHA-256: `E0518D9BEB4F5E8D3DAAD06F851AD417BA7A29EC51C398E33F94945A4FAD6FD3`.
+- Target XBE SHA-256: `DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6`.
+- Derived PE SHA-256: `AABDEBF414D216E67161DF9DDF1DAC5FD915EBB59BD2B26AE42E062C245682BD`.
+- Split reference SHA-256: `C61015D7A4DB7C0420A1ACD6A88BB96CE2CAEC7DB6A6C8A5648869EF550BAF9A`.
+- Toolchain: MSVC 19.51.36260 x86; options: `/TC, /c, /O2, /GS-, /Zl, /Gd, /Gy`.
+- ObjDiff: `3.8.2`; function match `100%`.
+- Recorded byte checks: compiled body, target object, XBE, and split reference are equal (100% exact-byte result).
+- Static review: `PASS`.
+- REA evidence references: ev_d4da75ae7b7a8e824c764bea9438230b6654496fcce13c783a7dbab266e486cd, ev_39b5dec2d8d2e5701251397f7037839f62cc0c85057c26a68013f0220cda21fb, ev_72e6680bb026b739ade27b1d0d4b0438e0cd6bfd7dd95b9538ca63d29dbfc085, ev_612f4eecaa5645648a8be8b33d97a93c7bcda6777a84ffd7b08ff472f9a08086.
 
-## Reproducible evidence
+## Validation scope
 
-The local validation record identifies the source, range, compiler options, and byte-comparison result. The public reconstruction contains only the C source and this sanitized summary; it omits game binaries, target byte dumps, and local machine paths. The exact-byte result does not establish Xbox integration or runtime behavior.
-
-## Static review basis
-
-Fresh REA confirms LEA EAX,[ECX+0x30]; RET, four-byte body, one caller. Canonical source agrees with the XboxRecomp candidate and all raw/derived byte sources.
+This record is for the function body bytes produced by the listed source and toolchain. It does not establish source-level semantic equivalence, a full Xbox link, or runtime behavior.
+- Xbox full link: `NOT_RUN`.
+- Runtime: `NOT_RUN`.
+- Source form: Exact-byte source; source-level semantic equivalence is not inferred..
