@@ -1,5 +1,5 @@
 /* Address-pinned x86 body backed by fresh REA and XBE/candidate byte checks.
- * Original semantic C is preserved in sources/sub_0007DE60-semantic-original.c. */
+ * Original semantic C is preserved separately. */
 __declspec(naked) unsigned int __cdecl sub_0007DE60(void) { __asm {
  /* 0007de60: mov eax, dword ptr [esp + 4] */
  __emit 0x8B;
