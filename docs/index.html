@@ -71,9 +71,10 @@
     .tiles { margin-top:18px; }
     .tiles summary { cursor:pointer; color:var(--accent); }
     .tile-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:6px; padding:10px 0; list-style:none; }
-    .tile-list button { width:100%; min-height:42px; display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--text); text-align:start; padding:7px 9px; cursor:pointer; }
+    .tile-list button { width:100%; min-height:42px; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:3px 8px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--text); text-align:start; padding:7px 9px; cursor:pointer; }
     .tile-list button:hover,.tile-list button:focus-visible { outline:2px solid var(--accent); }
-    .tile-list small { flex:none; color:var(--muted); }
+    .tile-list small { color:var(--muted); white-space:normal; text-align:end; }
+    .tile-list .tile-status { grid-column:1 / -1; text-align:start; }
     .foot { border-top:1px solid var(--line); padding-top:15px; font-size:.9rem; }
     @media (max-width:1100px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media (max-width:600px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -794,10 +795,11 @@
     note.textContent = matches.length>80 ? msg("noteLimit",{limit:80}) : filtered ? msg("noteFiltered",{count:fmt.format(matches.length)}) : msg("noteDefault");
     if (!filtered) return;
     for (const item of matches.slice(0,80)) {
-      const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small");
+      const li=document.createElement("li"), button=document.createElement("button"), name=document.createElement("span"), size=document.createElement("small"), status=document.createElement("small");
       const state=candidateState(item), stateText=state==="review" ? ui("review") : state==="claimed" ? ui("claimed") : state==="available" ? ui("available") : "";
-      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")} · ${msg(item.category)}${stateText ? ` · ${stateText}` : ""}`;
-      button.type="button"; button.append(name,size);
+      name.textContent=item.name; size.textContent=`${fmt.format(item.bytes)} ${msg("bytes")}`;
+      status.className="tile-status"; status.textContent=`${msg(item.category)}${stateText ? ` · ${stateText}` : ""}`;
+      button.type="button"; button.append(name,size,status);
       button.addEventListener("focus",()=>{ const i=visible.indexOf(item); if(i>=0){const r=rectangles.find(x=>x.item===item); if(r)showTooltip(item,r.x+r.w/2,r.y+r.h/2);}});
       button.addEventListener("click",()=>{ selected=item; resizeAndDraw(); showTooltip(item,wrap.clientWidth/2,wrap.clientHeight/2,true); });
       li.append(button); list.append(li);
