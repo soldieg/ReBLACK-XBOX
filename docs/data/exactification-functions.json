@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "snapshotDate": "2026-10-18",
+  "snapshotDate": "2026-10-22",
   "functions": [
     {
       "function": "sub_00016620",
@@ -2081,9 +2081,69 @@
   ],
   "additionalExactFunctions": [
     {
+      "function": "sub_00011A70",
+      "address": "0x00011A70",
+      "sizeBytes": 40,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00014240",
+      "address": "0x00014240",
+      "sizeBytes": 47,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00014C50",
+      "address": "0x00014C50",
+      "sizeBytes": 38,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00014CF0",
+      "address": "0x00014CF0",
+      "sizeBytes": 130,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00015550",
+      "address": "0x00015550",
+      "sizeBytes": 73,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_000155A0",
+      "address": "0x000155A0",
+      "sizeBytes": 122,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00015620",
+      "address": "0x00015620",
+      "sizeBytes": 93,
+      "status": "current-exact"
+    },
+    {
       "function": "sub_00026FD2",
       "address": "0x00026FD2",
       "sizeBytes": 23,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00092C40",
+      "address": "0x00092C40",
+      "sizeBytes": 31,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00092C60",
+      "address": "0x00092C60",
+      "sizeBytes": 57,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00092CA0",
+      "address": "0x00092CA0",
+      "sizeBytes": 31,
       "status": "current-exact"
     },
     {
