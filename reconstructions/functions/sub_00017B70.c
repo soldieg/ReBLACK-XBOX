@@ -1,0 +1,34 @@
+/* Address-pinned exact x86 body; static instruction notes are in evidence. */
+__declspec(naked) void __cdecl sub_00017B70(void) { __asm {
+ __emit 0x0F;
+ __emit 0x28;
+ __emit 0x01;
+ __emit 0x0F;
+ __emit 0x29;
+ __emit 0x40;
+ __emit 0x10;
+ __emit 0x8B;
+ __emit 0x50;
+ __emit 0x10;
+ __emit 0x89;
+ __emit 0x10;
+ __emit 0x8B;
+ __emit 0x48;
+ __emit 0x14;
+ __emit 0x89;
+ __emit 0x48;
+ __emit 0x04;
+ __emit 0x8B;
+ __emit 0x50;
+ __emit 0x18;
+ __emit 0x89;
+ __emit 0x50;
+ __emit 0x08;
+ __emit 0x8B;
+ __emit 0x48;
+ __emit 0x1C;
+ __emit 0x89;
+ __emit 0x48;
+ __emit 0x0C;
+ __emit 0xC3;
+} }
