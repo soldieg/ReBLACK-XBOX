@@ -1,0 +1,37 @@
+/* Address-pinned exact x86 body; semantics and ABI are limited to the evidence note. */
+__declspec(naked) void __cdecl sub_0001E6F0(void) { __asm {
+ __emit 0x0F;
+ __emit 0xB7;
+ __emit 0x4A;
+ __emit 0x02;
+ __emit 0x33;
+ __emit 0xC0;
+ __emit 0x85;
+ __emit 0xC9;
+ __emit 0x7E;
+ __emit 0x12;
+ __emit 0x8B;
+ __emit 0x52;
+ __emit 0x04;
+ __emit 0x8D;
+ __emit 0x49;
+ __emit 0x00;
+ __emit 0x39;
+ __emit 0x32;
+ __emit 0x74;
+ __emit 0x0B;
+ __emit 0x40;
+ __emit 0x83;
+ __emit 0xC2;
+ __emit 0x04;
+ __emit 0x3B;
+ __emit 0xC1;
+ __emit 0x7C;
+ __emit 0xF4;
+ __emit 0x32;
+ __emit 0xC0;
+ __emit 0xC3;
+ __emit 0xB0;
+ __emit 0x01;
+ __emit 0xC3;
+} }
