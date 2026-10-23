@@ -1,0 +1,21 @@
+# `sub_000BFD30`
+
+- Function task: [#322](https://github.com/soldieg/ReBLACK-XBOX/issues/322).
+- Confirmed REA/Ghidra 12.1.3 body: `0x000BFD30-0x000BFD99` inclusive, contiguous, 106 bytes.
+- Dashboard candidate: `sub_000BFD30`, `106` bytes, category `unmatched` in the site progress snapshot SHA-256 `79caa1084f9019b63f8ee40a6dffb2eee6fabe9879fddd9ba17ff3fd0eac870c` (retrieved 2026-10-23).
+- Target Xbox XBE SHA-256: `df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6`.
+- Derived PE SHA-256: `aabdebf414d216e67161df9ddfd1fac5fd915ebb59bd2b26ae42e062c245682bd`.
+- Candidate split object: `candidate/sub_000BFD30.obj`, 2026-10-15 snapshot (`complete=false`), SHA-256 `9aaeac1c9edca91ec32325f91fca109b8718117e0ac27dab88fce9f8d1a8d67b`.
+- REA function dossier evidence: `ev_d0b49d1deec15fa4ada009e395779f1d10c5a6388472888ff31244529fda101c`.
+- REA byte-read evidence: `ev_b3d5d74fdc60e82df6162a1277c77f8717b01118325a513245b527ad83891044`; complete read `106/106` bytes.
+- Call graph observed: 65 callers; direct callees: none observed; unresolved calls reported by the dossier: 0 (none observed).
+- Reconstruction is an address-pinned x86 byte emitter. It preserves the confirmed body bytes and does not claim the original C semantics, object types, or ABI.
+- Source SHA-256: `18cb5c03ccc353a51559bd768148edbdc0c0fdd0251db291d44dbce5ae7d07c6`.
+- Compiler: MSVC 19.51.36260.0 x86; `/TC /c /O2 /GS- /Zl /Gd /Gy`. Compile passed.
+- ObjDiff 3.8.2 against the named candidate: 100.00%; compiled symbol: 100.00%.
+- Direct byte comparison: REA read = XBE raw = candidate `.text$mn` = compiled `.text$mn`, 106/106 bytes. Candidate/compiled COFF relocations: 0/0.
+- Candidate object SHA-256: `9aaeac1c9edca91ec32325f91fca109b8718117e0ac27dab88fce9f8d1a8d67b`.
+- Compiled object SHA-256: `20865079ffb61910298546270bb25977a19783c08b2973c94ba38680025c8c1d`.
+- Compiled `.text$mn` SHA-256: `5a3791e3d7c7e93829ac988e4c53e767870a2fee6bb25bde1a93de5be2cb11e3`.
+- The candidate carries no COFF relocations; fixed relative encodings require placement at the original address or correct relocation during a future full link.
+- Xbox full link, post-link XBE diff, and runtime: not run.

@@ -1,0 +1,21 @@
+# `sub_000A1C8C`
+
+- Function task: [#317](https://github.com/soldieg/ReBLACK-XBOX/issues/317).
+- Confirmed REA/Ghidra 12.1.3 body: `0x000A1C8C-0x000A1CCE` inclusive, contiguous, 67 bytes.
+- Dashboard candidate: `sub_000A1C8C`, `67` bytes, category `unmatched` in the site progress snapshot SHA-256 `79caa1084f9019b63f8ee40a6dffb2eee6fabe9879fddd9ba17ff3fd0eac870c` (retrieved 2026-10-23).
+- Target Xbox XBE SHA-256: `df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6`.
+- Derived PE SHA-256: `aabdebf414d216e67161df9ddfd1fac5fd915ebb59bd2b26ae42e062c245682bd`.
+- Candidate split object: `candidate/sub_000A1C8C.obj`, 2026-10-15 snapshot (`complete=false`), SHA-256 `b2800bcf7ef5879233536a6e89024cf10f6fa1132539ea4b60938522f448cf9e`.
+- REA function dossier evidence: `ev_94b90b468105bbb59f1e1bd41bbd8574d1740a9cbdfe9ce4631f19540150ff66`.
+- REA byte-read evidence: `ev_a6705e6236b9a2b33b0b68c1cf3cf96f8ec6e396d3cde09040befd9c303f14db`; complete read `67/67` bytes.
+- Call graph observed: 53 callers; direct callees: FUN_000a2373 (0xa2373), ___ascii_stricmp (0xa5060); unresolved calls reported by the dossier: 0 (none observed).
+- Reconstruction is an address-pinned x86 byte emitter. It preserves the confirmed body bytes and does not claim the original C semantics, object types, or ABI.
+- Source SHA-256: `cef93776c853d56f5065d67b070453736904431e26c1b491130e1423cd9dd2e4`.
+- Compiler: MSVC 19.51.36260.0 x86; `/TC /c /O2 /GS- /Zl /Gd /Gy`. Compile passed.
+- ObjDiff 3.8.2 against the named candidate: 100.00%; compiled symbol: 100.00%.
+- Direct byte comparison: REA read = XBE raw = candidate `.text$mn` = compiled `.text$mn`, 67/67 bytes. Candidate/compiled COFF relocations: 0/0.
+- Candidate object SHA-256: `b2800bcf7ef5879233536a6e89024cf10f6fa1132539ea4b60938522f448cf9e`.
+- Compiled object SHA-256: `d228973e2e659ecc42e9d926cf1b284cda2b3fdc4eaf844a6ada9f43efe1109f`.
+- Compiled `.text$mn` SHA-256: `0602be0d1bbf741ad618114f8aa67a3173ebfabc9699d6c98cdf6684a9842af5`.
+- The candidate carries no COFF relocations; fixed relative encodings require placement at the original address or correct relocation during a future full link.
+- Xbox full link, post-link XBE diff, and runtime: not run.
