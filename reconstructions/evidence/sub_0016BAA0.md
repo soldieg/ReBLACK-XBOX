@@ -1,0 +1,21 @@
+# sub_0016BAA0
+
+- Function task: [#2452](https://github.com/soldieg/ReBLACK-XBOX/issues/2452).
+- Batch: 23 (current ten-batch run: 1/10; 100 functions).
+- Ghidra 12.1.3 body: 0x0016BAA0–0x0016C435 inclusive, contiguous, 2454 bytes.
+- Observed direct caller sites: 0x001780F1 (FUN_001780b0).
+- Observed direct callees: 0x00011C10 (FUN_00011c10), 0x00012450 (FUN_00012450), 0x00012600 (FUN_00012600), 0x00012670 (FUN_00012670), 0x000126E0 (FUN_000126e0), 0x00014DE0 (FUN_00014de0), 0x00014FE0 (FUN_00014fe0), 0x001467B0 (FUN_001467b0), 0x0015F470 (FUN_0015f470), 0x0015FA60 (FUN_0015fa60), 0x00162F20 (FUN_00162f20), 0x001C6060 (FUN_001c6060), 0x001DAFF0 (FUN_001daff0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0016BAA0, 2454 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0016BAA0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x15BAA0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x15AE20.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 2454/2454 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 5c0092ba3be546d8061627325e5fca20935b022e2aca2bae0f69dd9880199a56.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 2454 bytes.
+- Candidate object SHA-256: 142bcc4df954b1f6392550cceb844b5f004e7697855033163b98dca93f08b3d4.
+- Compiled object SHA-256: cee418cd88a81d92c7428e7421125adc34cee75d986d756408974eb1bed72168.
+- Candidate .text$mn SHA-256: 9b5903d8208370443be609be532671f46e2acfdc4a263f8fd85d5605f500c6e8; compiled .text$mn SHA-256: 9b5903d8208370443be609be532671f46e2acfdc4a263f8fd85d5605f500c6e8.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

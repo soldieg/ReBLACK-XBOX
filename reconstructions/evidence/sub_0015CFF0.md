@@ -1,0 +1,21 @@
+# sub_0015CFF0
+
+- Function task: [#2370](https://github.com/soldieg/ReBLACK-XBOX/issues/2370).
+- Batch: 23 (current ten-batch run: 1/10; 100 functions).
+- Ghidra 12.1.3 body: 0x0015CFF0–0x0015D310 inclusive, contiguous, 801 bytes.
+- Observed direct caller sites: none observed.
+- Observed direct callees: 0x00011C10 (FUN_00011c10); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0015CFF0, 801 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0015CFF0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x14CFF0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x14C370.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 801/801 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 283d3c0a3816ca7fdc1cc3d031096b8f394d1874d613301926b0e2621fe170d9.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 801 bytes.
+- Candidate object SHA-256: 3880b3867f4653cd0acbd2e84094dba865f52e7cdbd269faab31549e062fddc1.
+- Compiled object SHA-256: bfdff749000a54dea5f518f294079fbab672682a6eeab9138f726686736cdd9d.
+- Candidate .text$mn SHA-256: b06f4b7726f4d4293a196a0647ee02e84aa83b23933844f644cc27e9d1c68fc7; compiled .text$mn SHA-256: b06f4b7726f4d4293a196a0647ee02e84aa83b23933844f644cc27e9d1c68fc7.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
