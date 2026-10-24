@@ -1,0 +1,21 @@
+# sub_0010DAD0
+
+- Function task: [#1940](https://github.com/soldieg/ReBLACK-XBOX/issues/1940).
+- Lot: 18/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0010DAD0–0x0010DE0B inclusive, contiguous, 828 bytes.
+- Observed direct caller sites: 0x0010DEE9 (FUN_0010de20).
+- Observed direct callees: 0x000E2900 (FUN_000e2900), 0x000F2260 (FUN_000f2260), 0x000F8130 (FUN_000f8130), 0x00103A00 (FUN_00103a00), 0x00108010 (FUN_00108010), 0x0010C1E0 (FUN_0010c1e0), 0x0010CC50 (FUN_0010cc50); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0010DAD0, 828 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0010DAD0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0xFDAD0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0xFCE50.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 828/828 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: b1dbca4ec95a67a0995ee00b7b78cc3e5398e1d8accb7efa3980c456f9d49e2f.
+- Compiler: MSVC 19.51.36260 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 828 bytes.
+- Candidate object SHA-256: 0dd8a8a7520e91e6a08adc5ca451de2d8fd23f6fd0f87d5f4f7fd5fd7fa495e6.
+- Compiled object SHA-256: 935f0d7410ae2bf5df1db0dbae406ae5f700f565f1cc91a7082eabce35f2e3c0.
+- Candidate .text$mn SHA-256: 4b36469f65db4013e6b266f384c70077eb240a68e944924c88d606fce645b395; compiled .text$mn SHA-256: 4b36469f65db4013e6b266f384c70077eb240a68e944924c88d606fce645b395.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
