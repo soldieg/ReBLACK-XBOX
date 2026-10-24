@@ -1,0 +1,21 @@
+# sub_0016DEC0
+
+- Function task: [#2457](https://github.com/soldieg/ReBLACK-XBOX/issues/2457).
+- Batch: 23 (current ten-batch run: 1/10; 100 functions).
+- Ghidra 12.1.3 body: 0x0016DEC0–0x0016E27C inclusive, contiguous, 957 bytes.
+- Observed direct caller sites: 0x00175D4C (FUN_00175b80).
+- Observed direct callees: 0x00011C10 (FUN_00011c10), 0x00012670 (FUN_00012670), 0x00269880 (FUN_00269880); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0016DEC0, 957 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0016DEC0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x15DEC0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x15D240.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 957/957 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 44cb1522b2e6d4e9efa6292e1f09b4836b3ef8e7d31e677509212054fc9235a7.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 957 bytes.
+- Candidate object SHA-256: 517a41e108f942f86ba62a4db798a17cfee8bde0e8e9b7aaae3f54d94f9f0e3e.
+- Compiled object SHA-256: 7def0ff6edeca063acf559dbc0140020b89c650a17ebb10f422a668c05741b90.
+- Candidate .text$mn SHA-256: 02245e66745325790d7bb7767909221ca094a537053f9aec9fcf8627587b475d; compiled .text$mn SHA-256: 02245e66745325790d7bb7767909221ca094a537053f9aec9fcf8627587b475d.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
