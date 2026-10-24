@@ -3,7 +3,7 @@
 **Queue snapshot date:** 2026-10-18
 **Dashboard exactification refresh:** 2026-10-24
 
-The progress page does not show a separate queue card. The 346-entry queue remains documented here and is kept separate from 2,375 additional exact-byte function records in `docs/data/exactification-functions.json` (the original 15, 1,760 already-merged functions, lot 18 in PR #1958, lot 19 in merged PR #2059, lot 20 in merged PR #2160, and lot 21 in merged PR #2261, and lot 22 in merged PR #2362, and lot 23 in open PR #2464). The reviewed objdiff report itself remains unchanged. On the candidate map, the dashboard combines both sets of exact records with objdiff exact candidates by function identity and counts overlaps once.
+The progress page does not show a separate queue card. The 346-entry queue remains documented here and is kept separate from 2,375 additional exact-byte function records in `docs/data/exactification-functions.json` (the original 15, 1,760 already-merged functions, lot 18 in PR #1958, lot 19 in merged PR #2059, lot 20 in merged PR #2160, and lot 21 in merged PR #2261, lot 22 in merged PR #2362, and lot 23 in merged PR #2464). The reviewed objdiff report itself remains unchanged. On the candidate map, the dashboard combines both sets of exact records with objdiff exact candidates by function identity and counts overlaps once.
 
 The public function list contains only function IDs, addresses, sizes, and exact status. It contains no reconstructed source, game bytes, binaries, local evidence paths, or private hashes. The 346-entry queue remains a separate measure from the 13,676-candidate objdiff snapshot; the 2,375 additional records are not included in its denominator.
 
