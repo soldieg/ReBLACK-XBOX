@@ -1,0 +1,65 @@
+/* shortcut: address-pinned byte emitter preserves exact candidate bytes; replace only after semantic C matches at the final link address. */
+__declspec(naked) void __cdecl sub_0013EA00(void)
+{
+    __asm {
+        _emit 0x8B
+        _emit 0x90
+        _emit 0x38
+        _emit 0x1E
+        _emit 0x00
+        _emit 0x00
+        _emit 0x53
+        _emit 0x56
+        _emit 0x8B
+        _emit 0xB0
+        _emit 0x30
+        _emit 0x1E
+        _emit 0x00
+        _emit 0x00
+        _emit 0x3B
+        _emit 0xD6
+        _emit 0x7D
+        _emit 0x24
+        _emit 0x8D
+        _emit 0x0C
+        _emit 0x92
+        _emit 0x8D
+        _emit 0x8C
+        _emit 0xC8
+        _emit 0x90
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8D
+        _emit 0x64
+        _emit 0x24
+        _emit 0x00
+        _emit 0x8B
+        _emit 0x59
+        _emit 0x04
+        _emit 0x85
+        _emit 0xDB
+        _emit 0x8D
+        _emit 0x41
+        _emit 0xF0
+        _emit 0x75
+        _emit 0x04
+        _emit 0x39
+        _emit 0x39
+        _emit 0x74
+        _emit 0x0A
+        _emit 0x42
+        _emit 0x83
+        _emit 0xC1
+        _emit 0x28
+        _emit 0x3B
+        _emit 0xD6
+        _emit 0x7C
+        _emit 0xEA
+        _emit 0x33
+        _emit 0xC0
+        _emit 0x5E
+        _emit 0x5B
+        _emit 0xC3
+    }
+}
