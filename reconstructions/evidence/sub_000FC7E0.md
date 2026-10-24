@@ -1,0 +1,21 @@
+# sub_000FC7E0
+
+- Function task: [#1857](https://github.com/soldieg/ReBLACK-XBOX/issues/1857).
+- Lot: 18/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x000FC7E0–0x000FC87A inclusive, contiguous, 155 bytes.
+- Observed direct caller sites: none observed.
+- Observed direct callees: 0x000E5400 (FUN_000e5400), 0x000E5880 (FUN_000e5880), 0x000F8A90 (FUN_000f8a90); unresolved direct callee references: 0.
+- Dashboard candidate: sub_000FC7E0, 155 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_000FC7E0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0xEC7E0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0xEBB60.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 155/155 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: a357cf17734b5c64ff825c32e40a4d1a357282f0fa124c4113dc30aedf6f2c19.
+- Compiler: MSVC 19.51.36260 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 155 bytes.
+- Candidate object SHA-256: dc72551a225f429c9a7a4ba513aff474f968307104afb8615c32f8f126149995.
+- Compiled object SHA-256: 44f3e08ebb6f487593eb3318682047ea22acd3fcd2b61d30031758e55c6d5239.
+- Candidate .text$mn SHA-256: 064989a2b87661f87284c1ccbf5d08fdff35323c0672940c041bd95ca4f17d7f; compiled .text$mn SHA-256: 064989a2b87661f87284c1ccbf5d08fdff35323c0672940c041bd95ca4f17d7f.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
