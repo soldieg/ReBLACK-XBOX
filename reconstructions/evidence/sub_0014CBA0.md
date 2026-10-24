@@ -1,0 +1,21 @@
+# sub_0014CBA0
+
+- Function task: [#2277](https://github.com/soldieg/ReBLACK-XBOX/issues/2277).
+- Lot: 22/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0014CBA0–0x0014CC0A inclusive, contiguous, 107 bytes.
+- Observed direct caller sites: 0x00119B7B (FUN_00119b50), 0x0011A066 (UNRESOLVED).
+- Observed direct callees: 0x001484F0 (FUN_001484f0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0014CBA0, 107 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0014CBA0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x13CBA0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x13BF20.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 107/107 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: ae33681f27064281f7f36ca0662f1523fa13d07883bb3ef076932cf131bfd87a.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 107 bytes.
+- Candidate object SHA-256: 7c3953be670b00c386f584ffdab74815688530c984a4d38f89be6364279334e8.
+- Compiled object SHA-256: 51368b1b52bdc447def088a0938ade576e853c0f459a2665c4f91600e0e4be92.
+- Candidate .text$mn SHA-256: 7bec0ba68e2eb25adb12acafee80d551c7e26ff4be6c790a25468016cfffc13e; compiled .text$mn SHA-256: 7bec0ba68e2eb25adb12acafee80d551c7e26ff4be6c790a25468016cfffc13e.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

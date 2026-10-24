@@ -1,0 +1,21 @@
+# sub_0014DCF0
+
+- Function task: [#2292](https://github.com/soldieg/ReBLACK-XBOX/issues/2292).
+- Lot: 22/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0014DCF0–0x0014DD40 inclusive, contiguous, 81 bytes.
+- Observed direct caller sites: 0x0015137C (FUN_00151340).
+- Observed direct callees: 0x000B55B0 (FUN_000b55b0), 0x0013D1B0 (FUN_0013d1b0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0014DCF0, 81 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0014DCF0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x13DCF0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x13D070.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 81/81 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 18bc893937b70a1bdfdbe6a6ab9f35a99a4ebb30f105b2c1d70e57e4269ecf3f.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 81 bytes.
+- Candidate object SHA-256: 7b4cf1eca86d43bc7ed1c37d9611056817f62d13d6c6bd595f830eb4432592ff.
+- Compiled object SHA-256: 260817ff69634920932725b0ec80e173101087c7c7986d1942405adc3fb76336.
+- Candidate .text$mn SHA-256: 52792100ae097b9e7689d11bee198a2ea7336da5fc37441ec631aeacd0b2242b; compiled .text$mn SHA-256: 52792100ae097b9e7689d11bee198a2ea7336da5fc37441ec631aeacd0b2242b.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

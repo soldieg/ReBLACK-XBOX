@@ -1,0 +1,21 @@
+# sub_0014DBE0
+
+- Function task: [#2291](https://github.com/soldieg/ReBLACK-XBOX/issues/2291).
+- Lot: 22/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0014DBE0–0x0014DC5C inclusive, contiguous, 125 bytes.
+- Observed direct caller sites: 0x001A15DC (FUN_001a1570).
+- Observed direct callees: 0x0014D9F0 (FUN_0014d9f0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0014DBE0, 125 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0014DBE0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x13DBE0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x13CF60.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 125/125 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 596086999d9725b1b442594874fcc5d6da77702bd212ec89dbd5fb0c96fdcf07.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 125 bytes.
+- Candidate object SHA-256: a9105dfb6e2ecba2737723e28ac61b6827fd8dbcacceab40dd73e4889a4b509e.
+- Compiled object SHA-256: 2e9243f93062dce997551247ebe7ee4ab39271ca7db17801d3de33bb7e350900.
+- Candidate .text$mn SHA-256: 27b82569fbe536590cad90b12f588a40f210100787656d0a6ae368072ebf878c; compiled .text$mn SHA-256: 27b82569fbe536590cad90b12f588a40f210100787656d0a6ae368072ebf878c.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

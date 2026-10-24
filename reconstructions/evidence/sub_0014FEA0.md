@@ -1,0 +1,21 @@
+# sub_0014FEA0
+
+- Function task: [#2314](https://github.com/soldieg/ReBLACK-XBOX/issues/2314).
+- Lot: 22/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0014FEA0–0x0015022F inclusive, contiguous, 912 bytes.
+- Observed direct caller sites: 0x001505A7 (FUN_001503a0).
+- Observed direct callees: 0x0007EE10 (FUN_0007ee10), 0x0007F0F0 (FUN_0007f0f0), 0x0007F400 (FUN_0007f400), 0x0007F450 (FUN_0007f450), 0x0007FA20 (FUN_0007fa20), 0x000BAF00 (FUN_000baf00), 0x000BAF50 (FUN_000baf50), 0x000BD710 (FUN_000bd710), 0x000C44C0 (FUN_000c44c0), 0x00141180 (FUN_00141180), 0x001411C0 (FUN_001411c0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0014FEA0, 912 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0014FEA0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x13FEA0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x13F220.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 912/912 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: cb2680ce39fbbad4824501c886700c24a97f64e76f5c816ae92c6536169623c3.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 912 bytes.
+- Candidate object SHA-256: 283f12d50bd0b4bf8cabf5e5623a0f48491f647f300a7165072d4bb5aabec813.
+- Compiled object SHA-256: 7ce1b38d395588e94782165a941cf04ca0b70a9538140a8013cada34f9a605b9.
+- Candidate .text$mn SHA-256: f56ca277b19391d9cbb72cd1db2ad1f47d14a1d001a50d2cd1c421e08a38eccb; compiled .text$mn SHA-256: f56ca277b19391d9cbb72cd1db2ad1f47d14a1d001a50d2cd1c421e08a38eccb.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
