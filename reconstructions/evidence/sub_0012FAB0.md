@@ -1,0 +1,21 @@
+# sub_0012FAB0
+
+- Function task: [#2075](https://github.com/soldieg/ReBLACK-XBOX/issues/2075).
+- Lot: 20/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0012FAB0–0x0012FB31 inclusive, contiguous, 130 bytes.
+- Observed direct caller sites: 0x001344BA (FUN_00134490), 0x001C8FEC (FUN_001c8d20).
+- Observed direct callees: 0x001F9620 (FUN_001f9620); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0012FAB0, 130 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0012FAB0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x11FAB0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x11EE30.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 130/130 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 95b3abd2cefdc56c6061cbd40e0a88957f2d4c0e752331607da81533a29413e3.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 130 bytes.
+- Candidate object SHA-256: 1b8d24a1280d1529b490bb53b78e1ba2d7846da1cc79e0695eb525ccbe51f563.
+- Compiled object SHA-256: 148979c5c2cb53079f4c66eae8e98baaa459292df328d89ab5aefa367071d5c1.
+- Candidate .text$mn SHA-256: 9ed49a241a5fe1d01e0eb939032884d9081c2ff34c36bb72bcb2e7c604ccd768; compiled .text$mn SHA-256: 9ed49a241a5fe1d01e0eb939032884d9081c2ff34c36bb72bcb2e7c604ccd768.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

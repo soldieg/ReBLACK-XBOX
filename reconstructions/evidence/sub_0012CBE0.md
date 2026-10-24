@@ -1,0 +1,21 @@
+# sub_0012CBE0
+
+- Function task: [#2062](https://github.com/soldieg/ReBLACK-XBOX/issues/2062).
+- Lot: 20/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0012CBE0–0x0012CC41 inclusive, contiguous, 98 bytes.
+- Observed direct caller sites: none observed.
+- Observed direct callees: 0x000C34C0 (FUN_000c34c0); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0012CBE0, 98 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0012CBE0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x11CBE0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x11BF60.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 98/98 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: d87d4ad91ba8439fd04926fd4c53e148cc689d44f153b88ed4415236d684daaf.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 98 bytes.
+- Candidate object SHA-256: 296f7dacd02521d743ea7d0d0d74b017427e84a092f9a68cd1893d4db16a3ecc.
+- Compiled object SHA-256: 2f46f29e3885185947f8fa9acdc5e8c313159e6cbfd8febc361f4fe8ed64391e.
+- Candidate .text$mn SHA-256: 3dd658b7b2cb2d0cb86b68b9d684f61a0f17091ec45f84399ac4581c982e47d4; compiled .text$mn SHA-256: 3dd658b7b2cb2d0cb86b68b9d684f61a0f17091ec45f84399ac4581c982e47d4.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
