@@ -852,6 +852,18 @@
     document.getElementById("candidate-detail").hidden=true;
     drawList(visible,q.length>0 || category!=="all" || range!=="all" || regionZoom.value!=="all" || status!=="all"); resizeAndDraw();
   }
+  function refreshIssueStateView() {
+    renderQueue();
+    if (!report) return;
+    const panel=document.getElementById("region-detail"), keepOpen=!panel.hidden;
+    updateFilter();
+    if (!keepOpen) return;
+    const group=regionGroups(visible)[0];
+    if (!group) return;
+    document.getElementById("region-detail-title").textContent=regionRangeLabel(group.region);
+    document.getElementById("region-detail-summary").textContent=regionSummaryText(group);
+    panel.hidden=false;
+  }
   canvas.addEventListener("pointermove",event=>{
     const box=canvas.getBoundingClientRect(), x=event.clientX-box.left, y=event.clientY-box.top;
     let hit=null;
@@ -882,7 +894,7 @@
   }).catch(error=>{
     loadError=error.message; applyLanguage(language);
   });
-  loadIssueStates().then(()=>{renderQueue(); if(report) updateFilter();}).catch(()=>{issueStates.clear(); issueStatusError=true; issueStatusLoaded=true; renderQueue(); if(report) updateFilter();});
+  loadIssueStates().then(refreshIssueStateView).catch(()=>{issueStates.clear(); issueStatusError=true; issueStatusLoaded=true; refreshIssueStateView();});
 })();
 </script>
 </body>
