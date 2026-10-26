@@ -164,6 +164,10 @@
       <canvas id="chart" aria-label="Treemap of candidate code sizes; use the search and candidate list to navigate by keyboard"></canvas>
       <div class="tooltip" id="tooltip" role="status"></div>
     </div>
+    <section class="candidate-detail" id="region-detail" aria-live="polite" hidden>
+      <h3 id="region-detail-title"></h3>
+      <p id="region-detail-summary"></p>
+    </section>
     <section class="candidate-detail" id="candidate-detail" aria-live="polite" hidden>
       <h3 id="candidate-detail-title"></h3>
       <p id="candidate-detail-status"></p>
@@ -246,6 +250,20 @@
     "zh-CN":{label:"地址区域",all:"所有地址区域",help:"点击区域可放大，选择所有区域可返回。这里只按起始地址分组，不代表调用或包含关系。",tip:"范围 {region}：{count} 个候选项，代码 {bytes} 字节。按起始地址分组，不代表调用关系。"},
     ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
     tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
+  };
+  const regionProgressCopy = {
+    en:"Exact: {exactCandidates}/{count} candidates, {exactBytes}/{bytes} bytes ({complete}%); remaining {remainingBytes} bytes ({remaining}%), within current filters.",
+    "pt-BR":"Exatas: {exactCandidates}/{count} candidatas, {exactBytes}/{bytes} bytes ({complete}%); faltam {remainingBytes} bytes ({remaining}%), considerando os filtros atuais.",
+    es:"Exactas: {exactCandidates}/{count} candidatas, {exactBytes}/{bytes} bytes ({complete}%); faltan {remainingBytes} bytes ({remaining}%), según los filtros actuales.",
+    ru:"Точно: {exactCandidates}/{count} кандидатов, {exactBytes}/{bytes} байт ({complete}%); осталось {remainingBytes} байт ({remaining}%), с учётом текущих фильтров.",
+    fr:"Exact : {exactCandidates}/{count} candidats, {exactBytes}/{bytes} octets ({complete} %) ; reste {remainingBytes} octets ({remaining} %), selon les filtres actuels.",
+    de:"Exakt: {exactCandidates}/{count} Kandidaten, {exactBytes}/{bytes} Bytes ({complete}%); offen: {remainingBytes} Bytes ({remaining}%), mit aktuellen Filtern.",
+    it:"Esatte: {exactCandidates}/{count} candidate, {exactBytes}/{bytes} byte ({complete}%); restano {remainingBytes} byte ({remaining}%), con i filtri attuali.",
+    ja:"完全一致: {exactCandidates}/{count} 件、{exactBytes}/{bytes} バイト ({complete}%)。残り {remainingBytes} バイト ({remaining}%)。現在のフィルターを適用。",
+    ko:"정확 일치: 후보 {exactCandidates}/{count}개, {exactBytes}/{bytes}바이트 ({complete}%). 남은 양: {remainingBytes}바이트 ({remaining}%). 현재 필터 기준입니다.",
+    "zh-CN":"精确匹配：{exactCandidates}/{count} 个候选项，{exactBytes}/{bytes} 字节（{complete}%）；剩余 {remainingBytes} 字节（{remaining}%），按当前筛选条件统计。",
+    ar:"مطابق تمامًا: {exactCandidates}/{count} مرشحًا، {exactBytes}/{bytes} بايت ({complete}٪)؛ المتبقي {remainingBytes} بايت ({remaining}٪)، وفق عوامل التصفية الحالية.",
+    tr:"Tam eşleşen: {exactCandidates}/{count} aday, {exactBytes}/{bytes} bayt ({complete}%); kalan {remainingBytes} bayt ({remaining}%), geçerli filtrelere göre."
   };
   const progressMetricCopy = {
     en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
@@ -594,11 +612,22 @@
     regionZoom.replaceChildren(option);
     const regions=[...new Set(all.map(item=>item.addressRegion || "Unknown"))].sort();
     for (const region of regions) {
-      const start=Number.parseInt(region.slice(2),16), end=start+0xFFFF, item=document.createElement("option");
-      item.value=region; item.textContent=`${region}–0x${end.toString(16).toUpperCase().padStart(8,"0")}`;
+      const item=document.createElement("option");
+      item.value=region; item.textContent=regionRangeLabel(region);
       regionZoom.append(item);
     }
     regionZoom.value=regions.includes(previous) ? previous : "all";
+  }
+  function regionRangeLabel(region) {
+    const start=Number.parseInt(region.slice(2),16);
+    return Number.isFinite(start) ? `${region}–0x${(start+0xffff).toString(16).toUpperCase().padStart(8,"0")}` : region;
+  }
+  function regionSummaryText(item) {
+    const values={"{region}":regionRangeLabel(item.region),"{count}":fmt.format(item.members.length),"{bytes}":fmt.format(item.bytes),
+      "{exactCandidates}":fmt.format(item.exactCandidates),"{exactBytes}":fmt.format(item.exactBytes),"{complete}":fmt.format(item.completePercent),
+      "{remainingBytes}":fmt.format(item.remainingBytes),"{remaining}":fmt.format(item.remainingPercent)};
+    const fill=template=>Object.entries(values).reduce((text,[key,value])=>text.replaceAll(key,value),template);
+    return `${fill(regionCopy[language].tip)} ${fill(regionProgressCopy[language] || regionProgressCopy.en)}`;
   }
   function regionGroups(items) {
     const groups=new Map();
@@ -612,7 +641,12 @@
       bytes:members.reduce((total,item)=>total+item.bytes,0),
       category:members.some(item=>item.category==="fuzzy") ? "fuzzy" : members.some(item=>item.category==="unmatched") ? "unmatched" : "exact",
       state:members.some(item=>candidateState(item)==="review") ? "review" : members.some(item=>candidateState(item)==="claimed") ? "claimed" : "available",
-    })).sort((a,b)=>a.region.localeCompare(b.region));
+    })).map(group=>{
+      const exact=group.members.filter(item=>item.category==="exact"), exactBytes=exact.reduce((total,item)=>total+item.bytes,0);
+      return {...group, exactCandidates:exact.length, exactBytes, remainingBytes:group.bytes-exactBytes,
+        completePercent:group.bytes ? exactBytes/group.bytes*100 : 0,
+        remainingPercent:group.bytes ? (group.bytes-exactBytes)/group.bytes*100 : 0};
+    }).sort((a,b)=>a.region.localeCompare(b.region));
   }
   function candidateIssueIds(issue) {
     const body=String(issue.body || "");
@@ -671,6 +705,7 @@
   }
   function renderCandidateDetails(item) {
     const panel=document.getElementById("candidate-detail"), actions=document.getElementById("candidate-actions"), state=candidateState(item), records=issueStates.get(item.name.toLowerCase());
+    document.getElementById("region-detail").hidden=true;
     panel.hidden=false;
     document.getElementById("candidate-detail-title").textContent=item.name;
     const base=item.category==="exact" ? msg("exact") : item.category==="fuzzy" ? msg("fuzzy") : msg("unmatched");
@@ -764,10 +799,9 @@
   function explain(item) {
     if (item.members) {
       const detail=document.createElement("span"), title=document.createElement("strong");
-      const template=regionCopy[language].tip;
       tooltip.replaceChildren();
-      title.textContent=`${item.region} · ${fmt.format(item.members.length)} ${msg("candidatesMetric")}`;
-      detail.textContent=template.replace("{region}",item.region).replace("{count}",fmt.format(item.members.length)).replace("{bytes}",fmt.format(item.bytes));
+      title.textContent=regionRangeLabel(item.region);
+      detail.textContent=regionSummaryText(item);
       tooltip.append(title,detail);
       return;
     }
@@ -814,6 +848,7 @@
       return (!q || item.name.toLowerCase().includes(q)) && (category==="all" || item.category===category) && inRange(item) && inRegion && (status==="all" || (status==="available" && state==="available") || state===status);
     });
     selected=null; tooltip.style.display="none";
+    document.getElementById("region-detail").hidden=true;
     document.getElementById("candidate-detail").hidden=true;
     drawList(visible,q.length>0 || category!=="all" || range!=="all" || regionZoom.value!=="all" || status!=="all"); resizeAndDraw();
   }
@@ -827,7 +862,12 @@
   canvas.addEventListener("click",event=>{
     const box=canvas.getBoundingClientRect(),x=event.clientX-box.left,y=event.clientY-box.top;
     const hit=rectangles.find(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h);
-    if(hit?.item.members){regionZoom.value=hit.item.region;updateFilter();}
+    if(hit?.item.members){
+      regionZoom.value=hit.item.region; updateFilter();
+      document.getElementById("region-detail-title").textContent=regionRangeLabel(hit.item.region);
+      document.getElementById("region-detail-summary").textContent=regionSummaryText(hit.item);
+      document.getElementById("region-detail").hidden=false;
+    }
     else if(hit){selected=hit.item;showTooltip(hit.item,x,y,true);} else {selected=null;showTooltip(null);resizeAndDraw();}
   });
   query.addEventListener("input",updateFilter); classification.addEventListener("change",updateFilter);
