@@ -75,6 +75,6 @@ Lot 68 merged in PR #7245 with 100 functions totaling 5,129 bytes. All 100 have 
 | 70 | [#7431](https://github.com/soldieg/ReBLACK-XBOX/pull/7431) | aberta, mergeable | 100 | 6.164 | 100/100 a 100% | 7 |
 | 71 | [#7453](https://github.com/soldieg/ReBLACK-XBOX/pull/7453) | aberta, mergeable | 100 | 12.097 | 100/100 a 100% | 37 |
 | 72 | [#7563](https://github.com/soldieg/ReBLACK-XBOX/pull/7563) | aberta, mergeable | 100 | 8.585 | 100/100 a 100% | 62 |
-| 73 | pendente | branch do lote em preparação | 100 | 4.203 | 100/100 a 100% | 14 |
+| 73 | [#7664](https://github.com/soldieg/ReBLACK-XBOX/pull/7664) | aberta, mergeable | 100 | 4.203 | 100/100 a 100% | 14 |
 
 Cada prévia é independente e soma somente seu lote à `main` integrada até o lote 68; as propostas abertas 69–72 não são acumuladas nesta prévia. O lote 73 tem 100 corpos Ghidra contíguos e 1.226 instruções. XBE original, PE derivada, Ghidra e split XboxRecomp coincidem em 4.203 bytes; MSVC x86 compilou sem diagnósticos; as seções COFF `.text$mn` coincidem byte a byte (4.203/4.203 bytes, 0/0 relocações); ObjDiff 3.8.2 resulta em 100/100 a 100% contra os objetos candidatos identificados. A prévia do lote 73 informa 7.226 candidatos exatos / 1.479.992 bytes (64,42714382%) no inventário incompleto de 13.676 candidatos; ObjDiff fuzzy permanece 0,66778016%. São emissores de bytes presos ao endereço, não C semântico nem ABI formal; link Xbox, diff pós-link, runtime e gameplay permanecem pendentes. O índice de validação de mantenedor e a fila independente de 346 funções não mudaram.
