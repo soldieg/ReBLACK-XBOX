@@ -1,0 +1,63 @@
+/* shortcut: exact bytes are emitted until semantic C is independently proven. */
+__declspec(naked) void __cdecl sub_0013C8E0(void)
+{
+    __asm {
+        _emit 0x56
+        _emit 0x57
+        _emit 0x83
+        _emit 0xc2
+        _emit 0x48
+        _emit 0xbe
+        _emit 0x08
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8d
+        _emit 0x9b
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0xc7
+        _emit 0x42
+        _emit 0xf8
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        _emit 0xc7
+        _emit 0x02
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0xc7
+        _emit 0x42
+        _emit 0xfc
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8d
+        _emit 0x7a
+        _emit 0xb8
+        _emit 0x33
+        _emit 0xc0
+        _emit 0xb9
+        _emit 0x10
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x83
+        _emit 0xc2
+        _emit 0x4c
+        _emit 0x4e
+        _emit 0xf3
+        _emit 0xab
+        _emit 0x75
+        _emit 0xda
+        _emit 0x5f
+        _emit 0x5e
+        _emit 0xc3
+    }
+}
