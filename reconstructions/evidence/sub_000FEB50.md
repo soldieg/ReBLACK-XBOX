@@ -1,0 +1,21 @@
+# sub_000FEB50
+
+- Function task: [#1866](https://github.com/soldieg/ReBLACK-XBOX/issues/1866).
+- Lot: 18/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x000FEB50–0x000FEC2A inclusive, contiguous, 219 bytes.
+- Observed direct caller sites: none observed.
+- Observed direct callees: 0x000A1C8C (__stricmp), 0x000E5880 (FUN_000e5880), 0x000FE160 (FUN_000fe160); unresolved direct callee references: 0.
+- Dashboard candidate: sub_000FEB50, 219 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_000FEB50.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0xEEB50.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0xEDED0.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 219/219 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: bc57966a27223a61a0d76027137cad59ceaf50eb2011a28829134de8b72945f9.
+- Compiler: MSVC 19.51.36260 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 219 bytes.
+- Candidate object SHA-256: b26ebbba4d82600d2e246cee01fff5ee49ac9eadfef9b86e7a02dd2c7738435d.
+- Compiled object SHA-256: 3278e0a68ce301487b5634e62522c3772d0ca407f9a04a2eeb36dad7c414a36e.
+- Candidate .text$mn SHA-256: 5049ab81df946f96bbc5728a5d62d50c586e31b40dea5483e5f89b05c3faf2e7; compiled .text$mn SHA-256: 5049ab81df946f96bbc5728a5d62d50c586e31b40dea5483e5f89b05c3faf2e7.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

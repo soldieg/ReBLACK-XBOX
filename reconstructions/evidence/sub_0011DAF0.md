@@ -1,0 +1,21 @@
+# sub_0011DAF0
+
+- Function task: [#1985](https://github.com/soldieg/ReBLACK-XBOX/issues/1985).
+- Lot: 19/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0011DAF0–0x0011DC3D inclusive, contiguous, 334 bytes.
+- Observed direct caller sites: 0x0011EAB2 (UNRESOLVED).
+- Observed direct callees: 0x000BF2A0 (FUN_000bf2a0), 0x0011BC00 (FUN_0011bc00), 0x001F3A80 (FUN_001f3a80); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0011DAF0, 334 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0011DAF0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x10DAF0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x10CE70.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 334/334 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: 30279a0ea1b5be9bbeaf5497161762bf912bdfd7991848d2afe6b9fbcac2d957.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 334 bytes.
+- Candidate object SHA-256: fd8f851a8447338234801f19736f864d22ab3f6c1d6a7403f18656ce2ecb5de3.
+- Compiled object SHA-256: f533d659b08398a39acaa93657106cda8203434ffd2bbb63c0c9070936a27705.
+- Candidate .text$mn SHA-256: e3477ab5ab60fe82d484ed1435278d37be15844dcb5d53d6da9a1a028089e792; compiled .text$mn SHA-256: e3477ab5ab60fe82d484ed1435278d37be15844dcb5d53d6da9a1a028089e792.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

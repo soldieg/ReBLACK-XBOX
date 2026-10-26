@@ -1,0 +1,21 @@
+# sub_0012FBC0
+
+- Function task: [#2076](https://github.com/soldieg/ReBLACK-XBOX/issues/2076).
+- Lot: 20/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0012FBC0–0x0012FD1F inclusive, contiguous, 352 bytes.
+- Observed direct caller sites: 0x001349D9 (FUN_001348e0), 0x00134A5F (FUN_001348e0), 0x00134B1F (FUN_00134a90), 0x00134BDF (FUN_00134a90).
+- Observed direct callees: 0x0012AE60 (FUN_0012ae60); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0012FBC0, 352 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0012FBC0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x11FBC0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x11EF40.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 352/352 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: b5ac52d8950e3891e12234993630c80a543dbeffccc3876eb97533a1f484b495.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 352 bytes.
+- Candidate object SHA-256: 1f472c825929be1d1efd8504e9fedf213853ec134e7cfed6ee178f86c23f8677.
+- Compiled object SHA-256: f37950343303920bae4c1ff1a9d18f0425f7c4f379fbdc68f1e57f843b7a274f.
+- Candidate .text$mn SHA-256: 1b65d29d7845f1e3e26707dc506881a0d5f45ef4b0a528453329daf7da81efce; compiled .text$mn SHA-256: 1b65d29d7845f1e3e26707dc506881a0d5f45ef4b0a528453329daf7da81efce.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

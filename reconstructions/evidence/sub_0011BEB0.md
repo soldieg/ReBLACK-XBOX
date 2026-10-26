@@ -1,0 +1,21 @@
+# sub_0011BEB0
+
+- Function task: [#1984](https://github.com/soldieg/ReBLACK-XBOX/issues/1984).
+- Lot: 19/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0011BEB0–0x0011C097 inclusive, contiguous, 488 bytes.
+- Observed direct caller sites: 0x0011C114 (UNRESOLVED).
+- Observed direct callees: 0x000A1AEB (_sprintf), 0x000BF2A0 (FUN_000bf2a0), 0x0011A4A0 (FUN_0011a4a0), 0x0011BC00 (FUN_0011bc00), 0x001F3A80 (FUN_001f3a80); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0011BEB0, 488 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0011BEB0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0x10BEB0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0x10B230.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 488/488 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: a2475343bb04ff75b46a7336ea0b74661ea243f7168de29ceb1e9635495f24f9.
+- Compiler: MSVC 19.51.36260.0 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 488 bytes.
+- Candidate object SHA-256: f6772cb689c5aeaec62205846afb278b3a07d86966d0626306eabcdfe65147ad.
+- Compiled object SHA-256: c84bac25c3d58974434e778da1f3639555565955694cbbe3612127040205f604.
+- Candidate .text$mn SHA-256: 2a967f360120aa3262f5839dfa3e3946ce84a716be612923cdd87266ae82612d; compiled .text$mn SHA-256: 2a967f360120aa3262f5839dfa3e3946ce84a716be612923cdd87266ae82612d.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.

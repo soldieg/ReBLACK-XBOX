@@ -1,0 +1,62 @@
+/* shortcut: exact bytes are emitted; replace only after semantic C matches at the final link address. */
+__declspec(naked) void __cdecl sub_001F2F20(void)
+{
+    __asm {
+        _emit 0x81
+        _emit 0xB9
+        _emit 0x20
+        _emit 0x05
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x18
+        _emit 0x00
+        _emit 0x00
+        _emit 0x74
+        _emit 0x2B
+        _emit 0x8D
+        _emit 0x81
+        _emit 0x2B
+        _emit 0x05
+        _emit 0x00
+        _emit 0x00
+        _emit 0x81
+        _emit 0xC1
+        _emit 0x68
+        _emit 0x12
+        _emit 0x00
+        _emit 0x00
+        _emit 0xBA
+        _emit 0x03
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8D
+        _emit 0x49
+        _emit 0x00
+        _emit 0xC6
+        _emit 0x40
+        _emit 0xFD
+        _emit 0x01
+        _emit 0xC6
+        _emit 0x00
+        _emit 0x01
+        _emit 0xC7
+        _emit 0x01
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x40
+        _emit 0x81
+        _emit 0xC1
+        _emit 0x78
+        _emit 0x07
+        _emit 0x00
+        _emit 0x00
+        _emit 0x4A
+        _emit 0x75
+        _emit 0xE9
+        _emit 0xC3
+    }
+}

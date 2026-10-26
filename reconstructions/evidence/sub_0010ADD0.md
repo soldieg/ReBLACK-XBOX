@@ -1,0 +1,21 @@
+# sub_0010ADD0
+
+- Function task: [#1912](https://github.com/soldieg/ReBLACK-XBOX/issues/1912).
+- Lot: 18/100 (100-function lots).
+- Ghidra 12.1.3 body: 0x0010ADD0–0x0010AE27 inclusive, contiguous, 88 bytes.
+- Observed direct caller sites: none observed.
+- Observed direct callees: 0x000E4250 (FUN_000e4250), 0x00107580 (FUN_00107580); unresolved direct callee references: 0.
+- Dashboard candidate: sub_0010ADD0, 88 bytes; candidate identity and size matched.
+- Candidate object: candidate/sub_0010ADD0.obj from the 2026-10-15 snapshot; candidate is incomplete (complete=false).
+- Target XBE SHA-256: df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6; raw file span offset 0xFADD0.
+- Derived PE SHA-256: aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd; mapped raw span offset 0xFA150.
+- Static byte equality: raw XBE = mapped derived PE = XboxRecomp split .s = candidate .text$mn = compiled .text$mn, 88/88 bytes. REA byte-read was unavailable; no REA byte-read claim is made.
+- Candidate and compiled COFF relocations: 0/0.
+- Source SHA-256: eea7af530700e4aa59f70371420ea82e895d59ef46911ca0713be1912b7a3eee.
+- Compiler: MSVC 19.51.36260 x86; /nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy; compile passed without warnings.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 88 bytes.
+- Candidate object SHA-256: 8c86840c47788effec3beb4ffb8add01e8245348d54f0bcc83b5f104f5773163.
+- Compiled object SHA-256: 6f763e607d8bab2182897d6e1b394a981cfb3e0f08d4c3a17bd08dcf2020f1bf.
+- Candidate .text$mn SHA-256: 218f0b6ecd34c28a2398dcef617c2a88e43735a5dd39999534c9b554c4bf2893; compiled .text$mn SHA-256: 218f0b6ecd34c28a2398dcef617c2a88e43735a5dd39999534c9b554c4bf2893.
+- Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+- Caller/callee entries are static Ghidra references only; they do not establish dynamic reachability or runtime callbacks.
