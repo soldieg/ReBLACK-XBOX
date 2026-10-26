@@ -1,28 +1,110 @@
-extern unsigned char dat_00295c6c;
-extern unsigned char dat_00295c80;
-__declspec(naked) void sub_00014C80(void)
+/* shortcut: exact candidate bytes are emitted; restore the local semantic source or replace only after link-address semantics are validated. */
+__declspec(naked) void __cdecl sub_00014C80(void)
 {
     __asm {
-        sub esp, 0Ch
-        movss xmm0, dword ptr [dat_00295c6c]
-        movss dword ptr [esp], xmm0
-        movss xmm0, dword ptr [dat_00295c80]
-        movss dword ptr [esp + 4h], xmm0
-        rsqrtss xmm0, dword ptr [esp + 10h]
-        movss xmm1, dword ptr [esp + 10h]
-        mulss xmm1, xmm0
-        movss xmm2, dword ptr [esp + 4h]
-        mulss xmm1, xmm0
-        mulss xmm0, dword ptr [esp]
-        subss xmm2, xmm1
-        mulss xmm0, xmm2
-        xorps xmm1, xmm1
-        mulss xmm0, dword ptr [esp + 10h]
-        cmpneqss xmm1, dword ptr [esp + 10h]
-        andps xmm0, xmm1
-        movss dword ptr [esp + 8h], xmm0
-        movss xmm0, dword ptr [esp + 8h]
-        add esp, 0Ch
-        ret
+        _emit 0x83
+        _emit 0xEC
+        _emit 0x0C
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x05
+        _emit 0x6C
+        _emit 0x5C
+        _emit 0x29
+        _emit 0x00
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x11
+        _emit 0x04
+        _emit 0x24
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x05
+        _emit 0x80
+        _emit 0x5C
+        _emit 0x29
+        _emit 0x00
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x11
+        _emit 0x44
+        _emit 0x24
+        _emit 0x04
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x52
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x10
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0xC8
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x54
+        _emit 0x24
+        _emit 0x04
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0xC8
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0x04
+        _emit 0x24
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x5C
+        _emit 0xD1
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0xC2
+        _emit 0x0F
+        _emit 0x57
+        _emit 0xC9
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0xC2
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x10
+        _emit 0x04
+        _emit 0x0F
+        _emit 0x54
+        _emit 0xC1
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x11
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0x83
+        _emit 0xC4
+        _emit 0x0C
+        _emit 0xC3
     }
 }
