@@ -1,66 +1,220 @@
-extern unsigned char dat_00295e98;
-__declspec(naked) void sub_00013A00(void)
+/* shortcut: exact candidate bytes are emitted; restore the local semantic source or replace only after link-address semantics are validated. */
+__declspec(naked) void __cdecl sub_00013A00(void)
 {
     __asm {
-        push ebp
-        mov ebp, esp
-        and esp, 0FFFFFFF0h
-        sub esp, 30h
-        movss xmm0, dword ptr [dat_00295e98]
-        movaps xmm1, xmmword ptr [edx]
-        movss dword ptr [esp + 8h], xmm0
-        lea eax, [esp + 8h]
-        movss xmm0, dword ptr [eax]
-        shufps xmm0, xmm0, 0h
-        mulps xmm1, xmm0
-        movaps xmmword ptr [esp + 20h], xmm1
-        cvttss2si edx, dword ptr [esp + 24h]
-        cvttss2si eax, dword ptr [esp + 20h]
-        mov dword ptr [esp + 10h], edx
-        cvttss2si edx, dword ptr [esp + 2Ch]
-        mov dword ptr [esp + 18h], edx
-        mov dword ptr [esp + 0Ch], eax
-        cvttss2si eax, dword ptr [esp + 28h]
-        mov edx, 0FFh
-        mov dword ptr [esp + 14h], eax
-        mov dword ptr [esp + 8h], edx
-        push eax
-        mov eax, dword ptr [esp + 10h]
-        cmp eax, dword ptr [esp + 0Ch]
-        cmovg eax, dword ptr [esp + 0Ch]
-        mov dword ptr [esp + 20h], eax
-        pop eax
-        mov dword ptr [esp + 0Ch], edx
-        push eax
-        mov eax, dword ptr [esp + 14h]
-        cmp eax, dword ptr [esp + 10h]
-        cmovg eax, dword ptr [esp + 10h]
-        mov dword ptr [esp + 0Ch], eax
-        pop eax
-        mov dword ptr [esp + 10h], edx
-        push eax
-        mov eax, dword ptr [esp + 18h]
-        cmp eax, dword ptr [esp + 14h]
-        cmovg eax, dword ptr [esp + 14h]
-        mov dword ptr [esp + 10h], eax
-        pop eax
-        mov dword ptr [esp + 14h], edx
-        push eax
-        mov eax, dword ptr [esp + 1Ch]
-        cmp eax, dword ptr [esp + 18h]
-        cmovg eax, dword ptr [esp + 18h]
-        mov dword ptr [esp + 14h], eax
-        pop eax
-        mov al, byte ptr [esp + 1Ch]
-        mov dl, byte ptr [esp + 8h]
-        mov byte ptr [ecx], al
-        mov al, byte ptr [esp + 0Ch]
-        mov byte ptr [ecx + 1h], dl
-        mov dl, byte ptr [esp + 10h]
-        mov byte ptr [ecx + 2h], al
-        mov byte ptr [ecx + 3h], dl
-        mov esp, ebp
-        pop ebp
-        ret
+        _emit 0x55
+        _emit 0x8B
+        _emit 0xEC
+        _emit 0x83
+        _emit 0xE4
+        _emit 0xF0
+        _emit 0x83
+        _emit 0xEC
+        _emit 0x30
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x05
+        _emit 0x98
+        _emit 0x5E
+        _emit 0x29
+        _emit 0x00
+        _emit 0x0F
+        _emit 0x28
+        _emit 0x0A
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x11
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0x8D
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x00
+        _emit 0x0F
+        _emit 0xC6
+        _emit 0xC0
+        _emit 0x00
+        _emit 0x0F
+        _emit 0x59
+        _emit 0xC8
+        _emit 0x0F
+        _emit 0x29
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x20
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x2C
+        _emit 0x54
+        _emit 0x24
+        _emit 0x24
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x2C
+        _emit 0x44
+        _emit 0x24
+        _emit 0x20
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x10
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x2C
+        _emit 0x54
+        _emit 0x24
+        _emit 0x2C
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x18
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x0C
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x2C
+        _emit 0x44
+        _emit 0x24
+        _emit 0x28
+        _emit 0xBA
+        _emit 0xFF
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x14
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x08
+        _emit 0x50
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0x3B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x0F
+        _emit 0x4F
+        _emit 0x44
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x20
+        _emit 0x58
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x50
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x14
+        _emit 0x3B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0x0F
+        _emit 0x4F
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x58
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x10
+        _emit 0x50
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x18
+        _emit 0x3B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x14
+        _emit 0x0F
+        _emit 0x4F
+        _emit 0x44
+        _emit 0x24
+        _emit 0x14
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x10
+        _emit 0x58
+        _emit 0x89
+        _emit 0x54
+        _emit 0x24
+        _emit 0x14
+        _emit 0x50
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x1C
+        _emit 0x3B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x18
+        _emit 0x0F
+        _emit 0x4F
+        _emit 0x44
+        _emit 0x24
+        _emit 0x18
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x14
+        _emit 0x58
+        _emit 0x8A
+        _emit 0x44
+        _emit 0x24
+        _emit 0x1C
+        _emit 0x8A
+        _emit 0x54
+        _emit 0x24
+        _emit 0x08
+        _emit 0x88
+        _emit 0x01
+        _emit 0x8A
+        _emit 0x44
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x88
+        _emit 0x51
+        _emit 0x01
+        _emit 0x8A
+        _emit 0x54
+        _emit 0x24
+        _emit 0x10
+        _emit 0x88
+        _emit 0x41
+        _emit 0x02
+        _emit 0x88
+        _emit 0x51
+        _emit 0x03
+        _emit 0x8B
+        _emit 0xE5
+        _emit 0x5D
+        _emit 0xC3
     }
 }

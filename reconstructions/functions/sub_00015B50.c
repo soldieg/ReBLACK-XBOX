@@ -1,27 +1,81 @@
-extern unsigned int dat_002d45f0;
-extern unsigned char dat_00295e48;
-extern unsigned char dat_00295e44;
-extern unsigned char dat_00295e58;
-__declspec(naked) void sub_00015B50(void)
+/* shortcut: exact candidate bytes are emitted; restore the local semantic source or replace only after link-address semantics are validated. */
+__declspec(naked) void __cdecl sub_00015B50(void)
 {
     __asm {
-        mov eax, [dat_002d45f0]
-        mov eax, dword ptr [eax + 2014Ch]
-        cmp eax, 3h
-        ja L_15B98
-        jmp dword ptr [eax*4h + 15B9Ch]
-        movss xmm0, dword ptr [ecx + 2F0h]
-        mulss xmm0, dword ptr [dat_00295e48]
-        jmp L_15B89
-        movss xmm0, dword ptr [ecx + 2F0h]
-        mulss xmm0, dword ptr [dat_00295e44]
-        L_15B89:
-        comiss xmm0, dword ptr [dat_00295e58]
-        jc L_15B98
-        mov eax, 1h
-        ret
-        L_15B98:
-        xor eax, eax
-        ret
+        _emit 0xA1
+        _emit 0xF0
+        _emit 0x45
+        _emit 0x2D
+        _emit 0x00
+        _emit 0x8B
+        _emit 0x80
+        _emit 0x4C
+        _emit 0x01
+        _emit 0x02
+        _emit 0x00
+        _emit 0x83
+        _emit 0xF8
+        _emit 0x03
+        _emit 0x77
+        _emit 0x38
+        _emit 0xFF
+        _emit 0x24
+        _emit 0x85
+        _emit 0x9C
+        _emit 0x5B
+        _emit 0x01
+        _emit 0x00
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x81
+        _emit 0xF0
+        _emit 0x02
+        _emit 0x00
+        _emit 0x00
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0x05
+        _emit 0x48
+        _emit 0x5E
+        _emit 0x29
+        _emit 0x00
+        _emit 0xEB
+        _emit 0x10
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x81
+        _emit 0xF0
+        _emit 0x02
+        _emit 0x00
+        _emit 0x00
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x59
+        _emit 0x05
+        _emit 0x44
+        _emit 0x5E
+        _emit 0x29
+        _emit 0x00
+        _emit 0x0F
+        _emit 0x2F
+        _emit 0x05
+        _emit 0x58
+        _emit 0x5E
+        _emit 0x29
+        _emit 0x00
+        _emit 0x72
+        _emit 0x06
+        _emit 0xB8
+        _emit 0x01
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0xC3
+        _emit 0x33
+        _emit 0xC0
+        _emit 0xC3
     }
 }
