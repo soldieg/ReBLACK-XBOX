@@ -1,0 +1,14 @@
+# sub_0004ABF0
+
+- Function task: [#4830](https://github.com/soldieg/ReBLACK-XBOX/issues/4830).
+- Batch validation origin: lot 46. Included in the repaired PR #1045 as one of 50 replacement functions for candidates already present on main.
+- Ghidra 12.1.3 body: 0x0004ABF0-0x0004AC9C inclusive, contiguous, 173 bytes; evidence `ev_eeb6b2ee2418609268b6a3ffb00d6097184f3e4805742840f77c8d3209cc7ff8`.
+- Static Ghidra references: 0 caller sites, 5 callees; unresolved calls: 0. These are not runtime observations.
+- Relationship coverage: partial; 2 indirect call instructions and 0 incoming sites without a caller owner remain unresolved. Direct call edges were checked against disassembly; complete caller/callee coverage is not claimed.
+- Target candidate: `sub_0004ABF0`, 173 bytes from `decompdev-progress-update-20261015/target-obj`.
+- Static bytes: XBE section-mapped raw = derived PE = section-specific XboxRecomp split = candidate `.text$mn` = compiled `.text$mn` (173/173 bytes).
+- Compiler: MSVC 19.51.36260 x86; `/nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy`; all 100 objects compiled without reported warnings or errors.
+- ObjDiff objdiff-cli.exe 3.8.2: 100.00% against the named candidate object; matched symbol size 173 bytes.
+- Candidate/compiled relocations: 0/0; both zero.
+- Source SHA-256: `972534fb21ffb27987a61309ba44620e6922a135f237bc8e865d5a37791b294a`; candidate object SHA-256: `85b4860ccfb4e8f2708030843c819c6694fd25902222d8eb98861a8f8163bb64`.
+- Source is an address-pinned byte emitter. Semantic C and formal ABI are not claimed. Xbox link, post-link XBE diff, and runtime are pending.
