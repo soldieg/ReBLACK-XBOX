@@ -66,3 +66,15 @@ Lot 67 merged in PR #7144 with 100 functions totaling 5,600 bytes. Its merge-tri
 
 
 Lot 68 merged in PR #7245 with 100 functions totaling 5,129 bytes. All 100 have contiguous Ghidra 12.1.3 bodies, and original XBE mapped, derived PE, Ghidra, and XboxRecomp split bytes match. MSVC 19.51.36260 x86 compiled all sources without diagnostics; ObjDiff 3.8.2 reports 100.00% for each named candidate, and candidate/compiled COFF `.text$mn` sections match byte for byte (5,129/5,129 bytes, 0/0 relocations). Ghidra reports 3 unresolved computed/indirect call sites across 3 functions and no unresolved direct calls. These are address-pinned byte emitters, not semantic C or formal ABI reconstructions. Xbox link, post-link XBE diff, runtime, and gameplay remain pending. The combined dashboard now reports 7,126 exact candidates / 1,475,789 exact bytes (64.24417845%) after lots 62–68; raw fuzzy ObjDiff remains 0.66778016%. `reconstructions/validation-index.json` and the 346-function accepted-reconstruction queue are unchanged.
+
+## Propostas abertas de lotes de 100 funções
+
+| Lote | PR | Estado | Funções | Bytes | ObjDiff | Chamadas indiretas sem destino |
+|---:|---|---|---:|---:|---:|---:|
+| 69 | [#7346](https://github.com/soldieg/ReBLACK-XBOX/pull/7346) | aberta, mergeable | 100 | 5.763 | 100/100 a 100% | 8 |
+| 70 | [#7431](https://github.com/soldieg/ReBLACK-XBOX/pull/7431) | aberta, mergeable | 100 | 6.164 | 100/100 a 100% | 7 |
+| 71 | [#7453](https://github.com/soldieg/ReBLACK-XBOX/pull/7453) | aberta, mergeable | 100 | 12.097 | 100/100 a 100% | 37 |
+| 72 | [#7563](https://github.com/soldieg/ReBLACK-XBOX/pull/7563) | aberta, mergeable | 100 | 8.585 | 100/100 a 100% | 62 |
+| 73 | pendente | branch do lote em preparação | 100 | 4.203 | 100/100 a 100% | 14 |
+
+Cada prévia é independente e soma somente seu lote à `main` integrada até o lote 68; as propostas abertas 69–72 não são acumuladas nesta prévia. O lote 73 tem 100 corpos Ghidra contíguos e 1.226 instruções. XBE original, PE derivada, Ghidra e split XboxRecomp coincidem em 4.203 bytes; MSVC x86 compilou sem diagnósticos; as seções COFF `.text$mn` coincidem byte a byte (4.203/4.203 bytes, 0/0 relocações); ObjDiff 3.8.2 resulta em 100/100 a 100% contra os objetos candidatos identificados. A prévia do lote 73 informa 7.226 candidatos exatos / 1.479.992 bytes (64,42714382%) no inventário incompleto de 13.676 candidatos; ObjDiff fuzzy permanece 0,66778016%. São emissores de bytes presos ao endereço, não C semântico nem ABI formal; link Xbox, diff pós-link, runtime e gameplay permanecem pendentes. O índice de validação de mantenedor e a fila independente de 346 funções não mudaram.
