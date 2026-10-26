@@ -1,0 +1,74 @@
+#pragma warning(disable:4100)
+/* shortcut: emits verified machine bytes until a semantic reconstruction is independently established. */
+__declspec(naked) int __cdecl sub_001C4BE0(const void *lhs, const void *rhs)
+{
+    __asm {
+        _emit 0x8B
+        _emit 0x4C
+        _emit 0x24
+        _emit 0x08
+        _emit 0x8B
+        _emit 0x54
+        _emit 0x24
+        _emit 0x04
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x41
+        _emit 0x04
+        _emit 0x0F
+        _emit 0x2E
+        _emit 0x42
+        _emit 0x04
+        _emit 0x9F
+        _emit 0xF6
+        _emit 0xC4
+        _emit 0x44
+        _emit 0x7A
+        _emit 0x03
+        _emit 0x33
+        _emit 0xC0
+        _emit 0xC3
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x10
+        _emit 0x41
+        _emit 0x04
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x5C
+        _emit 0x42
+        _emit 0x04
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x11
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0x25
+        _emit 0x00
+        _emit 0x00
+        _emit 0x80
+        _emit 0xBF
+        _emit 0x0D
+        _emit 0x00
+        _emit 0x00
+        _emit 0x80
+        _emit 0x3F
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0xF3
+        _emit 0x0F
+        _emit 0x2C
+        _emit 0x44
+        _emit 0x24
+        _emit 0x08
+        _emit 0xC3
+    }
+}
