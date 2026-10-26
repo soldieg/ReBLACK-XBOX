@@ -66,3 +66,17 @@ Lot 67 merged in PR #7144 with 100 functions totaling 5,600 bytes. Its merge-tri
 
 
 Lot 68 merged in PR #7245 with 100 functions totaling 5,129 bytes. All 100 have contiguous Ghidra 12.1.3 bodies, and original XBE mapped, derived PE, Ghidra, and XboxRecomp split bytes match. MSVC 19.51.36260 x86 compiled all sources without diagnostics; ObjDiff 3.8.2 reports 100.00% for each named candidate, and candidate/compiled COFF `.text$mn` sections match byte for byte (5,129/5,129 bytes, 0/0 relocations). Ghidra reports 3 unresolved computed/indirect call sites across 3 functions and no unresolved direct calls. These are address-pinned byte emitters, not semantic C or formal ABI reconstructions. Xbox link, post-link XBE diff, runtime, and gameplay remain pending. The combined dashboard now reports 7,126 exact candidates / 1,475,789 exact bytes (64.24417845%) after lots 62–68; raw fuzzy ObjDiff remains 0.66778016%. `reconstructions/validation-index.json` and the 346-function accepted-reconstruction queue are unchanged.
+
+## Open 100-function lot proposals
+
+GitHub status checked on 2026-10-26: lots 69, 70, and 71 remain open and mergeable. Each branch is a separate dashboard proposal; none is part of `main` until merged.
+
+| Lot | PR | State | Functions | Bytes | ObjDiff 100% | Unresolved computed calls |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| 69 | [#7346](https://github.com/soldieg/ReBLACK-XBOX/pull/7346) | open, mergeable | 100 | 5,763 | 100/100 | 8 |
+| 70 | [#7431](https://github.com/soldieg/ReBLACK-XBOX/pull/7431) | open, mergeable | 100 | 6,164 | 100/100 | 7 |
+| 71 | [#7453](https://github.com/soldieg/ReBLACK-XBOX/pull/7453) | open, mergeable | 100 | 12,097 | 100/100 | 37 |
+| 72 | pending | prepared in this branch | 100 | 8,585 | 100/100 | 62 |
+
+Lot 72 has 100 contiguous Ghidra 12.1.3 bodies totaling 8,585 bytes and 2,856 instructions. Original XBE mapped bytes, derived PE mapped bytes, Ghidra body, and XboxRecomp split match for all 100. MSVC 19.51.36260 x86 compiled all sources without diagnostics; ObjDiff 3.8.2 reports 100.00% against each named candidate, and candidate/compiled COFF `.text$mn` sections match byte-for-byte (8,585/8,585 bytes, 0/0 relocations). Ghidra reports 62 unresolved computed/indirect call sites and no unresolved direct calls. The sources are address-pinned byte emitters, not semantic C or formal ABI reconstructions. Xbox link, post-link XBE diff, runtime, and gameplay remain pending. The lot 72 branch preview reports 7,226 exact candidates / 1,484,374 exact bytes (64.61790144%) across the incomplete 13,676-candidate snapshot; raw fuzzy ObjDiff remains 0.66778016%. This proposal includes only lot 72 on top of merged main through lot 68; it does not combine the open lots 69–71. Nine initially screened targets were excluded because their direct callees have no source reconstruction in public main; their Issues remain open. The maintainer-only validation index and 346-function accepted-reconstruction queue are unchanged.
+
