@@ -1,0 +1,16 @@
+# sub_0008BFD0 — lote 71
+
+- Issue: [#6507](https://github.com/soldieg/ReBLACK-XBOX/issues/6507).
+- Ghidra 12.1.3 local: corpo contíguo 0x0008BFD0–0x0008C013 (inclusive), 68 bytes, 19 instruções.
+- Grafo estático Ghidra: callers diretos observados: nenhum.
+- Callees diretos observados: 0x00080EF0 (00080ef0), 0x00084CA0 (00084ca0), 0x00084DC0 (00084dc0).
+- Referências de dados entrantes observadas: 0.
+- Chamadas computadas/indiretas sem destino resolvido: 0; chamadas diretas sem destino resolvido: 0.
+- Bytes: XBE original mapeado por seção = PE derivada mapeada por seção = corpo Ghidra = split XboxRecomp, byte a byte; fronteiras e comprimentos coincidem.
+- SHA-256 dos bytes comparados: `997087bb9cc7fa15f60bb5b54678b4192dbb2ffde3d4822fb693d38ccfb8548b`.
+- Fonte C SHA-256: `822f6ba58ec3d9ca81e0b92e3d849235e6aa8e3c84d18406c55e9846e8da6047`.
+- Compilação: MSVC 19.51.36260 x86; `/nologo /W4 /TC /c /O2 /GS- /Zl /Gd /Gy`; compilou sem diagnósticos.
+- ObjDiff 3.8.2: 100.00% contra o símbolo candidato nomeado `_sub_0008BFD0`, tamanho 68 bytes; as seções COFF `.text$mn` são idênticas byte a byte (68/68 bytes, 0/0 relocações).
+- SHA-256 da seção `.text$mn`: `997087bb9cc7fa15f60bb5b54678b4192dbb2ffde3d4822fb693d38ccfb8548b`.
+
+A fonte é um emissor de bytes preso ao endereço; não representa reconstrução semântica em C nem confirma ABI formal. REA MCP não estava disponível; as consultas de relações e fronteiras usaram Ghidra local. Xbox link, diff pós-link do XBE, runtime e gameplay permanecem pendentes.
