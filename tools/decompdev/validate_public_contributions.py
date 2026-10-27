@@ -28,6 +28,7 @@ TOKEN = re.compile(r"(?i)\b(?:gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_
 BYTE_DUMP = re.compile(r"(?i)(?:\b[0-9a-f]{2}\s+){15,}[0-9a-f]{2}\b")
 FUNCTION_ID = re.compile(r"^sub_[0-9a-fA-F]{8}$")
 MAX_TEXT_BYTES = 1024 * 1024
+MAX_EXACTIFICATION_DATA_BYTES = 2 * 1024 * 1024
 
 
 def inspect_public_file(path: Path, root: Path) -> list[str]:
@@ -42,8 +43,9 @@ def inspect_public_file(path: Path, root: Path) -> list[str]:
         content = path.read_bytes()
     except OSError as error:
         return [f"{relative}: cannot read changed file ({error})"]
-    if len(content) > MAX_TEXT_BYTES:
-        errors.append(f"{relative}: text contribution exceeds 1 MiB")
+    limit = MAX_EXACTIFICATION_DATA_BYTES if relative == "docs/data/exactification-functions.json" else MAX_TEXT_BYTES
+    if len(content) > limit:
+        errors.append(f"{relative}: text contribution exceeds {limit // (1024 * 1024)} MiB")
     if b"\x00" in content:
         errors.append(f"{relative}: binary content is not allowed")
         return errors

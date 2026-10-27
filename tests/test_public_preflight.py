@@ -12,6 +12,17 @@ from validate_public_contributions import (
 
 
 class PublicPreflightTests(unittest.TestCase):
+    def test_allows_dashboard_dataset_above_generic_text_limit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dataset = root / "docs" / "data" / "exactification-functions.json"
+            dataset.parent.mkdir(parents=True)
+            dataset.write_bytes(b" " * (1024 * 1024 + 1))
+            self.assertEqual(inspect_public_file(dataset, root), [])
+            other = root / "docs" / "data" / "other.json"
+            other.write_bytes(dataset.read_bytes())
+            self.assertTrue(inspect_public_file(other, root))
+
     def test_rejects_game_binaries_and_absolute_local_paths(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
