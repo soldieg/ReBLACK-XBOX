@@ -1,0 +1,46 @@
+__declspec(naked) void __cdecl sub_00035E90(void) {
+    __asm {
+        _emit 0x8B
+        _emit 0x44
+        _emit 0x24
+        _emit 0x04
+        _emit 0x85
+        _emit 0xC0
+        _emit 0x74
+        _emit 0x21
+        _emit 0x80
+        _emit 0x38
+        _emit 0x00
+        _emit 0x8B
+        _emit 0xD0
+        _emit 0x74
+        _emit 0x1A
+        _emit 0x90
+        _emit 0x8A
+        _emit 0x0A
+        _emit 0x80
+        _emit 0xF9
+        _emit 0x61
+        _emit 0x7C
+        _emit 0x0A
+        _emit 0x80
+        _emit 0xF9
+        _emit 0x7A
+        _emit 0x7F
+        _emit 0x05
+        _emit 0x80
+        _emit 0xE9
+        _emit 0x20
+        _emit 0x88
+        _emit 0x0A
+        _emit 0x8A
+        _emit 0x4A
+        _emit 0x01
+        _emit 0x42
+        _emit 0x84
+        _emit 0xC9
+        _emit 0x75
+        _emit 0xE7
+        _emit 0xC3
+    }
+}
