@@ -238,32 +238,32 @@
   };
   const keys = ["pageTitle","intro","scope","metrics","exactMetric","fuzzyMetric","functionsMetric","candidatesMetric","bytesMetric","mapTitle","mapDescription","searchLabel","searchPlaceholder","classification","allCandidates","exact","fuzzy","unmatched","loadingCandidates","legend","exactBytes","fuzzyCandidate","noMatchRecorded","chartAria","listDefault","listFiltered","noteLimit","noteFiltered","noteDefault","footer","repoLink","docsLink","loadingScope","errorData","noData","bytes","tooltipExact","tooltipFuzzy","tooltipNone","resultCount","languageLabel","languageMenu"];
   const regionCopy = {
-    en:{label:"Address region",all:"All address regions",help:"Click a region to zoom in; choose all regions to return. Grouped by start address only, not calls or containment.",tip:"Address range {region}: {count} candidates, {bytes} code bytes. Grouped by start address; this does not imply calls."},
-    "pt-BR":{label:"Região de endereço",all:"Todas as regiões",help:"Clique numa região para ampliar; escolha todas as regiões para voltar. O agrupamento usa só o endereço inicial, não chamadas ou contenção.",tip:"Faixa {region}: {count} candidatas, {bytes} bytes de código. Agrupadas pelo endereço inicial; isso não indica chamadas."},
-    es:{label:"Región de direcciones",all:"Todas las regiones",help:"Haz clic en una región para ampliar; selecciona todas para volver. Se agrupa solo por dirección inicial, no por llamadas ni contención.",tip:"Rango {region}: {count} candidatas, {bytes} bytes de código. Agrupadas por dirección inicial; no indica llamadas."},
-    ru:{label:"Область адресов",all:"Все области",help:"Нажмите на область для увеличения; выберите все области для возврата. Группировка только по начальному адресу, не по вызовам или вложенности.",tip:"Диапазон {region}: кандидатов — {count}, байт кода — {bytes}. Группировка по начальному адресу не означает связь вызовов."},
-    fr:{label:"Région d’adresses",all:"Toutes les régions",help:"Cliquez sur une région pour zoomer ; choisissez toutes les régions pour revenir. Le regroupement suit l’adresse de début, pas les appels ni l’imbrication.",tip:"Plage {region} : {count} candidats, {bytes} octets de code. Regroupés par adresse de début ; cela n’indique pas des appels."},
-    de:{label:"Adressbereich",all:"Alle Adressbereiche",help:"Klicken Sie auf einen Bereich zum Vergrößern; wählen Sie alle Bereiche für die Rückkehr. Gruppiert wird nur nach Startadresse, nicht nach Aufrufen oder Verschachtelung.",tip:"Bereich {region}: {count} Kandidaten, {bytes} Code-Bytes. Gruppiert nach Startadresse; daraus folgt keine Aufrufbeziehung."},
-    it:{label:"Area di indirizzi",all:"Tutte le aree",help:"Fai clic su un’area per ingrandirla; seleziona tutte le aree per tornare. Il raggruppamento usa solo l’indirizzo iniziale, non chiamate o contenimento.",tip:"Intervallo {region}: {count} candidate, {bytes} byte di codice. Raggruppate per indirizzo iniziale; non indica chiamate."},
-    ja:{label:"アドレス領域",all:"すべての領域",help:"領域をクリックすると拡大し、すべての領域を選ぶと戻ります。開始アドレスによる分類で、呼び出しや包含関係を示しません。",tip:"範囲 {region}: 候補 {count} 件、コード {bytes} バイト。開始アドレス別の分類であり、呼び出し関係を示すものではありません。"},
-    ko:{label:"주소 영역",all:"모든 주소 영역",help:"영역을 클릭해 확대하고, 모든 영역을 선택해 돌아가세요. 시작 주소로만 묶으며 호출이나 포함 관계를 뜻하지 않습니다.",tip:"범위 {region}: 후보 {count}개, 코드 {bytes}바이트. 시작 주소별 그룹이며 호출 관계를 뜻하지 않습니다."},
-    "zh-CN":{label:"地址区域",all:"所有地址区域",help:"点击区域可放大，选择所有区域可返回。这里只按起始地址分组，不代表调用或包含关系。",tip:"范围 {region}：{count} 个候选项，代码 {bytes} 字节。按起始地址分组，不代表调用关系。"},
-    ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"انقر على نطاق للتكبير، واختر كل النطاقات للعودة. التجميع حسب عنوان البداية فقط، ولا يدل على الاستدعاءات أو الاحتواء.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
-    tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Yakınlaştırmak için bir bölgeye, geri dönmek için tüm bölgelere tıklayın. Gruplama yalnızca başlangıç adresine göredir; çağrı veya içerme ilişkisi değildir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
+    en:{label:"Address region",all:"All address regions",help:"Incomplete regions fill amber from bottom to top; a fully exact region is green, and gray is the remaining share. Filters affect the percentage. Click to zoom in; grouping uses start addresses only, not calls or containment.",tip:"Address range {region}: {count} candidates, {bytes} code bytes. Grouped by start address; this does not imply calls."},
+    "pt-BR":{label:"Região de endereço",all:"Todas as regiões",help:"Regiões incompletas são preenchidas de baixo para cima em amarelo; uma região 100% exata fica verde, e o cinza mostra o que falta. Os filtros alteram a porcentagem. Clique para ampliar; o agrupamento usa só o endereço inicial, não chamadas ou contenção.",tip:"Faixa {region}: {count} candidatas, {bytes} bytes de código. Agrupadas pelo endereço inicial; isso não indica chamadas."},
+    es:{label:"Región de direcciones",all:"Todas las regiones",help:"Las regiones incompletas se rellenan en ámbar de abajo hacia arriba; una región 100 % exacta queda verde y el gris muestra lo que falta. Los filtros cambian el porcentaje. Haz clic para ampliar; se agrupa por dirección inicial.",tip:"Rango {region}: {count} candidatas, {bytes} bytes de código. Agrupadas por dirección inicial; no indica llamadas."},
+    ru:{label:"Область адресов",all:"Все области",help:"Незаполненные области окрашиваются янтарным снизу вверх; полностью точная область становится зелёной, серый показывает остаток. Фильтры меняют процент. Нажмите для увеличения; группировка по начальному адресу.",tip:"Диапазон {region}: кандидатов — {count}, байт кода — {bytes}. Группировка по начальному адресу не означает связь вызовов."},
+    fr:{label:"Région d’adresses",all:"Toutes les régions",help:"Les régions incomplètes se remplissent en ambre de bas en haut ; une région exacte à 100 % devient verte et le gris montre le reste. Les filtres modifient le pourcentage. Cliquez pour zoomer ; le regroupement suit l’adresse de début.",tip:"Plage {region} : {count} candidats, {bytes} octets de code. Regroupés par adresse de début ; cela n’indique pas des appels."},
+    de:{label:"Adressbereich",all:"Alle Adressbereiche",help:"Unvollständige Bereiche füllen sich von unten nach oben in Bernstein; ein vollständig exakter Bereich wird grün, Grau zeigt den Rest. Filter ändern den Prozentsatz. Klicken Sie zum Vergrößern; gruppiert wird nach Startadresse.",tip:"Bereich {region}: {count} Kandidaten, {bytes} Code-Bytes. Gruppiert nach Startadresse; daraus folgt keine Aufrufbeziehung."},
+    it:{label:"Area di indirizzi",all:"Tutte le aree",help:"Le aree incomplete si riempiono di ambra dal basso verso l’alto; un’area esatta al 100% diventa verde e il grigio indica il resto. I filtri modificano la percentuale. Fai clic per ingrandire; il raggruppamento usa l’indirizzo iniziale.",tip:"Intervallo {region}: {count} candidate, {bytes} byte di codice. Raggruppate per indirizzo iniziale; non indica chiamate."},
+    ja:{label:"アドレス領域",all:"すべての領域",help:"未完了の領域は下から上へ琥珀色で塗られ、100%一致すると緑になります。灰色は残りの割合を示します。フィルターで割合が変わります。クリックすると拡大します。",tip:"範囲 {region}: 候補 {count} 件、コード {bytes} バイト。開始アドレス別の分類であり、呼び出し関係を示すものではありません。"},
+    ko:{label:"주소 영역",all:"모든 주소 영역",help:"미완료 영역은 아래에서 위로 황색으로 채워지고, 100% 정확히 일치하면 초록색이 됩니다. 회색은 남은 부분입니다. 필터에 따라 비율이 바뀝니다. 클릭해 확대하세요.",tip:"범위 {region}: 후보 {count}개, 코드 {bytes}바이트. 시작 주소별 그룹이며 호출 관계를 뜻하지 않습니다."},
+    "zh-CN":{label:"地址区域",all:"所有地址区域",help:"未完成区域从下向上以琥珀色填充；达到 100% 精确匹配后变为绿色，灰色表示剩余部分。筛选条件会改变比例。点击区域可放大；这里只按起始地址分组。",tip:"范围 {region}：{count} 个候选项，代码 {bytes} 字节。按起始地址分组，不代表调用关系。"},
+    ar:{label:"نطاق العناوين",all:"كل النطاقات",help:"تمتلئ النطاقات غير المكتملة باللون الكهرماني من الأسفل إلى الأعلى؛ ويصبح النطاق أخضر عند المطابقة الدقيقة بنسبة 100٪، ويُظهر الرمادي الباقي. تغيّر المرشحات النسبة. انقر للتكبير؛ التجميع حسب عنوان البداية.",tip:"النطاق {region}: ‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. التجميع حسب عنوان البداية ولا يعني وجود استدعاءات."},
+    tr:{label:"Adres bölgesi",all:"Tüm adres bölgeleri",help:"Tamamlanmamış bölgeler aşağıdan yukarıya kehribar rengiyle dolar; %100 tam eşleşen bölge yeşil olur, gri kalan kısmı gösterir. Filtreler oranı değiştirir. Yakınlaştırmak için tıklayın; gruplama başlangıç adresine göredir.",tip:"Aralık {region}: {count} aday, {bytes} kod baytı. Başlangıç adresine göre gruplanır; çağrı ilişkisi anlamına gelmez."}
   };
   const regionProgressCopy = {
-    en:"Exact: {exactCandidates}/{count} candidates, {exactBytes}/{bytes} bytes ({complete}%); remaining {remainingBytes} bytes ({remaining}%), within current filters.",
-    "pt-BR":"Exatas: {exactCandidates}/{count} candidatas, {exactBytes}/{bytes} bytes ({complete}%); faltam {remainingBytes} bytes ({remaining}%), considerando os filtros atuais.",
-    es:"Exactas: {exactCandidates}/{count} candidatas, {exactBytes}/{bytes} bytes ({complete}%); faltan {remainingBytes} bytes ({remaining}%), según los filtros actuales.",
-    ru:"Точно: {exactCandidates}/{count} кандидатов, {exactBytes}/{bytes} байт ({complete}%); осталось {remainingBytes} байт ({remaining}%), с учётом текущих фильтров.",
-    fr:"Exact : {exactCandidates}/{count} candidats, {exactBytes}/{bytes} octets ({complete} %) ; reste {remainingBytes} octets ({remaining} %), selon les filtres actuels.",
-    de:"Exakt: {exactCandidates}/{count} Kandidaten, {exactBytes}/{bytes} Bytes ({complete}%); offen: {remainingBytes} Bytes ({remaining}%), mit aktuellen Filtern.",
-    it:"Esatte: {exactCandidates}/{count} candidate, {exactBytes}/{bytes} byte ({complete}%); restano {remainingBytes} byte ({remaining}%), con i filtri attuali.",
-    ja:"完全一致: {exactCandidates}/{count} 件、{exactBytes}/{bytes} バイト ({complete}%)。残り {remainingBytes} バイト ({remaining}%)。現在のフィルターを適用。",
-    ko:"정확 일치: 후보 {exactCandidates}/{count}개, {exactBytes}/{bytes}바이트 ({complete}%). 남은 양: {remainingBytes}바이트 ({remaining}%). 현재 필터 기준입니다.",
-    "zh-CN":"精确匹配：{exactCandidates}/{count} 个候选项，{exactBytes}/{bytes} 字节（{complete}%）；剩余 {remainingBytes} 字节（{remaining}%），按当前筛选条件统计。",
-    ar:"مطابق تمامًا: {exactCandidates}/{count} مرشحًا، {exactBytes}/{bytes} بايت ({complete}٪)؛ المتبقي {remainingBytes} بايت ({remaining}٪)، وفق عوامل التصفية الحالية.",
-    tr:"Tam eşleşen: {exactCandidates}/{count} aday, {exactBytes}/{bytes} bayt ({complete}%); kalan {remainingBytes} bayt ({remaining}%), geçerli filtrelere göre."
+    en:"{count} candidates, {bytes} code bytes. Exact: {exactCandidates}/{count} candidates ({exactBytes}/{bytes} bytes, {complete}%); remaining {remainingBytes} bytes ({remaining}%).",
+    "pt-BR":"{count} candidatas, {bytes} bytes de código. Exatas: {exactCandidates}/{count} candidatas ({exactBytes}/{bytes} bytes, {complete}%); faltam {remainingBytes} bytes ({remaining}%).",
+    es:"{count} candidatas, {bytes} bytes de código. Exactas: {exactCandidates}/{count} candidatas ({exactBytes}/{bytes} bytes, {complete}%); faltan {remainingBytes} bytes ({remaining}%).",
+    ru:"Кандидатов: {count}, байт кода: {bytes}. Точных: {exactCandidates}/{count} ({exactBytes}/{bytes} байт, {complete}%); осталось {remainingBytes} байт ({remaining}%).",
+    fr:"{count} candidats, {bytes} octets de code. Exactes : {exactCandidates}/{count} candidats ({exactBytes}/{bytes} octets, {complete} %) ; reste {remainingBytes} octets ({remaining} %).",
+    de:"{count} Kandidaten, {bytes} Code-Bytes. Exakt: {exactCandidates}/{count} Kandidaten ({exactBytes}/{bytes} Bytes, {complete}%); übrig: {remainingBytes} Bytes ({remaining}%).",
+    it:"{count} candidate, {bytes} byte di codice. Esatte: {exactCandidates}/{count} candidate ({exactBytes}/{bytes} byte, {complete}%); restano {remainingBytes} byte ({remaining}%).",
+    ja:"候補 {count} 件、コード {bytes} バイト。完全一致: {exactCandidates}/{count} 件 ({exactBytes}/{bytes} バイト、{complete}%)。残り {remainingBytes} バイト ({remaining}%)。",
+    ko:"후보 {count}개, 코드 {bytes}바이트. 정확히 일치: {exactCandidates}/{count}개 ({exactBytes}/{bytes}바이트, {complete}%); 남은 바이트: {remainingBytes} ({remaining}%).",
+    "zh-CN":"{count} 个候选项，代码 {bytes} 字节。精确匹配：{exactCandidates}/{count} 个（{exactBytes}/{bytes} 字节，{complete}%）；剩余 {remainingBytes} 字节（{remaining}%）。",
+    ar:"‏{count} مرشحًا، ‏{bytes} بايت من الشيفرة. المطابق تمامًا: ‏{exactCandidates}/{count} (‏{exactBytes}/{bytes} بايت، ‏{complete}٪)؛ المتبقي ‏{remainingBytes} بايت (‏{remaining}٪).",
+    tr:"{count} aday, {bytes} kod baytı. Tam eşleşen: {exactCandidates}/{count} aday ({exactBytes}/{bytes} bayt, {complete}%); kalan {remainingBytes} bayt ({remaining}%)."
   };
   const progressMetricCopy = {
     en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
@@ -623,11 +623,11 @@
     return Number.isFinite(start) ? `${region}–0x${(start+0xffff).toString(16).toUpperCase().padStart(8,"0")}` : region;
   }
   function regionSummaryText(item) {
-    const values={"{region}":regionRangeLabel(item.region),"{count}":fmt.format(item.members.length),"{bytes}":fmt.format(item.bytes),
+    const values={"{count}":fmt.format(item.members.length),"{bytes}":fmt.format(item.bytes),
       "{exactCandidates}":fmt.format(item.exactCandidates),"{exactBytes}":fmt.format(item.exactBytes),"{complete}":fmt.format(item.completePercent),
       "{remainingBytes}":fmt.format(item.remainingBytes),"{remaining}":fmt.format(item.remainingPercent)};
     const fill=template=>Object.entries(values).reduce((text,[key,value])=>text.replaceAll(key,value),template);
-    return `${fill(regionCopy[language].tip)} ${fill(regionProgressCopy[language] || regionProgressCopy.en)}`;
+    return fill(regionProgressCopy[language] || regionProgressCopy.en);
   }
   function regionGroups(items) {
     const groups=new Map();
@@ -783,11 +783,19 @@
     rectangles = layout(mapItems,box.width,box.height);
     ctx.clearRect(0,0,box.width,box.height);
     for (const rect of rectangles) {
-      const state = rect.item.members ? rect.item.state : candidateState(rect.item);
-      ctx.fillStyle = state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
-      ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
+      const isRegion=Boolean(rect.item.members), state = isRegion ? rect.item.state : candidateState(rect.item);
+      if (isRegion) {
+        ctx.fillStyle=colors.unmatched; ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
+        const progress=Math.max(0,Math.min(1,rect.item.completePercent/100)), fillHeight=rect.h*progress;
+        ctx.fillStyle=progress===1 ? colors.exact : colors.fuzzy;
+        ctx.fillRect(rect.x,rect.y+rect.h-fillHeight,rect.w,fillHeight);
+      } else {
+        ctx.fillStyle = state === "review" ? colors.review : state === "claimed" ? colors.claimed : colors[rect.item.category];
+        ctx.fillRect(rect.x,rect.y,rect.w,rect.h);
+      }
       if (rect.w > 5 && rect.h > 5) {
-        ctx.strokeStyle = "#10151d"; ctx.lineWidth = .65;
+        ctx.strokeStyle = isRegion && state === "review" ? colors.review : isRegion && state === "claimed" ? colors.claimed : "#10151d";
+        ctx.lineWidth = isRegion && state !== "available" ? 2 : .65;
         ctx.strokeRect(rect.x+.3,rect.y+.3,rect.w-.6,rect.h-.6);
       }
       if (selected === rect.item) {
@@ -800,7 +808,7 @@
     if (item.members) {
       const detail=document.createElement("span"), title=document.createElement("strong");
       tooltip.replaceChildren();
-      title.textContent=regionRangeLabel(item.region);
+      title.textContent=`${regionRangeLabel(item.region)}: ${fmt.format(item.completePercent)}%`;
       detail.textContent=regionSummaryText(item);
       tooltip.append(title,detail);
       return;
