@@ -14,3 +14,16 @@
 - Exact static bytes: original XBE raw span = mapped derived-PE span = candidate .text$mn = compiled .text$mn, 967/967 bytes.
 - Candidate and compiled COFF relocations: 0/0; compiled object SHA-256: f5807bdf204c08ea65cb452cd08b098fbf58cf0e3f6d212078f29f0dd1af96f9; compiled .text$mn SHA-256: 242b2bb72c8d612afb4ad14326cf6b099e748aa3abc6bc671aff6196cb765740.
 - Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+
+## Lot 93 static revalidation
+
+- Function task: [#1685](https://github.com/soldieg/ReBLACK-XBOX/issues/1685).
+- Function range: 0x0003DAE0–0x0003DEA6 inclusive, contiguous, 967 bytes; fresh Ghidra 12.1.3 body and complete REA byte read agree on the span.
+- Dashboard candidate: `current-exact`, 967 bytes; the function is already present in the 2026-10-28 exactification snapshot.
+- Fresh evidence references: Ghidra `ev_01a347d45f321ba7f55aca6a73064f7ff78bdce93fb6865c4233486674150012`; REA `ev_ffafd98d50ba1163ba6f4bd68ddf67eb7a1c3e4d66c80b7bbb239f705ceca221`.
+- Relationship coverage: partial. Ghidra limitations: Ghidra's callee inventory omits targets of 6 call reference(s) or decoded call(s) without destinations.. Decoded calls without resolved destinations: 0x3dd40, 0x3dd55, 0x3dd91, 0x3ddbf, 0x3ddf6, 0x3de08. Their targets remain unknown; direct versus indirect is not asserted. Caller/callee relationships are not marked complete.
+- Static byte comparison: REA bytes = original XBE raw span = mapped derived PE = XboxRecomp split = named candidate COFF `.text$mn` = fresh MSVC x86 `.text$mn`, 967/967 bytes.
+- Compiler: MSVC 19.51.36260 x86, `/TC /c /O2 /GS- /GR- /Zl /Gd /Gy`; compile passed.
+- ObjDiff 3.8.2 against the identified candidate: 100.00% for the named symbol and `.text$mn` section; candidate and compiled objects have zero relocations.
+- Source SHA-256: `cfbcd8fe675c0cac763532f8e9f5c263a0fe721f253556471b6dd31f0a5e73dc`; candidate COFF SHA-256: `9d643e87b54a713e943d66643c56eec8b7e359e5fed3196d835cb7cca3ad0edc`; compiled COFF SHA-256: `da88b5f7b18b711fc729190e2bc18713baecbd2903efc9b044d3c28f6dec3147`; ObjDiff report SHA-256: `92e08a93a41ad1d40af1bc53279f1faa5905052dfe049fc07ffdcf5431d92442`.
+- Source is an address-pinned byte emitter; semantic C, original types, complete caller/callee inventory, and formal ABI are not claimed. Xbox full link, post-link XBE diff, runtime, and gameplay were not run.
