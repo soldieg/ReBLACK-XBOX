@@ -13,3 +13,12 @@
 - Candidate object path: `decompilacao/compilacao/decompdev-refresh-20261015/target-obj/sub_000E3DC0.obj`. Its historical inventory marks units `complete=false`; this is a limitation on inventory/build claims, while the candidate's exact bytes independently match the target span.
 
 This is an address-pinned byte emitter, not semantic C or formal ABI recovery. Xbox linking, post-link XBE diff, runtime, and gameplay remain pending. It advances the supported working count from 84/100 to 85/100; the public dashboard remains unchanged until the full lot is reconciled and validated.
+
+## Lot 90 fresh revalidation (2026-10-28)
+
+- GitHub Issue: [#8906](https://github.com/soldieg/ReBLACK-XBOX/issues/8906); open and without a prior lot tag when audited.
+- Fresh Ghidra 12.1.3 boundary/relationship Evidence: `ev_5c77ef8df062d62e80ff098c9f0c0374b580f6c23a61dc3762f9f0b36c16385f`; complete REA byte-read Evidence: `ev_92b073e66dd69c8ed1313b6bad75793d3adf4e469cd98df3fc1d37fa190cc808`.
+- MSVC x86 object bytes match REA, original XBE raw, mapped derived PE, XboxRecomp split, and named candidate COFF for 270 bytes.
+- Candidate and fresh object have zero relocations; ObjDiff 3.8.2 reports the symbol and `.text$mn` at 100.00%.
+- Source SHA-256: `f58117d5b5fd8969a289aea69eea4f22b4cf0ba933cf7b9a72df77f4f3c81be7`; candidate COFF SHA-256: `dd71e40d8acf34cc8590f004824234f5fed6ab46e3cac15c9a5d96581ed81c63`; compiled COFF SHA-256: `5003da2680a0cc8fb771f4a44b4efd9cad1beb4242898ccfdaaa18f2af399267`; ObjDiff report SHA-256: `1d1de6d38622856d8e2c0cb21b241f40674a0e958968e4d61fd57cb4beb6a1a9`.
+- Static byte-emitter validation only. Semantic C, formal ABI, Xbox full link, post-link XBE diff, runtime, and gameplay remain unverified.
