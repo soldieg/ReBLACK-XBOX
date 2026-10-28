@@ -189,21 +189,21 @@ Lot 87 validates 100 distinct functions (14,325 bytes), with no overlap against 
 Lot 88 validates 100 distinct functions (17,438 bytes), with no overlap against Lots 83–87. All 100 are category `exact` in the current dashboard snapshot and have fresh Ghidra 12.1.3 boundary/relationship records, complete REA reads, byte equality across XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for all symbols and `.text$mn` sections; candidate and compiled objects have zero relocations. The dashboard remains at 8,626 exact candidates / 1,651,157 code bytes (71.87831388% of 2,297,156 candidate bytes); all 100 function records were already present in the dashboard exactification index, so no duplicate entries were added. These are static byte-emitter results, not semantic C, ABI, Xbox link, post-link XBE, runtime, or gameplay proof. Per-function evidence is in `reconstructions/evidence/`.
 
 
-## Lot 89 — validation complete (2026-10-28)
+## Lot 89 — merged in PR #8811 (2026-10-28)
 
 Lot 89 validates 100 distinct functions (16,171 bytes), with no overlap against Lots 83–88. All 100 are category `exact` in the current dashboard snapshot and have fresh Ghidra 12.1.3 boundary/relationship records, complete REA reads, byte equality across XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for all symbols and `.text$mn` sections; candidate and compiled objects have zero relocations. The dashboard remains at 8,626 exact candidates / 1,651,157 code bytes (71.87831388% of 2,297,156 candidate bytes); no duplicate IDs were added. These are static byte-emitter results, not semantic C, ABI, Xbox link, post-link XBE, runtime, or gameplay proof. Per-function evidence is in `reconstructions/evidence/`.
 
 
-## Lot 90 — validation complete (2026-10-28)
+## Lot 90 — merged in PR #8912 (2026-10-28)
 
 Lot 90 validates 100 distinct functions (6,389 bytes), with no overlap against Lots 83–89. All 100 are category `exact` in the current dashboard snapshot and have fresh Ghidra 12.1.3 boundary/relationship records, complete REA reads, byte equality across XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for all symbols and `.text$mn` sections; candidate and compiled objects have zero relocations. The dashboard remains at 8,626 exact candidates / 1,651,157 code bytes (71.87831388% of 2,297,156 candidate bytes); the two functions missing from the exactification index were added to it; candidate exact totals remain unchanged. These are static byte-emitter results, not semantic C, ABI, Xbox link, post-link XBE, runtime, or gameplay proof. Per-function evidence is in `reconstructions/evidence/`.
 
 
-## Lot 91 — validation complete (2026-10-28)
+## Lot 91 — merged in PR #8954 (2026-10-28)
 
 Lot 91 validates 100 distinct functions (12,019 bytes), with no overlap against Lots 83–90. All 100 are category `exact` in the current dashboard snapshot and have fresh Ghidra 12.1.3 boundary/relationship records, complete REA reads, byte equality across XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for all symbols and `.text$mn` sections; candidate and compiled objects have zero relocations. The dashboard remains at 8,626 exact candidates / 1,651,157 code bytes (71.87831388% of 2,297,156 candidate bytes); all 100 functions were already present in the dashboard exactification index, so the candidate totals remain unchanged. These are static byte-emitter results, not semantic C, ABI, Xbox link, post-link XBE, runtime, or gameplay proof. Per-function evidence is in `reconstructions/evidence/`.
 
-## Lot 92 — validation complete (2026-10-28)
+## Lot 92 — merged in PR #8995 (2026-10-28)
 
 Lot 92 validates 100 distinct functions (11,322 bytes), with no overlap against Lots 83–91. All 100 are `current-exact` in the 2026-10-28 exactification snapshot, so the dashboard candidate count remains 8,626 and no duplicate function entries were added. Fresh Ghidra 12.1.3 boundaries and complete REA byte reads agree for all 100; bytes match across XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for all symbols and `.text$mn` sections; both object sets have zero relocations. Ghidra caller coverage is partial for all 100: its diagnostics omit 286 caller reference source(s) into these function bodies in total; no unresolved direct calls were reported. This caller limitation is recorded per function. These are static byte-emitter results, not semantic C, complete caller/ABI proof, Xbox link, post-link XBE, runtime, or gameplay proof. Per-function evidence is in `reconstructions/evidence/`.
 
