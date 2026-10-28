@@ -14,3 +14,7 @@
 - Exact static bytes: original XBE raw span = mapped derived-PE span = candidate .text$mn = compiled .text$mn, 250/250 bytes.
 - Candidate and compiled COFF relocations: 0/0; compiled object SHA-256: 5ac84484a6b881f0d073c9396c6c9ec7b15b11ea766c2dbdc0316ecd9db423d7; compiled .text$mn SHA-256: f6ff4d0e696e1e48b43c40efc4660e407f0fb3e2999296f290010ea289ad45a6.
 - Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+
+### Lot 94 static revalidation (2026-10-28)
+
+Issue: [#1641](https://github.com/soldieg/ReBLACK-XBOX/issues/1641). Fresh Ghidra 12.1.3 confirms one contiguous 250-byte body at 0x0002FFC0. The complete REA read matches XBE raw, the derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 `.text$mn` byte for byte; both COFF sections have zero relocations. ObjDiff 3.8.2: symbol 100.00%, `.text$mn` 100.00%. Private batch evidence IDs: Ghidra `ev_fd4e6443b733cc61a8d5b2cdfe1204a5f049326d7db0c398fd804e9b45b220af`, REA bytes `ev_5f5b7367699dd4568382849ded9c66722622f75451e8a1adabc38b08c26fd852`. Relationship coverage: partial; 1 resolved callers, 0 resolved callees, 3 unresolved call sites. This is static byte/candidate evidence only; semantic C/ABI, Xbox link, post-link XBE diff, and runtime are not established.

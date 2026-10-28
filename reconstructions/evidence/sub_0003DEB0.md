@@ -17,3 +17,7 @@ This record is for the function body bytes produced by the listed source and too
 - Xbox full link: `NOT_RUN`.
 - Runtime: `NOT_RUN`.
 - Source form: Exact-byte source; source-level semantic equivalence is not inferred..
+
+### Lot 94 static revalidation (2026-10-28)
+
+Issue: [#9016](https://github.com/soldieg/ReBLACK-XBOX/issues/9016). Fresh Ghidra 12.1.3 confirms one contiguous 268-byte body at 0x0003DEB0. The complete REA read matches XBE raw, the derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 `.text$mn` byte for byte; both COFF sections have zero relocations. ObjDiff 3.8.2: symbol 100.00%, `.text$mn` 100.00%. Private batch evidence IDs: Ghidra `ev_a4e69bf8de1785d0346af76da5c1339843cd037954b0c512cd0195ade74c6db3`, REA bytes `ev_31da9221bd4be7991f7bafe8aa612c2264e6cef47fedb7e853a0c9f173a7711c`. Relationship coverage: partial; 4 resolved callers, 4 resolved callees, 3 unresolved call sites. This is static byte/candidate evidence only; semantic C/ABI, Xbox link, post-link XBE diff, and runtime are not established.
