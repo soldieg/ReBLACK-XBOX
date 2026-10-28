@@ -109,9 +109,9 @@
   <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
   <div class="scope" id="scope" aria-live="polite"><span id="scope-text">Loading reviewed report scope…</span></div>
   <section class="info-card" aria-labelledby="latest-batch-title">
-    <h2 id="latest-batch-title">Latest batch</h2>
+    <h2 id="latest-batch-title">Cumulative lot progress</h2>
     <p id="latest-batch-summary"></p>
-    <a class="info-link" id="latest-batch-link" href="https://github.com/soldieg/ReBLACK-XBOX/pull/9045"></a>
+    <a class="info-link" id="latest-batch-link" href="EXACTIFICATION_PROGRESS.md"></a>
   </section>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
     <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Code bytes matched exactly by objdiff</span></div>
@@ -119,6 +119,8 @@
     <div class="metric"><strong id="exact-functions">—</strong><span id="functions-metric">Candidates with exact bytes</span></div>
     <div class="metric"><strong id="candidate-count">—</strong><span id="candidates-metric">Split candidates</span></div>
     <div class="metric"><strong id="byte-count">—</strong><span id="bytes-metric">Candidate code bytes</span></div>
+    <div class="metric"><strong id="lots-reached">100 / 100</strong><span id="lots-metric">Lots reached</span></div>
+    <div class="metric"><strong id="merged-lot-prs">98 / 100</strong><span id="merged-lots-metric">Lot PRs merged</span></div>
   </section>
   <section aria-labelledby="map-heading">
     <h2 id="map-heading">Candidate size map</h2>
@@ -271,18 +273,18 @@
     tr:"{count} aday, {bytes} kod baytı. Tam eşleşen: {exactCandidates}/{count} aday ({exactBytes}/{bytes} bayt, {complete}%); kalan {remainingBytes} bayt ({remaining}%)."
   };
   const progressMetricCopy = {
-    en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
-    "pt-BR":{exactCode:"Bytes candidatos confirmados por comparação exata",fuzzy:"Índice aproximado do objdiff",functions:"Candidatas com bytes exatos",source:"Este snapshot combina o relatório objdiff v2 revisado com comparações exatas de bytes registradas por candidata. Vínculo Xbox e evidências em execução são acompanhados separadamente."},
-    es:{exactCode:"Bytes candidatos confirmados por comparación exacta",fuzzy:"Puntuación aproximada de objdiff",functions:"Candidatas con bytes exactos",source:"Este resumen combina el informe objdiff v2 revisado con comparaciones exactas de bytes registradas por candidata. El enlace de Xbox y las pruebas en ejecución se siguen por separado."},
-    ru:{exactCode:"Байты кандидатов, подтверждённые точным сравнением",fuzzy:"Приблизительная оценка objdiff",functions:"Кандидаты с точными байтами",source:"Этот снимок объединяет проверенный отчёт objdiff v2 с зарегистрированными точными сравнениями байтов отдельных кандидатов. Связывание Xbox и данные выполнения учитываются отдельно."},
-    fr:{exactCode:"Octets candidats confirmés par comparaison exacte",fuzzy:"Score approximatif objdiff",functions:"Candidats avec octets exacts",source:"Cet instantané combine le rapport objdiff v2 vérifié et les comparaisons exactes d’octets enregistrées pour chaque candidat. Le lien Xbox et les preuves d’exécution sont suivis séparément."},
-    de:{exactCode:"Kandidatenbytes durch exakten Vergleich bestätigt",fuzzy:"Näherungswert von objdiff",functions:"Kandidaten mit exakten Bytes",source:"Dieser Snapshot kombiniert den geprüften objdiff-v2-Bericht mit erfassten exakten Bytevergleichen einzelner Kandidaten. Xbox-Verknüpfung und Laufzeitnachweise werden getrennt erfasst."},
-    it:{exactCode:"Byte candidati confermati dal confronto esatto",fuzzy:"Punteggio approssimativo objdiff",functions:"Candidati con byte esatti",source:"Questo snapshot combina il rapporto objdiff v2 revisionato con confronti esatti dei byte registrati per ogni candidato. Collegamento Xbox e prove in esecuzione sono tracciati separatamente."},
-    ja:{exactCode:"完全なバイト比較で確認された候補コード",fuzzy:"objdiffの近似スコア",functions:"バイトが完全一致した候補",source:"このスナップショットは、確認済みobjdiff v2レポートと候補ごとに記録された完全なバイト比較を統合しています。Xboxリンクと実行時の証拠は別に管理します。"},
-    ko:{exactCode:"정확한 바이트 비교로 확인된 후보 코드",fuzzy:"objdiff 근사 점수",functions:"바이트가 정확히 일치한 후보",source:"이 스냅샷은 검토된 objdiff v2 보고서와 후보별로 기록된 정확한 바이트 비교를 결합합니다. Xbox 연결과 실행 증거는 별도로 추적합니다."},
-    "zh-CN":{exactCode:"经精确字节比较确认的候选代码",fuzzy:"objdiff 近似得分",functions:"字节完全匹配的候选项",source:"此快照结合了经过审核的 objdiff v2 报告与逐个候选项记录的精确字节比较。Xbox 链接和运行时证据单独跟踪。"},
-    ar:{exactCode:"بايتات المرشحين المؤكدة بالمقارنة الدقيقة",fuzzy:"نتيجة objdiff التقريبية",functions:"مرشحون ببايتات مطابقة تمامًا",source:"يجمع هذا الملخص بين تقرير objdiff v2 الذي تمت مراجعته ومقارنات البايتات الدقيقة المسجلة لكل مرشح. تتم متابعة ربط Xbox وأدلة التشغيل بشكل منفصل."},
-    tr:{exactCode:"Tam bayt karşılaştırmasıyla doğrulanan aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"Baytları tam eşleşen adaylar",source:"Bu anlık görüntü, incelenmiş objdiff v2 raporunu aday başına kaydedilmiş tam bayt karşılaştırmalarıyla birleştirir. Xbox bağlantısı ve çalışma zamanı kanıtları ayrı izlenir."}
+    en:{exactCode:"Candidate code bytes confirmed by exact byte comparison",fuzzy:"Fuzzy objdiff score",functions:"Candidates with exact bytes",lotsReached:"Lots reached",mergedLotPRs:"Lot PRs merged",source:"This snapshot combines the reviewed objdiff v2 report with recorded exact byte comparisons for individual candidates. Xbox linking and runtime evidence are tracked separately."},
+    "pt-BR":{exactCode:"Bytes candidatos confirmados por comparação exata",fuzzy:"Índice aproximado do objdiff",functions:"Candidatas com bytes exatos",lotsReached:"Lotes alcançados",mergedLotPRs:"PRs dos lotes mescladas",source:"Este snapshot combina o relatório objdiff v2 revisado com comparações exatas de bytes registradas por candidata. Vínculo Xbox e evidências em execução são acompanhados separadamente."},
+    es:{exactCode:"Bytes candidatos confirmados por comparación exacta",fuzzy:"Puntuación aproximada de objdiff",functions:"Candidatas con bytes exactos",lotsReached:"Lotes alcanzados",mergedLotPRs:"PR de lotes combinadas",source:"Este resumen combina el informe objdiff v2 revisado con comparaciones exactas de bytes registradas por candidata. El enlace de Xbox y las pruebas en ejecución se siguen por separado."},
+    ru:{exactCode:"Байты кандидатов, подтверждённые точным сравнением",fuzzy:"Приблизительная оценка objdiff",functions:"Кандидаты с точными байтами",lotsReached:"Достигнутые пакеты",mergedLotPRs:"Объединённые PR пакетов",source:"Этот снимок объединяет проверенный отчёт objdiff v2 с зарегистрированными точными сравнениями байтов отдельных кандидатов. Связывание Xbox и данные выполнения учитываются отдельно."},
+    fr:{exactCode:"Octets candidats confirmés par comparaison exacte",fuzzy:"Score approximatif objdiff",functions:"Candidats avec octets exacts",lotsReached:"Lots atteints",mergedLotPRs:"PR de lots fusionnées",source:"Cet instantané combine le rapport objdiff v2 vérifié et les comparaisons exactes d’octets enregistrées pour chaque candidat. Le lien Xbox et les preuves d’exécution sont suivis séparément."},
+    de:{exactCode:"Kandidatenbytes durch exakten Vergleich bestätigt",fuzzy:"Näherungswert von objdiff",functions:"Kandidaten mit exakten Bytes",lotsReached:"Erreichte Lose",mergedLotPRs:"Zusammengeführte Los-PRs",source:"Dieser Snapshot kombiniert den geprüften objdiff-v2-Bericht mit erfassten exakten Bytevergleichen einzelner Kandidaten. Xbox-Verknüpfung und Laufzeitnachweise werden getrennt erfasst."},
+    it:{exactCode:"Byte candidati confermati dal confronto esatto",fuzzy:"Punteggio approssimativo objdiff",functions:"Candidati con byte esatti",lotsReached:"Lotti raggiunti",mergedLotPRs:"PR dei lotti unite",source:"Questo snapshot combina il rapporto objdiff v2 revisionato con confronti esatti dei byte registrati per ogni candidato. Collegamento Xbox e prove in esecuzione sono tracciati separatamente."},
+    ja:{exactCode:"完全なバイト比較で確認された候補コード",fuzzy:"objdiffの近似スコア",functions:"バイトが完全一致した候補",lotsReached:"到達したロット",mergedLotPRs:"マージ済みロットPR",source:"このスナップショットは、確認済みobjdiff v2レポートと候補ごとに記録された完全なバイト比較を統合しています。Xboxリンクと実行時の証拠は別に管理します。"},
+    ko:{exactCode:"정확한 바이트 비교로 확인된 후보 코드",fuzzy:"objdiff 근사 점수",functions:"바이트가 정확히 일치한 후보",lotsReached:"도달한 로트",mergedLotPRs:"병합된 로트 PR",source:"이 스냅샷은 검토된 objdiff v2 보고서와 후보별로 기록된 정확한 바이트 비교를 결합합니다. Xbox 연결과 실행 증거는 별도로 추적합니다."},
+    "zh-CN":{exactCode:"经精确字节比较确认的候选代码",fuzzy:"objdiff 近似得分",functions:"字节完全匹配的候选项",lotsReached:"已完成批次",mergedLotPRs:"已合并的批次 PR",source:"此快照结合了经过审核的 objdiff v2 报告与逐个候选项记录的精确字节比较。Xbox 链接和运行时证据单独跟踪。"},
+    ar:{exactCode:"بايتات المرشحين المؤكدة بالمقارنة الدقيقة",fuzzy:"نتيجة objdiff التقريبية",functions:"مرشحون ببايتات مطابقة تمامًا",lotsReached:"الدفعات التي تم الوصول إليها",mergedLotPRs:"طلبات الدفعات المدمجة",source:"يجمع هذا الملخص بين تقرير objdiff v2 الذي تمت مراجعته ومقارنات البايتات الدقيقة المسجلة لكل مرشح. تتم متابعة ربط Xbox وأدلة التشغيل بشكل منفصل."},
+    tr:{exactCode:"Tam bayt karşılaştırmasıyla doğrulanan aday kod baytları",fuzzy:"objdiff yaklaşık eşleşme puanı",functions:"Baytları tam eşleşen adaylar",lotsReached:"Ulaşılan lotlar",mergedLotPRs:"Birleştirilen lot PR’ları",source:"Bu anlık görüntü, incelenmiş objdiff v2 raporunu aday başına kaydedilmiş tam bayt karşılaştırmalarıyla birleştirir. Xbox bağlantısı ve çalışma zamanı kanıtları ayrı izlenir."}
   };
   const validationDetailCopy = {
     en:{accepted:"Build + exact byte diff: accepted after maintainer review.",pending:"No accepted build + exact byte diff is recorded yet."},
@@ -316,19 +318,19 @@
   const languages = [
     ["en","English"],["pt-BR","Português (Brasil)"],["es","Español"],["ru","Русский"],["fr","Français"],["de","Deutsch"],["it","Italiano"],["ja","日本語"],["ko","한국어"],["zh-CN","中文（简体）"],["ar","العربية"],["tr","Türkçe"]
   ];
-  const latestBatchCopy = {
-    en: ["Latest batch", "Lot 100 revalidated 100 functions already marked exact. ObjDiff: 100/100 at 100%. Dashboard totals stay at 8,626 exact candidates / 1,651,157 bytes because these functions were already counted.", "Review PR #9045"],
-    "pt-BR": ["Lote mais recente", "O Lote 100 revalidou 100 funções já marcadas como exatas. ObjDiff: 100/100 a 100%. A dashboard permanece em 8.626 funções exatas / 1.651.157 bytes porque elas já estavam contabilizadas.", "Ver PR #9045"],
-    es: ["Lote más reciente", "El lote 100 volvió a validar 100 funciones ya marcadas como exactas. ObjDiff: 100/100 al 100 %. El total del panel permanece en 8.626 funciones exactas / 1.651.157 bytes porque ya estaban contabilizadas.", "Ver PR #9045"],
-    ru: ["Последний пакет", "Пакет 100 повторно проверил 100 функций, уже отмеченных как точные. ObjDiff: 100 из 100 — 100%. Итог панели остаётся 8 626 точных функций / 1 651 157 байт, так как они уже учтены.", "Открыть PR #9045"],
-    fr: ["Dernier lot", "Le lot 100 a revalidé 100 fonctions déjà marquées exactes. ObjDiff : 100/100 à 100 %. Le tableau reste à 8 626 fonctions exactes / 1 651 157 octets, car elles étaient déjà comptabilisées.", "Voir la PR #9045"],
-    de: ["Neuester Stapel", "Stapel 100 hat 100 bereits als exakt markierte Funktionen erneut geprüft. ObjDiff: 100/100 bei 100 %. Das Dashboard bleibt bei 8.626 exakten Funktionen / 1.651.157 Bytes, da diese bereits gezählt waren.", "PR #9045 ansehen"],
-    it: ["Lotto più recente", "Il lotto 100 ha riverificato 100 funzioni già contrassegnate come esatte. ObjDiff: 100/100 al 100%. Il totale della dashboard resta 8.626 funzioni esatte / 1.651.157 byte perché erano già conteggiate.", "Apri la PR #9045"],
-    ja: ["最新ロット", "ロット100では、すでに完全一致として記録された100関数を再検証しました。ObjDiffは100/100で100%。既計上のため、ダッシュボードは8,626関数 / 1,651,157バイトのままです。", "PR #9045を確認"],
-    ko: ["최근 배치", "Lot 100에서 이미 정확한 것으로 표시된 함수 100개를 다시 검증했습니다. ObjDiff: 100/100, 100%. 이미 집계된 함수이므로 대시보드 합계는 정확 함수 8,626개 / 1,651,157바이트로 유지됩니다.", "PR #9045 보기"],
-    "zh-CN": ["最新批次", "第100批重新验证了100个已标记为精确匹配的函数。ObjDiff：100/100，均为100%。这些函数已计入，因此面板仍为8,626个精确函数 / 1,651,157字节。", "查看 PR #9045"],
-    ar: ["أحدث دفعة", "أعادت الدفعة 100 التحقق من 100 دالة مصنفة مسبقًا على أنها دقيقة. ObjDiff: ‏100/100 بنسبة 100٪. يبقى الإجمالي 8,626 دالة دقيقة / 1,651,157 بايت لأنها محسوبة بالفعل.", "راجع PR #9045"],
-    tr: ["En son lot", "Lot 100, zaten tam eşleşme olarak işaretlenmiş 100 işlevi yeniden doğruladı. ObjDiff: 100/100, %100. Bu işlevler zaten sayıldığı için pano toplamı 8.626 tam işlev / 1.651.157 bayt olarak kalır.", "PR #9045'i incele"]
+  const batchProgressCopy = {
+    "en": ["Cumulative lot progress", "Lot 100 reached. 98/100 100-function lot PRs are merged, covering 9,800/10,000 lot records (not distinct candidates); Lots 3 (#944) and 4 (#1045) were closed without merge. Lots 95–100 revalidated 600 distinct functions (115,593 bytes); all were already in the exact-candidate index, so the dashboard remains at 8,626/13,676 exact candidates (71.8783%).", "View full lot history"],
+    "pt-BR": ["Progresso acumulado dos lotes", "Chegamos ao Lote 100. 98/100 PRs dos lotes de 100 funções foram mescladas, somando 9.800/10.000 registros de lote publicados (não são candidatas distintas); os Lotes 3 (#944) e 4 (#1045) foram fechados sem merge. Os Lotes 95–100 revalidaram 600 funções distintas (115.593 bytes); todas já constavam no índice exato, então o painel permanece em 8.626/13.676 candidatas exatas (71,8783%).", "Ver histórico completo dos lotes"],
+    "es": ["Progreso acumulado de lotes", "Llegamos al lote 100. Se fusionaron 98/100 PR de lotes de 100 funciones, con 9.800/10.000 registros de lote publicados (no son candidatos distintos); los lotes 3 (#944) y 4 (#1045) se cerraron sin fusionarse. Los lotes 95–100 revalidaron 600 funciones distintas (115.593 bytes); todas ya estaban en el índice exacto, por lo que el panel sigue en 8.626/13.676 candidatas exactas (71,8783%).", "Ver historial completo de lotes"],
+    "ru": ["Сводный прогресс пакетов", "Достигнут пакет 100. Объединены 98 из 100 PR пакетов по 100 функций: опубликовано 9 800 из 10 000 записей; PR пакетов 3 (#944) и 4 (#1045) закрыты без слияния. Пакеты 95–100 повторно проверили 600 разных функций (115 593 байта); все уже были в индексе точных кандидатов, поэтому итог остаётся 8 626/13 676 (71,8783%).", "Полная история пакетов"],
+    "fr": ["Progression cumulée des lots", "Le lot 100 a été atteint. 98 PR sur 100 lots de 100 fonctions ont été fusionnées, soit 9 800/10 000 entrées publiées ; les PR des lots 3 (#944) et 4 (#1045) ont été fermées sans fusion. Les lots 95–100 ont revérifié 600 fonctions distinctes (115 593 octets), déjà présentes dans l’index exact ; le total reste donc à 8 626/13 676 (71,8783%).", "Voir tout l’historique des lots"],
+    "de": ["Kumulativer Lot-Fortschritt", "Lot 100 ist erreicht. 98 von 100 PRs mit je 100 Funktionen wurden zusammengeführt; damit sind 9.800/10.000 Funktionseinträge veröffentlicht. Die PRs für Lot 3 (#944) und Lot 4 (#1045) wurden ohne Merge geschlossen. Lots 95–100 prüften 600 verschiedene Funktionen (115.593 Bytes) erneut; alle standen bereits im Exakt-Index. Der Stand bleibt 8.626/13.676 (71,8783%).", "Vollständigen Lot-Verlauf ansehen"],
+    "it": ["Avanzamento cumulativo dei lotti", "Raggiunto il lotto 100. Sono state unite 98 PR su 100 lotti da 100 funzioni, per 9.800/10.000 record pubblicati; le PR dei lotti 3 (#944) e 4 (#1045) sono state chiuse senza merge. I lotti 95–100 hanno riverificato 600 funzioni distinte (115.593 byte), già presenti nell’indice esatto; il totale resta 8.626/13.676 (71,8783%).", "Vedi cronologia completa dei lotti"],
+    "ja": ["ロット全体の進捗", "ロット100に到達しました。100関数ロットのPRは100件中98件がマージされ、9,800/10,000件の関数記録が公開済みです。ロット3（#944）と4（#1045）のPRはマージされずに終了しました。ロット95〜100では異なる600関数（115,593バイト）を再検証しましたが、すべて正確一致インデックスに含まれているため、合計は8,626/13,676（71.8783%）のままです。", "ロット履歴を見る"],
+    "ko": ["누적 로트 진행 상황", "로트 100에 도달했습니다. 함수 100개 로트 PR 100개 중 98개가 병합되어 9,800/10,000개 함수 기록이 게시되었습니다. 로트 3(#944)과 4(#1045) PR은 병합 없이 종료되었습니다. 로트 95–100은 서로 다른 함수 600개(115,593바이트)를 재검증했으며 모두 정확 후보 인덱스에 이미 포함되어 있어 합계는 8,626/13,676(71.8783%)입니다.", "전체 로트 기록 보기"],
+    "zh-CN": ["批次累计进度", "已到达第100批。100个函数一批的PR中有98/100已合并，共发布9,800/10,000条函数记录；第3批(#944)和第4批(#1045)的PR已关闭且未合并。第95至100批重新验证了600个不同函数（115,593字节），但它们早已在精确候选索引中，因此总数仍为8,626/13,676（71.8783%）。", "查看完整批次记录"],
+    "ar": ["التقدم التراكمي للدفعات", "تم الوصول إلى الدفعة 100. دُمجت 98 من أصل 100 طلب دمج لدفعات تضم 100 دالة، أي 9,800/10,000 سجل منشور؛ أُغلقت طلبات الدفعتين 3 (#944) و4 (#1045) دون دمج. أعادت الدفعات 95–100 التحقق من 600 دالة مختلفة (115,593 بايت)، وكانت جميعها مدرجة مسبقًا في فهرس المطابقة الدقيقة، لذا يبقى الإجمالي 8,626/13,676 (71.8783%).", "عرض سجل الدفعات الكامل"],
+    "tr": ["Kümülatif lot ilerlemesi", "100. lote ulaşıldı. 100 işlevlik lot PR’larının 100 tanesinden 98’i birleştirildi ve 9.800/10.000 işlev kaydı yayımlandı; 3. lot (#944) ve 4. lot (#1045) PR’ları birleştirilmeden kapatıldı. 95–100. lotlar 600 farklı işlevi (115.593 bayt) yeniden doğruladı; tümü zaten tam eşleşme dizinindeydi, bu yüzden toplam 8.626/13.676 (%71,8783) olarak kaldı.", "Tüm lot geçmişini görüntüle"]
   };
   const extraKeys = ["tabsLabel","tabProgress","tabContribute","tabMethod","useBrowserLanguage","contributeTitle","contributeIntro","contributeOne","contributeTwo","contributeThree","contributeNoFiles","issuesLink","pullsLink","methodTitle","methodIntro","methodOne","methodTwo","methodThree","exactStatus","approximateStatus","pendingStatus","missingLanguage","requestTranslation"];
   const X = Object.fromEntries(extraKeys.map((key,index)=>[key,index]));
@@ -427,10 +429,10 @@
     languageNote.hidden = false;
   }
   function updateExtraLanguage() {
-    const latestBatch = latestBatchCopy[language] || latestBatchCopy.en;
-    document.getElementById("latest-batch-title").textContent = latestBatch[0];
-    document.getElementById("latest-batch-summary").textContent = latestBatch[1];
-    document.getElementById("latest-batch-link").textContent = latestBatch[2];
+    const batchProgress = batchProgressCopy[language] || batchProgressCopy.en;
+    document.getElementById("latest-batch-title").textContent = batchProgress[0];
+    document.getElementById("latest-batch-summary").textContent = batchProgress[1];
+    document.getElementById("latest-batch-link").textContent = batchProgress[2];
     for (const [id,key] of Object.entries(extraTextIds)) document.getElementById(id).textContent = extra(key);
     const copy = contributionCopy[language] || contributionCopy.en;
     ["contribute-intro","contribute-step-one","contribute-step-two","contribute-step-three"].forEach((id,index)=>document.getElementById(id).textContent=copy[index]);
@@ -502,6 +504,8 @@
     document.getElementById("exact-metric").textContent=progressMetricCopyForLanguage.exactCode;
     document.getElementById("fuzzy-metric").textContent=progressMetricCopyForLanguage.fuzzy;
     document.getElementById("functions-metric").textContent=progressMetricCopyForLanguage.functions;
+    document.getElementById("lots-metric").textContent=progressMetricCopyForLanguage.lotsReached;
+    document.getElementById("merged-lots-metric").textContent=progressMetricCopyForLanguage.mergedLotPRs;
     document.getElementById("footer-text").textContent=progressMetricCopyForLanguage.source;
     document.getElementById("legend").setAttribute("aria-label",msg("legend"));
     document.getElementById("scope-text").textContent = report ? msg("scope") : loadError ? msg("errorData",{error:loadError}) : msg("loadingScope");
