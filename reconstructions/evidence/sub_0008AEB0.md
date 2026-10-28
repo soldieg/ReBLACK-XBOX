@@ -11,3 +11,13 @@
 - Candidate/compiled relocations: 0/0; both zero.
 - Source SHA-256: `ff0f748e8b2b995455cf15f6d5dbcd463aaab7f8151275b0a54ecd0184f77d68`; candidate object SHA-256: `660d0121476d669c5f62d77c8f771ee3bb5f5259473694b8ab4bca1f2d5fe648`.
 - Source is an address-pinned byte emitter. Semantic C and formal ABI are not claimed. Xbox link, post-link XBE diff, and runtime are pending.
+
+## Lot 98 revalidation — 2026-10-28
+
+- Task: [#3922](https://github.com/soldieg/ReBLACK-XBOX/issues/3922).
+- Fresh REA/Ghidra 12.1.3 body: 0x8aeb0–0x8aef8 inclusive, contiguous, 73 bytes; analysis evidence `ev_4e38b068cb4a2c6016b52fff6b8f1a93d49c3e3e5927c7d184923013fa974930`.
+- Fresh REA byte read: complete 73/73 bytes; SHA-256 matches the named candidate; evidence `ev_ca54533a7f1cf0c22ed59deacdf8a575c080b6c5e9e58c91852119a1f246ba14`.
+- Static checks: XBE raw = derived PE = XboxRecomp split = candidate = compiled MSVC x86 bytes; 0 candidate/compiled relocations.
+- MSVC 19.51.36260 x86 compile passed; ObjDiff 3.8.2: symbol 100.00%, section 100.00%.
+- Resolved Ghidra references: 3 caller sites, 2 callee sites; unresolved calls: 0. Coverage: complete.
+- Already marked `current-exact`; no dashboard candidate count increase. Address-pinned byte-emitter evidence only; semantic C, formal ABI, Xbox link, post-link XBE diff, runtime, and gameplay are not claimed.
