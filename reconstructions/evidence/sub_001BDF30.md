@@ -16,3 +16,16 @@
 - Compiled COFF relocations: 0; compiled object SHA-256: 2041d1e5ea3268912e9d68c8ac4425dae1e84891f0be84ebc5d7f1ffb665aa78.
 - Compiled .text$mn SHA-256: fc0a121b4b759ee709d737ba65ad83821b3dfc3274d8e8d198f3ab257006dfc2.
 - Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+
+## Lot 92 static revalidation
+
+- Function task: [#1496](https://github.com/soldieg/ReBLACK-XBOX/issues/1496).
+- Function range: 0x001BDF30–0x001BDF4C inclusive, contiguous, 29 bytes; fresh Ghidra 12.1.3 body and complete REA byte read agree on the span.
+- Dashboard candidate: `current-exact`, 29 bytes; the function is already present in the 2026-10-28 exactification snapshot.
+- Fresh evidence references: Ghidra `ev_370e57d70ea9c2647bb940a067190ce9e64572b772721d17413db18de198c4ea`; REA `ev_635037dd802cf3231b5df6f62f050bba59e2e914b148ffd47a6334ae7b401658`.
+- Relationship coverage: partial for callers. Ghidra diagnostic: Ghidra's caller inventory omits sources of 5 call reference(s) into this function's body. No unresolved direct calls were reported. Caller inventory is not complete.
+- Static byte comparison: REA bytes = original XBE raw span = mapped derived PE = XboxRecomp split = named candidate COFF `.text$mn` = fresh MSVC x86 `.text$mn`, 29/29 bytes.
+- Compiler: MSVC 19.51.36260 x86, `/TC /c /O2 /GS- /GR- /Zl /Gd /Gy`; compile passed.
+- ObjDiff 3.8.2 against the identified candidate: 100.00% for the named symbol and `.text$mn` section; candidate and compiled objects have zero relocations.
+- Source SHA-256: `36f0aa01d995b85f0a09bbbf48e936a39eeeede9eeb3a71d9c5e8070d8866171`; candidate COFF SHA-256: `b7ceeb13d016db1e5d6f30274c848b887b21d9f84259c99820c51476f929776b`; compiled COFF SHA-256: `183a8e337ed30a331110fcc88c95eb9e4ce7dffd8853a4dcc3757042528aed04`; ObjDiff report SHA-256: `54b67cb55b226e903cb3081864a58970f15c6cc4f5f100d1c3620627fa00cdde`.
+- Source is an address-pinned byte emitter; semantic C, original types, complete caller inventory, and formal ABI are not claimed. Xbox full link, post-link XBE diff, runtime, and gameplay were not run.
