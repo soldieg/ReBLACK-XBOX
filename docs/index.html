@@ -108,11 +108,6 @@
   </div>
   <section class="view" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" tabindex="0">
   <div class="scope" id="scope" aria-live="polite"><span id="scope-text">Loading reviewed report scope…</span></div>
-  <section class="info-card" aria-labelledby="latest-batch-title">
-    <h2 id="latest-batch-title">Latest batch</h2>
-    <p id="latest-batch-summary"></p>
-    <a class="info-link" id="latest-batch-link" href="https://github.com/soldieg/ReBLACK-XBOX/pull/9045"></a>
-  </section>
   <section class="metrics" id="metrics" aria-label="Project snapshot metrics">
     <div class="metric"><strong id="exact-percent">—</strong><span id="exact-metric">Code bytes matched exactly by objdiff</span></div>
     <div class="metric"><strong id="fuzzy-percent">—</strong><span id="fuzzy-metric">Fuzzy objdiff score</span></div>
@@ -316,20 +311,6 @@
   const languages = [
     ["en","English"],["pt-BR","Português (Brasil)"],["es","Español"],["ru","Русский"],["fr","Français"],["de","Deutsch"],["it","Italiano"],["ja","日本語"],["ko","한국어"],["zh-CN","中文（简体）"],["ar","العربية"],["tr","Türkçe"]
   ];
-  const latestBatchCopy = {
-    en: ["Latest batch", "Lot 100 revalidated 100 functions already marked exact. ObjDiff: 100/100 at 100%. Dashboard totals stay at 8,626 exact candidates / 1,651,157 bytes because these functions were already counted.", "Review PR #9045"],
-    "pt-BR": ["Lote mais recente", "O Lote 100 revalidou 100 funções já marcadas como exatas. ObjDiff: 100/100 a 100%. A dashboard permanece em 8.626 funções exatas / 1.651.157 bytes porque elas já estavam contabilizadas.", "Ver PR #9045"],
-    es: ["Lote más reciente", "El lote 100 volvió a validar 100 funciones ya marcadas como exactas. ObjDiff: 100/100 al 100 %. El total del panel permanece en 8.626 funciones exactas / 1.651.157 bytes porque ya estaban contabilizadas.", "Ver PR #9045"],
-    ru: ["Последний пакет", "Пакет 100 повторно проверил 100 функций, уже отмеченных как точные. ObjDiff: 100 из 100 — 100%. Итог панели остаётся 8 626 точных функций / 1 651 157 байт, так как они уже учтены.", "Открыть PR #9045"],
-    fr: ["Dernier lot", "Le lot 100 a revalidé 100 fonctions déjà marquées exactes. ObjDiff : 100/100 à 100 %. Le tableau reste à 8 626 fonctions exactes / 1 651 157 octets, car elles étaient déjà comptabilisées.", "Voir la PR #9045"],
-    de: ["Neuester Stapel", "Stapel 100 hat 100 bereits als exakt markierte Funktionen erneut geprüft. ObjDiff: 100/100 bei 100 %. Das Dashboard bleibt bei 8.626 exakten Funktionen / 1.651.157 Bytes, da diese bereits gezählt waren.", "PR #9045 ansehen"],
-    it: ["Lotto più recente", "Il lotto 100 ha riverificato 100 funzioni già contrassegnate come esatte. ObjDiff: 100/100 al 100%. Il totale della dashboard resta 8.626 funzioni esatte / 1.651.157 byte perché erano già conteggiate.", "Apri la PR #9045"],
-    ja: ["最新ロット", "ロット100では、すでに完全一致として記録された100関数を再検証しました。ObjDiffは100/100で100%。既計上のため、ダッシュボードは8,626関数 / 1,651,157バイトのままです。", "PR #9045を確認"],
-    ko: ["최근 배치", "Lot 100에서 이미 정확한 것으로 표시된 함수 100개를 다시 검증했습니다. ObjDiff: 100/100, 100%. 이미 집계된 함수이므로 대시보드 합계는 정확 함수 8,626개 / 1,651,157바이트로 유지됩니다.", "PR #9045 보기"],
-    "zh-CN": ["最新批次", "第100批重新验证了100个已标记为精确匹配的函数。ObjDiff：100/100，均为100%。这些函数已计入，因此面板仍为8,626个精确函数 / 1,651,157字节。", "查看 PR #9045"],
-    ar: ["أحدث دفعة", "أعادت الدفعة 100 التحقق من 100 دالة مصنفة مسبقًا على أنها دقيقة. ObjDiff: ‏100/100 بنسبة 100٪. يبقى الإجمالي 8,626 دالة دقيقة / 1,651,157 بايت لأنها محسوبة بالفعل.", "راجع PR #9045"],
-    tr: ["En son lot", "Lot 100, zaten tam eşleşme olarak işaretlenmiş 100 işlevi yeniden doğruladı. ObjDiff: 100/100, %100. Bu işlevler zaten sayıldığı için pano toplamı 8.626 tam işlev / 1.651.157 bayt olarak kalır.", "PR #9045'i incele"]
-  };
   const extraKeys = ["tabsLabel","tabProgress","tabContribute","tabMethod","useBrowserLanguage","contributeTitle","contributeIntro","contributeOne","contributeTwo","contributeThree","contributeNoFiles","issuesLink","pullsLink","methodTitle","methodIntro","methodOne","methodTwo","methodThree","exactStatus","approximateStatus","pendingStatus","missingLanguage","requestTranslation"];
   const X = Object.fromEntries(extraKeys.map((key,index)=>[key,index]));
   const extraMessages = {
@@ -427,10 +408,6 @@
     languageNote.hidden = false;
   }
   function updateExtraLanguage() {
-    const latestBatch = latestBatchCopy[language] || latestBatchCopy.en;
-    document.getElementById("latest-batch-title").textContent = latestBatch[0];
-    document.getElementById("latest-batch-summary").textContent = latestBatch[1];
-    document.getElementById("latest-batch-link").textContent = latestBatch[2];
     for (const [id,key] of Object.entries(extraTextIds)) document.getElementById(id).textContent = extra(key);
     const copy = contributionCopy[language] || contributionCopy.en;
     ["contribute-intro","contribute-step-one","contribute-step-two","contribute-step-three"].forEach((id,index)=>document.getElementById(id).textContent=copy[index]);
