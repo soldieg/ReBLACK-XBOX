@@ -1,0 +1,64 @@
+/* shortcut: address-pinned byte emitter; replace only after semantic C and ABI reconstruction. */
+__declspec(naked) void __cdecl sub_0007E490(void)
+{
+    __asm {
+        _emit 0x56
+        _emit 0x57
+        _emit 0x8B
+        _emit 0x7C
+        _emit 0x24
+        _emit 0x0C
+        _emit 0x33
+        _emit 0xF6
+        _emit 0xEB
+        _emit 0x06
+        _emit 0x8D
+        _emit 0x9B
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0x8B
+        _emit 0x04
+        _emit 0xB5
+        _emit 0xD0
+        _emit 0x82
+        _emit 0x29
+        _emit 0x00
+        _emit 0x57
+        _emit 0x50
+        _emit 0xE8
+        _emit 0xC2
+        _emit 0x75
+        _emit 0x00
+        _emit 0x00
+        _emit 0x83
+        _emit 0xC4
+        _emit 0x08
+        _emit 0x85
+        _emit 0xC0
+        _emit 0x74
+        _emit 0x0B
+        _emit 0x46
+        _emit 0x83
+        _emit 0xFE
+        _emit 0x09
+        _emit 0x72
+        _emit 0xE5
+        _emit 0x5F
+        _emit 0x33
+        _emit 0xC0
+        _emit 0x5E
+        _emit 0xC3
+        _emit 0x8B
+        _emit 0x04
+        _emit 0xB5
+        _emit 0xD0
+        _emit 0x82
+        _emit 0x29
+        _emit 0x00
+        _emit 0x5F
+        _emit 0x5E
+        _emit 0xC3
+    }
+}
