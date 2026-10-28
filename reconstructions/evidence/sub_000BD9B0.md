@@ -1,6 +1,6 @@
 # sub_000BD9B0 — static exact-byte evidence
 
-Issue: #8541. The unique ordinal in lot 82 remains pending roster reconciliation.
+Issue: #8541. Counted as function 96/100: this Issue was opened after the initial 74/100 checkpoint and is the only task for this function. The source is a new addition on the lot 82 branch relative to `origin/main`.
 
 - Ghidra 12.1.3 observes 541 instruction bytes across `0xBD9B0–0xBDB64` and `0xBDB70–0xBDBD7`, within a 552-byte span containing an 11-byte gap after an unconditional jump.
 - Direct caller: `sub_000BDD60`. Direct callee: `sub_00017650`. Unresolved direct calls: 0.
