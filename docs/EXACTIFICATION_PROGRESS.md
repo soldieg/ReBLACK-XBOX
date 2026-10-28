@@ -1,6 +1,6 @@
 # 346-function exactification queue
 
-**2026-10-28 batch audit:** Lots 83–94 are merged in their code PRs. Lot 95 is open in [PR #9040](https://github.com/soldieg/ReBLACK-XBOX/pull/9040). Lot 96 revalidated 100 already-counted candidates (16,556 bytes): 100/100 fresh REA bodies and byte reads, 100/100 static checks, and 100/100 ObjDiff at 100%. Its 100 IDs already have `current-exact` entries, so the dashboard correctly remains at **8,626 exact candidates / 1,651,157 bytes (71.87831388%)**; no duplicate rows were inserted. Per-function evidence is in `reconstructions/evidence/`. Xbox linking, post-link XBE diff, runtime, and gameplay remain unverified.
+**2026-10-28 batch audit:** Lots 83–94 are merged in their code PRs. Lot 95 is open in [PR #9040](https://github.com/soldieg/ReBLACK-XBOX/pull/9040). Lot 96 is documented in [PR #9041](https://github.com/soldieg/ReBLACK-XBOX/pull/9041) and revalidated 100 already-counted candidates (16,556 bytes): 100/100 fresh REA bodies and byte reads, 100/100 static checks, and 100/100 ObjDiff at 100%. Its 100 IDs already have `current-exact` entries, so the dashboard correctly remains at **8,626 exact candidates / 1,651,157 bytes (71.87831388%)**; no duplicate rows were inserted. Per-function evidence is in `reconstructions/evidence/`. Xbox linking, post-link XBE diff, runtime, and gameplay remain unverified.
 
 **Queue snapshot date:** 2026-10-18
 **Dashboard exactification refresh:** 2026-10-28
