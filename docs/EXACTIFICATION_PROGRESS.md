@@ -4,6 +4,8 @@
 
 **Lote 97 — revalidação publicada em [PR #9042](https://github.com/soldieg/ReBLACK-XBOX/pull/9042) (2026-10-28):** 100 funções distintas, 27,685 bytes; 100/100 fronteiras REA/Ghidra contíguas e leituras completas com SHA-256 igual ao candidato; 100/100 compilações MSVC e ObjDiff 3.8.2 a 100%; 100/100 verificações estáticas e cobertura de relações Ghidra completa, sem calls não resolvidos. As 100 já constavam como `current-exact`, então o mapa não ganha linhas duplicadas e a contagem continua em 8.626 funções exatas / 1.651.157 bytes (71.87831388%). PR do lote será vinculada ao publicar. Evidências por função em `reconstructions/evidence/`.
 
+**Lote 98 — revalidação publicada em [PR #9043](https://github.com/soldieg/ReBLACK-XBOX/pull/9043) (2026-10-28):** 100 funções distintas, 20,375 bytes; 100/100 fronteiras REA/Ghidra contíguas e leituras completas com SHA-256 igual ao candidato; 100/100 compilações MSVC e ObjDiff 3.8.2 a 100%; relações Ghidra completas e sem chamadas não resolvidas. As funções já estavam como `current-exact`; o mapa não recebe linhas duplicadas e permanece em 8.626 funções exatas / 1.651.157 bytes (71.87831388%). PR do lote será vinculada ao publicar. Evidências por função em `reconstructions/evidence/`.
+
 **Queue snapshot date:** 2026-10-18
 **Dashboard exactification refresh:** 2026-10-28
 
