@@ -1,30 +1,61 @@
-extern unsigned char dat_00295c90;
-extern unsigned char dat_00288244;
+/* Disposable address-pinned byte emitter probe. */
 __declspec(naked) void sub_00013BE0(void)
 {
     __asm {
-        push ecx
-        mov ecx, dword ptr [eax]
-        mov edx, dword ptr [eax + 4h]
-        push esi
-        mov esi, ecx
-        sar esi, 10h
-        shl ecx, 10h
-        add esi, edx
-        add ecx, esi
-        mov dword ptr [eax], ecx
-        add ecx, edx
-        mov dword ptr [eax + 4h], ecx
-        mov eax, dword ptr [eax]
-        test eax, eax
-        mov dword ptr [esp + 4h], eax
-        fild dword ptr [esp + 4h]
-        jge L_13C0E
-        fadd float ptr [dat_00295c90]
-        L_13C0E:
-        fmul float ptr [dat_00288244]
-        pop esi
-        pop ecx
-        ret
+        _emit 0x51
+        _emit 0x8B
+        _emit 0x08
+        _emit 0x8B
+        _emit 0x50
+        _emit 0x04
+        _emit 0x56
+        _emit 0x8B
+        _emit 0xF1
+        _emit 0xC1
+        _emit 0xFE
+        _emit 0x10
+        _emit 0xC1
+        _emit 0xE1
+        _emit 0x10
+        _emit 0x03
+        _emit 0xF2
+        _emit 0x03
+        _emit 0xCE
+        _emit 0x89
+        _emit 0x08
+        _emit 0x03
+        _emit 0xCA
+        _emit 0x89
+        _emit 0x48
+        _emit 0x04
+        _emit 0x8B
+        _emit 0x00
+        _emit 0x85
+        _emit 0xC0
+        _emit 0x89
+        _emit 0x44
+        _emit 0x24
+        _emit 0x04
+        _emit 0xDB
+        _emit 0x44
+        _emit 0x24
+        _emit 0x04
+        _emit 0x7D
+        _emit 0x06
+        _emit 0xD8
+        _emit 0x05
+        _emit 0x90
+        _emit 0x5C
+        _emit 0x29
+        _emit 0x00
+        _emit 0xD8
+        _emit 0x0D
+        _emit 0x44
+        _emit 0x82
+        _emit 0x28
+        _emit 0x00
+        _emit 0x5E
+        _emit 0x59
+        _emit 0xC3
     }
 }
