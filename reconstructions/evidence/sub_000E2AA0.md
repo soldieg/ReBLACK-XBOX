@@ -9,3 +9,12 @@
 - REA bytes = original XBE raw = XboxRecomp split, 113/113 bytes; SHA-256 `047e9b3b62d288738c43244daa6b0f167661f5adb2cdb8d44d3028e692c18272`.
 - Target identity: derived PE SHA-256 `AABDEBF414D216E67161DF9DDFD1FAC5FD915EBB59BD2B26AE42E062C245682BD`; original XBE SHA-256 `DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6`.
 - Xbox link, post-link XBE diff and runtime remain pending.
+
+## Lot 83 fresh revalidation (2026-10-28)
+
+- GitHub Issue: [#233](https://github.com/soldieg/ReBLACK-XBOX/issues/233).
+- Fresh Ghidra boundary and relationship evidence: `ev_3bc27987e8d67b67ef5971a38537f997a649675856146dbaaba4a7f92f5b7fda`; REA complete-byte read: `ev_fe3aa99abfe50648d397fcf98074dced11fc0a17411c8494d465bad2ac37165b`.
+- XBE, derived PE, XboxRecomp split, named candidate COFF body, and freshly compiled MSVC x86 body all match for 113 bytes; SHA-256: `047e9b3b62d288738c43244daa6b0f167661f5adb2cdb8d44d3028e692c18272`.
+- Candidate and compiled COFF `.text$mn` sections match byte for byte; relocations: 0/0.
+- MSVC 19.51.36260 x86, `/TC /c /O2 /GS- /Zl /Gd /Gy`; ObjDiff 3.8.2: symbol 100.00%, section 100.00%.
+- Static byte-emitter result only. Full Xbox link, post-link XBE diff, runtime, and gameplay remain pending; semantic behavior and formal ABI are not inferred.

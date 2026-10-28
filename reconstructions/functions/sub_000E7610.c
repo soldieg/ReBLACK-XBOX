@@ -24,7 +24,11 @@ __declspec(naked) int __cdecl sub_000E7610(void *node)
         mov eax, dword ptr [esi + 48h]
         or dword ptr [eax + 1ch], 02000000h
     done:
-        mov eax, dword ptr [002ec9bch]
+        __emit 0xA1
+        __emit 0xBC
+        __emit 0xC9
+        __emit 0x2E
+        __emit 0x00
         pop esi
         ret
     }
