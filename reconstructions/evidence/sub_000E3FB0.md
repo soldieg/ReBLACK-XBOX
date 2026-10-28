@@ -1,7 +1,7 @@
 # sub_000E3FB0
 
 - Function task: [#245](https://github.com/soldieg/ReBLACK-XBOX/issues/245).
-- Function range: 0xe3fb0â€“0x000E402C inclusive, contiguous, 125 bytes; local Ghidra 12.1.4 body FUN_000e3fb0 covers the same exact range.
+- Function range: 0xe3fb0–0x000E402C inclusive, contiguous, 125 bytes; local Ghidra 12.1.4 body FUN_000e3fb0 covers the same exact range.
 - Candidate dashboard entry: sub_000E3FB0, 125 bytes, category unmatched in snapshot SHA-256 79caa1084f9019b63f8ee40a6dffb2eee6fabe9879fddd9ba17ff3fd0eac870c (2026-10-24).
 - Local Ghidra 12.1.4 direct callees: FUN_0001c040 (0x0001c040) at 0x000e3fbe; unresolved direct calls: none observed. Callee sources are present in the base checkout where applicable.
 - Target candidate object: candidate/sub_000E3FB0.obj, SHA-256 93c8eebc2a781ec45db442da59720004daf92fab158e02c53a28a6ca44ffbb6e; candidate relocations 0.
