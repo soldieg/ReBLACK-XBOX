@@ -51730,6 +51730,18 @@
       "address": "0x00112A60",
       "sizeBytes": 41,
       "status": "current-exact"
-    }
+    },
+    {
+      "function": "sub_00091820",
+      "address": "0x00091820",
+      "sizeBytes": 6,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00095700",
+      "address": "0x00095700",
+      "sizeBytes": 6,
+      "status": "current-exact"
+    },
   ]
 }
