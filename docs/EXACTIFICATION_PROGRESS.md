@@ -214,3 +214,12 @@ Lot 93 validates 100 distinct functions (13,778 bytes), with no overlap against 
 ## Lot 94 — merged in PR #9038 (2026-10-28)
 
 Lot 94 revalidates 100 distinct dashboard candidates totaling 15938 bytes, with no overlap against Lots 43–93. All 100 have fresh Ghidra 12.1.3 boundary evidence and complete REA reads; bytes match XBE raw, derived PE, XboxRecomp split, named candidate COFF, and fresh MSVC 19.51.36260 x86 objects. ObjDiff 3.8.2 reports 100.00% for every symbol and `.text$mn` section; both object sets have zero relocations. Ghidra relationship coverage is complete for 2 functions and partial for 98; 119 call instructions have unresolved destinations. All IDs were already `current-exact`, so dashboard exact candidate totals remain 8,626 and no duplicate index rows were added. These static results do not establish semantic C, formal ABI, Xbox link, post-link XBE diff, runtime, or gameplay. Per-function evidence and Issue links are in `reconstructions/evidence/`.
+
+
+## Lot 95 — validation complete (2026-10-28)
+
+Lot 95 revalidates 100 distinct functions totaling 14,802 bytes, with no overlap against Lots 43–94. All 100 are already `current-exact` in the 2026-10-28 dashboard snapshot; the dashboard remains at 8,626 exact candidates / 1,651,157 bytes out of 2,297,156 (71.87831388%), with no duplicate index rows. Fresh Ghidra 12.1.3 confirms the exact contiguous boundary and complete caller/callee coverage for 100/100, with zero unresolved direct calls. Complete REA reads match XBE raw, derived PE, XboxRecomp split, named candidate COFF objects, and fresh MSVC x86 objects byte for byte.
+
+MSVC 19.51.36260 x86 (`/nologo /W4 /TC /c /O2 /GS- /GR- /Zl /Gd /Gy`) compiled 100/100 without diagnostics. ObjDiff 3.8.2 reports 100.00% for every symbol and `.text$mn` section; candidate and compiled objects have zero relocations. Per-function evidence and Issues are linked in `reconstructions/evidence/`.
+
+These sources are address-pinned byte emitters. This lot does not establish semantic C equivalence, formal ABI recovery, Xbox linking, post-link XBE diff, runtime, or gameplay. The separate maintainer-owned reconstruction validation index was not changed.

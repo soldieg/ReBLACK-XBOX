@@ -11,3 +11,13 @@
 - Candidate/compiled relocations: 0/0; both zero.
 - Source SHA-256: `ba8cc99a2a0bdf26a80dbff3170dd2d6f5dc09b9bf44e57ff3dbbda6b686a44d`; candidate object SHA-256: `30db98b70dafbeaaf44cd3892555f2a933d0811f7e97642ba657c0b50cf83cde`.
 - Source is an address-pinned byte emitter. Semantic C and formal ABI are not claimed. Xbox link, post-link XBE diff, and runtime are pending.
+
+
+## Lot 95 revalidation (2026-10-28)
+
+- Function task: [#3659](https://github.com/soldieg/ReBLACK-XBOX/issues/3659); no overlap with Lots 43–94.
+- Fresh Ghidra 12.1.3 boundary: `0x00022FFA–0x00023079` inclusive, contiguous, 128 bytes; callers/callees coverage complete; 1 caller(s), 3 callee(s), zero unresolved direct calls. Evidence: `ev_5b780510fb67e94b221f693c5713b03d8a420bfed937fe9e29b05413b5dad873`.
+- REA read: complete, 128/128 bytes; matches the candidate and the XBE raw, derived PE, and XboxRecomp split. Span SHA-256: `4e3abc9137ce963dbe00783e632a0156eebe0afed92aec707753b633dd31ca10`.
+- MSVC 19.51.36260 x86 `/nologo /W4 /TC /c /O2 /GS- /GR- /Zl /Gd /Gy`: passed without warnings or errors. Candidate and compiled `.text$mn` match byte for byte; relocations: 0/0.
+- ObjDiff 3.8.2: symbol 100.00%, `.text$mn` section 100.00% against the named target candidate. The function is already `current-exact` in the dashboard snapshot; no duplicate exactification row was added.
+- The source is an address-pinned byte emitter. These results do not establish semantic C, formal ABI recovery, Xbox linking, post-link XBE equality, runtime, or gameplay.
