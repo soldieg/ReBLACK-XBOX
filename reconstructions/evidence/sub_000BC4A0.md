@@ -19,3 +19,13 @@
 - REA bytes match XBE raw, derived PE, XboxRecomp split, named candidate COFF, and freshly compiled MSVC x86 COFF for 76 bytes.
 - Candidate and compiled `.text$mn` bodies match byte for byte with zero relocations; ObjDiff 3.8.2: symbol and section 100.00%.
 - Static byte-emitter validation only. Xbox full link, post-link XBE diff, runtime/gameplay, semantic behavior, and formal ABI remain separate and unverified.
+
+## Lot 100 revalidation — 2026-10-28
+
+- Task: [#4196](https://github.com/soldieg/ReBLACK-XBOX/issues/4196).
+- Fresh REA/Ghidra 12.1.3 body: 0xbc4a0–0xbc4eb inclusive, contiguous, 76 bytes; analysis evidence `ev_aa8805e7afe20379d00f44489e2f44cefae019aa83ffd55615c102f5c1f34214`.
+- Fresh REA byte read: complete 76/76 bytes; SHA-256 matches the named candidate; evidence `ev_20d2410c3afef0ff927ce51064f5122160389329adb5fcc6eec20137fa8912ec`.
+- Static checks: XBE raw = derived PE = XboxRecomp split = candidate = compiled MSVC x86 bytes; 0 candidate/compiled relocations.
+- MSVC 19.51.36260 x86 compile passed; ObjDiff 3.8.2: symbol 100.00%, section 100.00%.
+- Resolved Ghidra references: 3 caller sites, 3 callee sites; unresolved calls: 0. Coverage: complete.
+- Already marked `current-exact`; no dashboard candidate count increase. Address-pinned byte-emitter evidence only; semantic C, formal ABI, Xbox link, post-link XBE diff, runtime, and gameplay are not claimed.

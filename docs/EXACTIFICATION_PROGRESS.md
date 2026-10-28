@@ -1,6 +1,6 @@
 # 346-function exactification queue
 
-**2026-10-28 batch audit:** Lots 83–94 are merged in their code PRs. Lot 95 is open in [PR #9040](https://github.com/soldieg/ReBLACK-XBOX/pull/9040). Lot 96 is documented in [PR #9041](https://github.com/soldieg/ReBLACK-XBOX/pull/9041) and revalidated 100 already-counted candidates (16,556 bytes): 100/100 fresh REA bodies and byte reads, 100/100 static checks, and 100/100 ObjDiff at 100%. Its 100 IDs already have `current-exact` entries, so the dashboard correctly remains at **8,626 exact candidates / 1,651,157 bytes (71.87831388%)**; no duplicate rows were inserted. Per-function evidence is in `reconstructions/evidence/`. Xbox linking, post-link XBE diff, runtime, and gameplay remain unverified.
+**2026-10-28 batch audit:** Lots 83–94 are merged in their code PRs. Lot 95 was merged in [PR #9040](https://github.com/soldieg/ReBLACK-XBOX/pull/9040). Lot 96 is documented in [PR #9041](https://github.com/soldieg/ReBLACK-XBOX/pull/9041) and revalidated 100 already-counted candidates (16,556 bytes): 100/100 fresh REA bodies and byte reads, 100/100 static checks, and 100/100 ObjDiff at 100%. Its 100 IDs already have `current-exact` entries, so the dashboard correctly remains at **8,626 exact candidates / 1,651,157 bytes (71.87831388%)**; no duplicate rows were inserted. Per-function evidence is in `reconstructions/evidence/`. Xbox linking, post-link XBE diff, runtime, and gameplay remain unverified.
 
 **Lote 97 — revalidação publicada em [PR #9042](https://github.com/soldieg/ReBLACK-XBOX/pull/9042) (2026-10-28):** 100 funções distintas, 27,685 bytes; 100/100 fronteiras REA/Ghidra contíguas e leituras completas com SHA-256 igual ao candidato; 100/100 compilações MSVC e ObjDiff 3.8.2 a 100%; 100/100 verificações estáticas e cobertura de relações Ghidra completa, sem calls não resolvidos. As 100 já constavam como `current-exact`, então o mapa não ganha linhas duplicadas e a contagem continua em 8.626 funções exatas / 1.651.157 bytes (71.87831388%). PR do lote será vinculada ao publicar. Evidências por função em `reconstructions/evidence/`.
 
@@ -8,6 +8,8 @@
 
 **Lote 99 — revalidação publicada em [PR #9044](https://github.com/soldieg/ReBLACK-XBOX/pull/9044) (2026-10-28):** 100 funções distintas, 20,175 bytes; fronteiras e leituras REA/Ghidra 100/100, hashes conferidos, MSVC 100/100 e ObjDiff 100/100 a 100%; relações completas e sem chamadas não resolvidas. Todas já estavam `current-exact`, então o mapa continua em 8.626 funções exatas / 1.651.157 bytes (71.87831388%) sem duplicatas. PR será vinculada ao publicar. Evidências por função em `reconstructions/evidence/`.
 
+
+**Lote 100 - revalidacao concluida (2026-10-28):** 100 funcoes distintas, 16.000 bytes; 100/100 fronteiras e leituras REA/Ghidra contiguas e completas, hashes conferidos; verificacao estatica e MSVC/ObjDiff 3.8.2 100/100; cobertura de relacoes completa, nenhuma chamada direta nao resolvida. Todas ja estavam `current-exact`, portanto a contagem segue 8.626 funcoes / 1.651.157 bytes (71.87831388%), sem duplicatas. PR e card da dashboard serao vinculados nesta publicacao. Evidencias por funcao em `reconstructions/evidence/`. Link Xbox, diff pos-link, runtime e gameplay nao foram verificados.
 **Queue snapshot date:** 2026-10-18
 **Dashboard exactification refresh:** 2026-10-28
 
