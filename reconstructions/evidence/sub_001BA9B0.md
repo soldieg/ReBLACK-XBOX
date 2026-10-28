@@ -16,3 +16,12 @@
 - Compiled COFF relocations: 0; compiled object SHA-256: d396824296a923f4d74696b15c8a682db1734fee5d68d17584c3e3568483320d.
 - Compiled .text$mn SHA-256: 3aa4a34881780176f06e559137eb61d6b3547f8bb9cb41ea9022e81d8fc02b20.
 - Source is an address-pinned byte emitter; semantic C, original types, and formal ABI are not claimed. Xbox full link, post-link XBE diff, and runtime were not run.
+
+## Lot 87 fresh revalidation (2026-10-28)
+
+- GitHub Issue: [#1463](https://github.com/soldieg/ReBLACK-XBOX/issues/1463); open and without a prior lot tag when audited.
+- Fresh Ghidra 12.1.3 boundary/relationship Evidence: `ev_fdef76579ab53e7b2405cc433d1cedcf1e2ee90585086bf2339512e6c8467faf`; complete REA byte-read Evidence: `ev_cd7d360a22bf9d415b4513d5d8c38baf24b6a9f4ebc47ddc706760163ab1f47a`.
+- MSVC x86 object bytes match REA, original XBE raw, mapped derived PE, XboxRecomp split, and named candidate COFF for 67 bytes.
+- Candidate and fresh object have zero relocations; ObjDiff 3.8.2 reports the symbol and `.text$mn` at 100.00%.
+- Source SHA-256: `86d0642eb20a4ec5e4f9d5df956d4c912d9886338a29e66c770779b631a59889`; candidate COFF SHA-256: `91eb73ad0ec6236cece5075613c7e198c5b7c10176afb02e8aef2f2d0d8db6ce`; compiled COFF SHA-256: `8afba48d3cb205594829509069963dd8aa34f11465383c6ff1280a04ec2d7f28`; ObjDiff report SHA-256: `8a4a014f6e8151f56bd837d146991314d9246d7249f7ddcaf0b6b16009dcb5cb`.
+- Static byte-emitter validation only. Semantic C, formal ABI, Xbox full link, post-link XBE diff, runtime, and gameplay remain unverified.
