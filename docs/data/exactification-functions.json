@@ -53841,6 +53841,606 @@
       "address": "0x001200C0",
       "sizeBytes": 677,
       "status": "current-exact"
+    },
+    {
+      "function": "sub_00120A70",
+      "address": "0x00120A70",
+      "sizeBytes": 3406,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00124330",
+      "address": "0x00124330",
+      "sizeBytes": 939,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00124F30",
+      "address": "0x00124F30",
+      "sizeBytes": 1340,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001269A0",
+      "address": "0x001269A0",
+      "sizeBytes": 1807,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012C620",
+      "address": "0x0012C620",
+      "sizeBytes": 117,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012D770",
+      "address": "0x0012D770",
+      "sizeBytes": 271,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012DF80",
+      "address": "0x0012DF80",
+      "sizeBytes": 1036,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012E560",
+      "address": "0x0012E560",
+      "sizeBytes": 323,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012F810",
+      "address": "0x0012F810",
+      "sizeBytes": 82,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0012FF20",
+      "address": "0x0012FF20",
+      "sizeBytes": 1019,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001314E0",
+      "address": "0x001314E0",
+      "sizeBytes": 6763,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00134220",
+      "address": "0x00134220",
+      "sizeBytes": 167,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00135850",
+      "address": "0x00135850",
+      "sizeBytes": 5144,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00137390",
+      "address": "0x00137390",
+      "sizeBytes": 714,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001385C0",
+      "address": "0x001385C0",
+      "sizeBytes": 1533,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0013B9F0",
+      "address": "0x0013B9F0",
+      "sizeBytes": 566,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0013F8D0",
+      "address": "0x0013F8D0",
+      "sizeBytes": 449,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00141290",
+      "address": "0x00141290",
+      "sizeBytes": 231,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001414B0",
+      "address": "0x001414B0",
+      "sizeBytes": 48,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00141D80",
+      "address": "0x00141D80",
+      "sizeBytes": 835,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00143D80",
+      "address": "0x00143D80",
+      "sizeBytes": 581,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00143FD0",
+      "address": "0x00143FD0",
+      "sizeBytes": 161,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00144500",
+      "address": "0x00144500",
+      "sizeBytes": 125,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00144960",
+      "address": "0x00144960",
+      "sizeBytes": 1600,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00144FC0",
+      "address": "0x00144FC0",
+      "sizeBytes": 316,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00145650",
+      "address": "0x00145650",
+      "sizeBytes": 358,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00146EA0",
+      "address": "0x00146EA0",
+      "sizeBytes": 244,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014A520",
+      "address": "0x0014A520",
+      "sizeBytes": 303,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014A790",
+      "address": "0x0014A790",
+      "sizeBytes": 291,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014ADC0",
+      "address": "0x0014ADC0",
+      "sizeBytes": 149,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014B4F0",
+      "address": "0x0014B4F0",
+      "sizeBytes": 106,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014B5F0",
+      "address": "0x0014B5F0",
+      "sizeBytes": 1176,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014BBF0",
+      "address": "0x0014BBF0",
+      "sizeBytes": 151,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0014EB10",
+      "address": "0x0014EB10",
+      "sizeBytes": 220,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00150830",
+      "address": "0x00150830",
+      "sizeBytes": 708,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00152180",
+      "address": "0x00152180",
+      "sizeBytes": 1668,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00152D10",
+      "address": "0x00152D10",
+      "sizeBytes": 897,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00153470",
+      "address": "0x00153470",
+      "sizeBytes": 131,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00153BB0",
+      "address": "0x00153BB0",
+      "sizeBytes": 354,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00154010",
+      "address": "0x00154010",
+      "sizeBytes": 1347,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00154C70",
+      "address": "0x00154C70",
+      "sizeBytes": 1100,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00157690",
+      "address": "0x00157690",
+      "sizeBytes": 210,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00157840",
+      "address": "0x00157840",
+      "sizeBytes": 92,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00159AA0",
+      "address": "0x00159AA0",
+      "sizeBytes": 551,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00159EE0",
+      "address": "0x00159EE0",
+      "sizeBytes": 205,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0015E510",
+      "address": "0x0015E510",
+      "sizeBytes": 177,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0015F110",
+      "address": "0x0015F110",
+      "sizeBytes": 99,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0015F370",
+      "address": "0x0015F370",
+      "sizeBytes": 99,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0015F4F0",
+      "address": "0x0015F4F0",
+      "sizeBytes": 449,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00160960",
+      "address": "0x00160960",
+      "sizeBytes": 1173,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00161E30",
+      "address": "0x00161E30",
+      "sizeBytes": 792,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00162150",
+      "address": "0x00162150",
+      "sizeBytes": 1514,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00162780",
+      "address": "0x00162780",
+      "sizeBytes": 153,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001628A0",
+      "address": "0x001628A0",
+      "sizeBytes": 800,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00162C20",
+      "address": "0x00162C20",
+      "sizeBytes": 218,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00162DA0",
+      "address": "0x00162DA0",
+      "sizeBytes": 381,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00164B50",
+      "address": "0x00164B50",
+      "sizeBytes": 145,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00164BF0",
+      "address": "0x00164BF0",
+      "sizeBytes": 238,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00164FD0",
+      "address": "0x00164FD0",
+      "sizeBytes": 272,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001650E0",
+      "address": "0x001650E0",
+      "sizeBytes": 538,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00165890",
+      "address": "0x00165890",
+      "sizeBytes": 562,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00165C00",
+      "address": "0x00165C00",
+      "sizeBytes": 4185,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00166C60",
+      "address": "0x00166C60",
+      "sizeBytes": 4726,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001684B0",
+      "address": "0x001684B0",
+      "sizeBytes": 209,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001690D0",
+      "address": "0x001690D0",
+      "sizeBytes": 1379,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001697A0",
+      "address": "0x001697A0",
+      "sizeBytes": 441,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00169960",
+      "address": "0x00169960",
+      "sizeBytes": 603,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0016A790",
+      "address": "0x0016A790",
+      "sizeBytes": 884,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0016C5E0",
+      "address": "0x0016C5E0",
+      "sizeBytes": 507,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0016C9B0",
+      "address": "0x0016C9B0",
+      "sizeBytes": 3777,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0016D890",
+      "address": "0x0016D890",
+      "sizeBytes": 1578,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0016F420",
+      "address": "0x0016F420",
+      "sizeBytes": 485,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00170C80",
+      "address": "0x00170C80",
+      "sizeBytes": 1068,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00172DA0",
+      "address": "0x00172DA0",
+      "sizeBytes": 247,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00173650",
+      "address": "0x00173650",
+      "sizeBytes": 657,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001762B0",
+      "address": "0x001762B0",
+      "sizeBytes": 497,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00176620",
+      "address": "0x00176620",
+      "sizeBytes": 806,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00176950",
+      "address": "0x00176950",
+      "sizeBytes": 332,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00176AA0",
+      "address": "0x00176AA0",
+      "sizeBytes": 295,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00176F60",
+      "address": "0x00176F60",
+      "sizeBytes": 156,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0017A0C0",
+      "address": "0x0017A0C0",
+      "sizeBytes": 225,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0017A290",
+      "address": "0x0017A290",
+      "sizeBytes": 65,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0017AB40",
+      "address": "0x0017AB40",
+      "sizeBytes": 305,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0017EE10",
+      "address": "0x0017EE10",
+      "sizeBytes": 334,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00181E40",
+      "address": "0x00181E40",
+      "sizeBytes": 369,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00182910",
+      "address": "0x00182910",
+      "sizeBytes": 49,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00182950",
+      "address": "0x00182950",
+      "sizeBytes": 48,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00182980",
+      "address": "0x00182980",
+      "sizeBytes": 48,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00183AC0",
+      "address": "0x00183AC0",
+      "sizeBytes": 64,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00186AE0",
+      "address": "0x00186AE0",
+      "sizeBytes": 78,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00187070",
+      "address": "0x00187070",
+      "sizeBytes": 77,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_00188A50",
+      "address": "0x00188A50",
+      "sizeBytes": 180,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001895D0",
+      "address": "0x001895D0",
+      "sizeBytes": 39,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018AF60",
+      "address": "0x0018AF60",
+      "sizeBytes": 115,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018B530",
+      "address": "0x0018B530",
+      "sizeBytes": 400,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018BAA0",
+      "address": "0x0018BAA0",
+      "sizeBytes": 110,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018CD40",
+      "address": "0x0018CD40",
+      "sizeBytes": 84,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018EE40",
+      "address": "0x0018EE40",
+      "sizeBytes": 245,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018F7D0",
+      "address": "0x0018F7D0",
+      "sizeBytes": 165,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_0018FA60",
+      "address": "0x0018FA60",
+      "sizeBytes": 141,
+      "status": "current-exact"
     }
   ]
 }
