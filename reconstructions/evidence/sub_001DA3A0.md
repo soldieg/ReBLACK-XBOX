@@ -6,3 +6,13 @@ Candidate `sub_001DA3A0` - manifest lot 139, position 78; address `0x001DA3A0`; 
 - Original XBE SHA-256 `df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6`; XBE raw bytes at file offset `0x1ca3a0` equal split `.s` bytes, 327/327; byte SHA-256 `fb1d05fcb26d409e026c9c525565bb03dd6efe261c27571637ffb1530da2d24e`.
 - Fresh MSVC object and candidate object have identical `.text$mn` bytes, confirmed by ObjDiff 3.8.2: function and section 100.00%. MSVC 19.51.36260 x86 `/W4 /TC /c /O2 /GS- /Zl /Gd /Gy` compiled without diagnostics; COFF relocation count is zero for both objects.
 - Source SHA-256 `d8ca4765fa056c87362e9bbf251ae2d599c507404dd5dbec00376340ccb37f72`.
+
+## Lot 139 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 139, position 78; address order. Candidate span: 327 bytes (0x001DA3A0 to exclusive end 0x001DA4E7).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 1 incoming call sites; callers: 001ebbdd@001ebb40. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x1CA3A0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x1C9720. REA read_bytes evidence ev_3212b1273de339298fbceede2cffffc2be394e25c72b0d7976098b50b77612af returned 327 bytes. XBE raw = derived PE = split = REA; span SHA-256 fb1d05fcb26d409e026c9c525565bb03dd6efe261c27571637ffb1530da2d24e.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 327 bytes.
+- Source SHA-256 d8ca4765fa056c87362e9bbf251ae2d599c507404dd5dbec00376340ccb37f72; compiled object SHA-256 d6b555dff60fec7b9f2ff4a2c8cfeadb13f9c2e5235f7cb81252e1ff6e660e80; candidate object SHA-256 192179eec43375f0932b0968a1fd19f8cdedd79dad24e5b902b17c5e626dd70f.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
