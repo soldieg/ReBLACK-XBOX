@@ -12,3 +12,13 @@
 - SHA-256 da fonte: 10226d1afe8adacbb4afb77030f0f27874b63a1eff3081591f2732a0216bfe65; candidato: 1ab418bee3606e17dc7671bbaca6f000203515a6a54d8893cc16fc12325e6a9a; compilado: 34ee8cccd97c6a4b7b66a820c32b8f9b0a0ab980f20fffe99a0605496bf70a23.
 
 A fonte é um emissor de bytes preso ao endereço; não afirma C semântico nem ABI formal. Xbox link, diff pós-link do XBE, runtime e gameplay permanecem pendentes.
+
+## Lot 102 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 111, position 99; address order. Candidate span: 99 bytes (0x000C3EB0 to exclusive end 0x000C3F13).
+- Boundary: Ghidra class not-in-procedure; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 0 incoming call sites; callers: none listed. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0xB3EB0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0xB3230. REA read_bytes evidence ev_1170f83c433f4613954d883277e925781c638dfc0a34bea8c82e4d4ebc1890a7 returned 99 bytes. XBE raw = derived PE = split = REA; span SHA-256 b01664430805d4bf210db1a9891424490545a11af697f87bbe36809c5a9e1e5b.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 99 bytes.
+- Source SHA-256 10226d1afe8adacbb4afb77030f0f27874b63a1eff3081591f2732a0216bfe65; compiled object SHA-256 7f3b6098d2594d83b1bae3905280778a26999f18acefe66c0f11052496b3ae73; candidate object SHA-256 1ab418bee3606e17dc7671bbaca6f000203515a6a54d8893cc16fc12325e6a9a.
+- GitHub Issue: #6734 (https://github.com/soldieg/ReBLACK-XBOX/issues/6734).
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
