@@ -6,3 +6,13 @@
 - MSVC x86 compile passed without warnings. Source SHA-256: `AB762966D03DB79D57EF80B40D1961930B91BD7BF5F1BB6CE5FFFFC0B47D58C9`; compiled object SHA-256: `E0A2DABA2A60158DE8A14B8038C1F14D2A2BFB209E9C5CB483C2ED603359805F`.
 - ObjDiff 3.8.2: `_sub_0027EFA8` 100.00% against the named candidate object. Direct bytes also match the compiled `.text$mn`, the named split, and XBE raw offset `0x26C088`: 4/4 bytes, no relocations.
 - Counted as function 40/50 in Lot 101 after processing prior distinct eligible functions in address order; manifest candidate row Lot 151/position 80 describes the candidate partition, not the delivered function-lot number. Xbox link, post-link XBE diff, and runtime remain unverified.
+
+## Lot 151 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 151, position 80; address order. Candidate span: 4 bytes (0x0027EFA8 to exclusive end 0x0027EFAC).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 18 incoming call sites; callers: 00282666@0028265c;002824b6@002824ab;0028234c@00282344;00282bff@00282bf8;0028276c@00282765;00282b30@00282b25;002828e7@002828de;00282c31@00282c28;00282cb1@00282ca8;00282dd8@00282dcf;00282601@?;0028282f@00282828;00282936@?;00282a01@002829fa;00282ac1@00282aba;0028279f@00282797;0028288a@00282883;002823de@002823d7. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x26C088; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x26A7E8. REA read_bytes evidence ev_5e847a96cf7f6a2010c2907f9087274dbe921d8a18bc0c332825cbb9d59b3e47 returned 4 bytes. XBE raw = derived PE = split = REA; span SHA-256 0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 4 bytes.
+- Source SHA-256 7a57732f49c0648d07a667b966f7d17503bfa9ca6d7da05b00711037f18ad5e9; compiled object SHA-256 5d82c3979c5f180c019b2dfeaccbd8a389eeca64aa7396453750e3c137747550; candidate object SHA-256 7074b42873526ca7cc17f6377d7d724e3f92671ecd504e97158e54b3d9c62522.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
