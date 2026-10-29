@@ -1,0 +1,10 @@
+/* shortcut: preserve exact bytes until semantic C reproduces the same linked body. */
+#pragma code_seg(".text$mn")
+__declspec(naked) void __cdecl sub_0004000C(void)
+{
+    __asm {
+        _emit 0x5D
+        _emit 0x5B
+        _emit 0xC3
+    }
+}

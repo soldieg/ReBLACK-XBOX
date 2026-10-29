@@ -78,7 +78,7 @@ def validate_function_pairs(changed_paths: list[str], root: Path, known: set[str
     evidence_paths = {PurePosixPath(name).name for name in changed_paths if name.startswith("reconstructions/evidence/") and name.endswith(".md")}
     for source in source_paths:
         candidate_id = source.stem
-        if not FUNCTION_ID.fullmatch(candidate_id):
+        if not FUNCTION_ID.fullmatch(candidate_id) and candidate_id != "xbe_entry_point":
             errors.append(f"{source.as_posix()}: filename must be sub_ followed by eight hexadecimal digits")
             continue
         if candidate_id not in known:
