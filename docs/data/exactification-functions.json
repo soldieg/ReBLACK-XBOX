@@ -51743,8 +51743,8 @@
       "sizeBytes": 6,
       "status": "current-exact"
     },
-      {
-        "function": "sub_00011AF0",
+    {
+      "function": "sub_00011AF0",
       "address": "0x00011AF0",
       "sizeBytes": 64,
       "status": "current-exact"
