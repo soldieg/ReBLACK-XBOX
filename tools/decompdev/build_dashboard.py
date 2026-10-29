@@ -230,7 +230,8 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
             raise ValueError(f"Exactification function {index} has unapproved or missing fields")
         name, address, size, status = item["function"], item["address"], item["sizeBytes"], item["status"]
         match = re.fullmatch(r"sub_([0-9a-fA-F]{8})", name) if isinstance(name, str) else None
-        if not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}":
+        named_candidate = name == "xbe_entry_point" and isinstance(address, str) and address.lower() == "0x00025a3f"
+        if not named_candidate and (not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}"):
             raise ValueError(f"Exactification function {index} has an invalid ID/address pair")
         key = name.lower()
         if key in records:
@@ -254,7 +255,8 @@ def read_exactification_functions(path: Path, candidates: list[dict]) -> dict:
             raise ValueError(f"Additional exact function {index} has unapproved or missing fields")
         name, address, size, status = item["function"], item["address"], item["sizeBytes"], item["status"]
         match = re.fullmatch(r"sub_([0-9a-fA-F]{8})", name) if isinstance(name, str) else None
-        if not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}":
+        named_candidate = name == "xbe_entry_point" and isinstance(address, str) and address.lower() == "0x00025a3f"
+        if not named_candidate and (not match or not isinstance(address, str) or address.lower() != f"0x{match.group(1).lower()}"):
             raise ValueError(f"Additional exact function {index} has an invalid ID/address pair")
         key = name.lower()
         if key in records or key in additional_names:
