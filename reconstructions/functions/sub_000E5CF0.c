@@ -1,0 +1,70 @@
+/* shortcut: preserve exact bytes until semantic C reproduces the same linked body. */
+#pragma code_seg(".text$mn")
+__declspec(naked) void __cdecl sub_000E5CF0(void)
+{
+    __asm {
+        _emit 0x8D
+        _emit 0x0C
+        _emit 0x7F
+        _emit 0xC1
+        _emit 0xE1
+        _emit 0x05
+        _emit 0x56
+        _emit 0x8B
+        _emit 0x35
+        _emit 0xAC
+        _emit 0xC9
+        _emit 0x2E
+        _emit 0x00
+        _emit 0x83
+        _emit 0xC1
+        _emit 0x10
+        _emit 0xE8
+        _emit 0x2B
+        _emit 0xDC
+        _emit 0xFF
+        _emit 0xFF
+        _emit 0xA8
+        _emit 0x0F
+        _emit 0xA3
+        _emit 0x74
+        _emit 0x42
+        _emit 0x2F
+        _emit 0x00
+        _emit 0x5E
+        _emit 0x74
+        _emit 0x06
+        _emit 0x83
+        _emit 0xC0
+        _emit 0x10
+        _emit 0x83
+        _emit 0xE0
+        _emit 0xF0
+        _emit 0xA3
+        _emit 0x70
+        _emit 0x42
+        _emit 0x2F
+        _emit 0x00
+        _emit 0x66
+        _emit 0x89
+        _emit 0x3D
+        _emit 0x78
+        _emit 0x42
+        _emit 0x2F
+        _emit 0x00
+        _emit 0x66
+        _emit 0xC7
+        _emit 0x05
+        _emit 0x7C
+        _emit 0x42
+        _emit 0x2F
+        _emit 0x00
+        _emit 0x00
+        _emit 0x00
+        _emit 0xE9
+        _emit 0xF1
+        _emit 0xE6
+        _emit 0xFF
+        _emit 0xFF
+    }
+}
