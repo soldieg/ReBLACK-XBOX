@@ -1,0 +1,22 @@
+{
+  "repository": "soldieg/ReBLACK-XBOX",
+  "base_commit": "52d4f607e1ffb5f4f6402dc06520d464ed9a1d2f",
+  "source_files": 13676,
+  "function_candidates": 13675,
+  "entry_point_sources": 1,
+  "corrected_function": "sub_00016630",
+  "corrected_source_sha256": "b60063ba87c588386a3bdb4ba8c31f3bbf94cf58ff16b01e41f7a16d9a43acc6",
+  "corpus_zip_sha256": "202fb69b8ec111927e4f492ba5f4083fa41afc13ee4c655a4bea756388681eeb",
+  "library_sha256": "ffb323b42f026c546d273554c7717e1f8e035ec2ab4ea321bc79d1cdb349bcec",
+  "validation_csv_sha256": "10278c9acdea06ce3ce74127c8073909b30deabbd14203a7444aa22ed65da46b",
+  "compiler": "MSVC 19.51.36260.0 x86",
+  "flags": "/DWIN32 /D_WINDOWS /O2 /GS- /Gy /Zl /DNDEBUG /MD /Oy",
+  "compilation": "13676/13676 passed; library contains all object files",
+  "candidate_byte_scan": {
+    "matches": 13676,
+    "mismatches": 0,
+    "boundary_confirmed_by_unique_tracker_size": 13674,
+    "boundary_unresolved": 2
+  },
+  "scope_note": "Candidate-range equality only; the two unresolved boundaries are not EXACT_PASS. No Xbox link, XBE, runtime, or gameplay is included."
+}
