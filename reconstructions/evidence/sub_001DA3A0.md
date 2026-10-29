@@ -1,0 +1,8 @@
+Candidate `sub_001DA3A0` - manifest lot 139, position 78; address `0x001DA3A0`; candidate span 327 bytes.
+
+- Source is an exact-byte emitter (`_emit`); semantic C reconstruction remains pending.
+- Ghidra 12.1.3 target `default-xbe-rea-view.exe`, SHA-256 `aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd`; entry `0x001da3a0`; body 298 bytes in 6 ranges: `0x001da3a0-0x001da3dc; 0x001da3e0-0x001da40c; 0x001da410-0x001da468; 0x001da470-0x001da497; 0x001da4a0-0x001da4c7; 0x001da4d0-0x001da4e6`; 1 direct callers, 1 resolved callees, no unresolved calls; relationship coverage complete. Evidence `ev_b26f06aa5b9cb0d8815f2f3d42bc4a3c32f0dcdfef3d53497921d4d28775c3ca`.
+- Non-body gap bytes in the span, decoded by split disassembly as alignment: `0x001da3dd-0x001da3df` = `8d 49 00` (0x001da3dd lea ecx, [ecx]); `0x001da40d-0x001da40f` = `8d 49 00` (0x001da40d lea ecx, [ecx]); `0x001da469-0x001da46f` = `8d a4 24 00 00 00 00` (0x001da469 lea esp, [esp]); `0x001da498-0x001da49f` = `8d a4 24 00 00 00 00 90` (0x001da498 lea esp, [esp]; 0x001da49f nop); `0x001da4c8-0x001da4cf` = `8d a4 24 00 00 00 00 90` (0x001da4c8 lea esp, [esp]; 0x001da4cf nop).
+- Original XBE SHA-256 `df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6`; XBE raw bytes at file offset `0x1ca3a0` equal split `.s` bytes, 327/327; byte SHA-256 `fb1d05fcb26d409e026c9c525565bb03dd6efe261c27571637ffb1530da2d24e`.
+- Fresh MSVC object and candidate object have identical `.text$mn` bytes, confirmed by ObjDiff 3.8.2: function and section 100.00%. MSVC 19.51.36260 x86 `/W4 /TC /c /O2 /GS- /Zl /Gd /Gy` compiled without diagnostics; COFF relocation count is zero for both objects.
+- Source SHA-256 `d8ca4765fa056c87362e9bbf251ae2d599c507404dd5dbec00376340ccb37f72`.
