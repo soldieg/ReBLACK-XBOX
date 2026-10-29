@@ -1,0 +1,9 @@
+# sub_000BEDA0
+
+- Manifest: lot 109, position 39; address order. Candidate span: 12 bytes (0x000BEDA0 to exclusive end 0x000BEDAC).
+- Boundary: Ghidra class not-in-procedure; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 0 incoming call sites; callers: none listed. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0xAEDA0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0xAE120. REA read_bytes evidence ev_b71b6e946d2606d8eb90df3d0d93b488e2b1f0f2e29d240d0b5d504a5ed6b019 returned 12 bytes. XBE raw = derived PE = split = REA; span SHA-256 f841f66683bda69af5e16291b5a5be1b169fb9ad02731dd4080ae50cf47bc444.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 12 bytes.
+- Source SHA-256 80c103f0e239216f3e53b254a5fdfac90a6c6b7719166ec23e1e541f40141463; compiled object SHA-256 7a049f6cead93791d36dd3fec154b232b1466c7279e332b4e5ea1784af6f64e0; candidate object SHA-256 f0f3d990aa64277781fa16bfd680c29d86e2cb276413f00724f253a8af53ff91.
+- GitHub Issue: #10145 (https://github.com/soldieg/ReBLACK-XBOX/issues/10145).
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
