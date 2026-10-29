@@ -7,3 +7,13 @@
 - Source SHA-256 76ca432dd6879e61faa199d04200e53068aca9ca834b183c2541d47e31194ec6; fresh object SHA-256 d2a16a8ab14abfb3619f4861ac7bb991ca56f52026b0f0fe74226fbf9911f4c8; candidate object SHA-256 d642c13b7370f0069f491f1b1219708bb0c5ec14cd2bd5901e79067b37a0a8f5.
 - GitHub Issue: #9263 (https://github.com/soldieg/ReBLACK-XBOX/issues/9263).
 - Source is an address-pinned byte emitter, not semantic C or a formal ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
+
+## Lot 137 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 137, position 19; address order. Candidate span: 3413 bytes (0x001B7FF0 to exclusive end 0x001B8D45).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 6 incoming call sites; callers: 001ba18d@001ba090;001e4678@001e4580;001bf456@001bf430;001ebcfd@001ebc30;001ba1dd@?;001ce88a@001ce830. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x1A7FF0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x1A7370. REA read_bytes evidence ev_0e90ced1c1f835501eae8cac22e57cb9d19d31a9577f4741b1489cce7108609f returned 3413 bytes. XBE raw = derived PE = split = REA; span SHA-256 4e4f27e8434ca260ce5e5f006fd174c507bbc9fe60fba5ea661262e5d41b9c4b.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 3413 bytes.
+- Source SHA-256 76ca432dd6879e61faa199d04200e53068aca9ca834b183c2541d47e31194ec6; compiled object SHA-256 fd30a9f1a0a97d8bc68db4aa69b47422ab8f4d81a8b69324a1337879d5e1ba81; candidate object SHA-256 d642c13b7370f0069f491f1b1219708bb0c5ec14cd2bd5901e79067b37a0a8f5.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
