@@ -1,0 +1,13 @@
+# `sub_0002FAE0`
+
+- Related task: [Issue #4733](https://github.com/soldieg/ReBLACK-XBOX/issues/4733).
+- Prior-work reconciliation: Issue #4733 records a Lot 82 local validation, but the approved dashboard baseline still classifies this manifest candidate as unmatched. This fresh validation is assigned once to the current initial 50-function lot; it is not credited as an additional unique function.
+- Manifest position: Lot 102 candidate 55, address `0x0002FAE0`. Counted as the 17th validated distinct function in the initial 50-function lot, following manifest address order and holding earlier unresolved rows.
+- Ghidra 12.1.3 body: 246 bytes in ranges `0x2FAE0–0x2FB0C` and `0x2FB10–0x2FBD8`. The three-byte gap `0x2FB0D–0x2FB0F` is `lea ecx,[ecx]`, an alignment NOP after an unconditional jump to `0x2FB10`; the candidate's contiguous 249-byte symbol includes it. Procedure evidence: `ev_2df14cbddf19d940554ba3d4c257db267283dc69a3a07c57a1d09e7e0e6af82f`.
+- Resolved callers: `0x37B60`, `0x43B30` (evidence `ev_c6384415d941e1235039cfe2f328b44434c8ac46a1b73a272d5dd798cce50be4`). Resolved direct callees: `0x2F9C0`, `0x307B0`, `0x331B0`, `0x816E0` (evidence `ev_a758e93cea1b1a0f50ebe519934e2ae132a89cc850d2cf97c2b7f361a60a96b7`); source and evidence files exist for all six adjacent procedures. No unresolved direct call was observed.
+- Fresh REA read: 249/249 bytes (`ev_970e201544fd57cebc1812de92fec970a85689ac820ea0156879339998743bf9`), equal to the original XBE raw span at offset `0x1FAE0` and XboxRecomp split `decompilacao/funcoes-separadas/split-full-DF2739C3-20261013/asm/text/sub_0002FAE0.s`. All three byte-span SHA-256 values: `352C96F61DA4E1BBE07525BAF4CAAA2360C89820AE3714794D2A23EE82B1B650`. XBE SHA-256: `DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6`; REA maps VA `0x2FAE0` to derived-PE file offset `126560` (`ev_ff1c449e58773eaae05c8ea948dd66e600cc434448316a8a078f361c83f3ef81`).
+- Source: address-pinned MSVC x86 byte emitter preserving the observed procedure span and alignment NOP. It does not claim recovered semantic C, original source types, or ABI.
+- Compiler: MSVC 19.51.36260.0, x86; `/TC /c /O2 /GS- /Zl /Gd /Gy`. Compile passed; `.text$mn` emitted 249 bytes.
+- Source SHA-256: `F4C324108BC80D6139D9FCA1ACC28F50C3BD2CD44669DCEA2F08D254D6AD26DB`; compiled COFF SHA-256: `59DFA7F8535DB0968757E24965B4755F04B075D1726976D6C0450EE9FBACE552`.
+- ObjDiff 3.8.2 against candidate object `sub_0002FAE0.obj` (SHA-256 `D95F837DAC6A8CBA4B0D42D2591E70C859E695CF17B374CA9F497CEA45860D73`): 100.00%, 249/249 bytes for `_sub_0002FAE0` and `.text$mn`.
+- Xbox link, post-link XBE diff, runtime, gameplay, semantic C, and original ABI remain unverified.
