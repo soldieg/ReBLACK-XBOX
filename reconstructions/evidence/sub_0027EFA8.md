@@ -1,22 +1,8 @@
-# `sub_0027EFA8`
+# sub_0027EFA8 reconstruction evidence
 
-- Related function task: [Issue #28](https://github.com/soldieg/ReBLACK-XBOX/issues/28).
-- Function range: `0x0027EFA8–0x0027EFAC` (exclusive end); four contiguous bytes, two instructions.
-- Target XBE SHA-256: `DF2739C372D254A90AEECCF5971D12097F22D89FBB90DB021FDA96DD4DEB68F6`.
-- Derived PE SHA-256: `AABDEBF414D216E67161DF9DDFD1FAC5FD915EBB59BD2B26AE42E062C245682BD`.
-- REA/Ghidra 12.1.4 (x86) evidence: function body `ev_3ba3416d57bcf10e1ce11eded6f657fd1958074654cd8125735d1854f8865f73`; assembly `ev_01fbd40164e6b19c72827ed21a19721db46ed4374962264b6fafc5e5591e4da4`; pseudocode `ev_0067415f732b8ce8eaec35a3c0d3621ccf300c3bb808ff189a5adee322ae9908`; analyzed bytes `ev_3978397bcac2a5a3f59d6a1dc45c61359a3ffb54876a7e37abfc4b0468c57a39`; PE source-file mapping `ev_47b0c799097c1f162e1ab8ce76ea0de6958df0cac961410b668abe04df364c30`.
-- Observed behavior: reads the 32-bit field at `[ECX+0x1C]` into EAX, then returns. The example caller sets ECX from its object pointer and uses EAX as a pointer-like value. The source is an exact-byte emitter; its declaration is not a proven original C/C++ signature or complete semantic type.
-- Caller evidence `ev_ced8d0ab90fac327046dd77909dd7e9f90d0e91d8c0773289bbd31b9a5dbbe4d`: 16 resolved callers, partial coverage with two unresolved incoming reference owners. Callees `ev_ac921c8868d678f9e1c1204c043d1c6ca4d00788ff329b1b247000044a4b07b6`: none resolved. Example caller assembly `ev_93eb74498508fbaeaa056fb7419bacea4f412ace60318f026e01a2901dc14019`.
-- Boundary corroboration: the XBE section table maps this VA to XPP; the mapped original-XBE span, the REA-mapped PE span, the four-byte split entry, and the candidate assembly were checked independently. The split boundary method is `call_target` with heuristic confidence 0.90; no competing body owner was recorded.
-- Compiler and version: MSVC 19.51.36260.0, x86; developer environment initialized with `VsDevCmd.bat -arch=x86 -host_arch=x64`.
-- Target/build options: x86 emitter; `/TC /c /O2 /GS- /Zl /Gd /Gy`. ECX input/EAX output behavior is observed; the original C/C++ types and declaration are not proven.
-- Reproduction: compile the source with `cl.exe /nologo /TC /c /O2 /GS- /Zl /Gd /Gy`; the compiled COFF `.text$mn` body is four bytes.
-- Compile: passed.
-- Exact byte diff: passed. The compiled body equals the mapped four-byte spans in the original XBE XPP section and the derived PE; the split reference identifies the same two instructions.
-- ObjDiff 3.8.2: 100.00% for `_sub_0027EFA8` against the explicitly identified four-byte `sub_0027EFA8` target candidate object. This candidate object is a comparison reference, not an Xbox-linked object; the result is corroborative, while the direct body-byte comparisons are the exact-byte claim.
-- Xbox full link/runtime: not run.
-- Static self-review: passed for the observed register-level behavior and stated limits. Independent PR review: pending.
-
-## Validation scope
-
-The four-byte body is byte-identical across the compiled object, mapped target PE/XBE spans, and split reference. This does not prove the field's semantic type, a source-level prototype, full caller coverage, Xbox linking, or runtime behavior.
+- Frozen candidate: manifest Lot 151, position 80, address `0x0027EFA8`, 4 bytes; the Ghidra boundary crosswalk identifies an exact 4-byte procedure entry.
+- Fresh REA/Ghidra 12.1.3 evidence: body and references `ev_b2468fce1eab9d24df813cb74fc6183cf2d02984868d6ee7514ba2b07c17c4f3`; body `0x27EFA8–0x27EFAB`, 4/4 bytes. Fresh byte read `ev_622260e183ae94a4005e52ec4dbe977605fc6b1a9e3527f7ea2e758d8d7e4baf`: `8B411CC3`.
+- The body reads the 32-bit value at `[ECX+0x1C]` into EAX and returns. Ghidra observes 16 named callers and no callees or outgoing calls. It also records two direct calls whose source procedures are unassigned; their instructions were independently decoded by Ghidra as direct calls at `0x282601` and `0x282936` (`ev_4fc106b7cfbb2f193ce347b03ce739e711e10d94d6a9f2b871347d0de23b12af`, `ev_de9dae695ab08b21f38d00b43f8c39d31f465a119a0b3d39cef6326b1be4837d`). Both lie inside existing manifest candidates `sub_002825F9` and `sub_0028292E`; the XBE/split boundary crosswalk independently lists them as callers and reports equal instruction-start sets. Their address spans end in `ret 8` in the byte disassembly. This reconciles the two call sites without claiming Ghidra assigned their owner functions.
+- MSVC x86 compile passed without warnings. Source SHA-256: `AB762966D03DB79D57EF80B40D1961930B91BD7BF5F1BB6CE5FFFFC0B47D58C9`; compiled object SHA-256: `E0A2DABA2A60158DE8A14B8038C1F14D2A2BFB209E9C5CB483C2ED603359805F`.
+- ObjDiff 3.8.2: `_sub_0027EFA8` 100.00% against the named candidate object. Direct bytes also match the compiled `.text$mn`, the named split, and XBE raw offset `0x26C088`: 4/4 bytes, no relocations.
+- Counted as function 40/50 in Lot 101 after processing prior distinct eligible functions in address order; manifest candidate row Lot 151/position 80 describes the candidate partition, not the delivered function-lot number. Xbox link, post-link XBE diff, and runtime remain unverified.

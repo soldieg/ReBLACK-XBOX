@@ -19,3 +19,10 @@
 - Compiled `.text$mn` SHA-256: `5a3791e3d7c7e93829ac988e4c53e767870a2fee6bb25bde1a93de5be2cb11e3`.
 - The candidate carries no COFF relocations; fixed relative encodings require placement at the original address or correct relocation during a future full link.
 - Xbox full link, post-link XBE diff, and runtime: not run.
+
+## Fresh MSVC and ObjDiff recheck (2026-10-28)
+
+- Public source SHA-256: `03AA4ED1C490E7E32140B899834E7BE99B0AD0E399EA73131633083CFC101DAF`.
+- MSVC 19.51.36260.0 x86 compiled with `/TC /c /O2 /GS- /Zl /Gd /Gy`; compiled COFF SHA-256: `3F9FCA81885CFC7CAB0C24647B2B5FF51307E2426895429394819D2EC9DBB09F`.
+- ObjDiff 3.8.2 against the identified XboxRecomp candidate object (SHA-256 `9AAEAC1C9EDCA91EC32325F91FCA109B8718117E0AC27DAB88FCE9F8D1A8D67B`): `100.00%` for `sub_000BFD30` (`106` bytes).
+- This recheck covers compilation and the named candidate comparison. Xbox link, post-link XBE diff, and runtime remain unverified.

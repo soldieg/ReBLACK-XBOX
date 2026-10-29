@@ -1,6 +1,7 @@
 __declspec(naked) void __cdecl sub_000E7210(void)
 {
     __asm {
+    function_entry:
         push esi
         mov esi, ecx
         mov eax, dword ptr [esi + 4]
@@ -59,7 +60,7 @@ __declspec(naked) void __cdecl sub_000E7210(void)
     child_loop:
         push edi
         mov ecx, esi
-        call sub_000E7210
+        call function_entry
         mov esi, dword ptr [esi + 50h]
         test esi, esi
         jnz short child_loop
