@@ -29,7 +29,12 @@ __declspec(naked) void __cdecl sub_000F2120(void)
         cmp word ptr [edx], 0
         jnz clear_entry
         movzx ecx, word ptr [edx + 4]
-        mov eax, dword ptr [002ec9ach]
+        // shortcut: original moffs encoding is retained until global relocation is modeled.
+        __emit 0a1h
+        __emit 0ach
+        __emit 0c9h
+        __emit 02eh
+        __emit 000h
         add ecx, 9
         // shortcut: raw rel32 assumes the original mapped image layout; recheck on Xbox link.
         __emit 0e8h
@@ -48,7 +53,11 @@ __declspec(naked) void __cdecl sub_000F2120(void)
     cleanup_entries:
         mov ecx, dword ptr [edi]
         mov edx, dword ptr [edi + 4]
-        mov eax, dword ptr [002ec9ach]
+        __emit 0a1h
+        __emit 0ach
+        __emit 0c9h
+        __emit 02eh
+        __emit 000h
         shl ecx, 3
         __emit 0e8h
         __emit 0ech
