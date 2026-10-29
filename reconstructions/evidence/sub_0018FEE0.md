@@ -7,3 +7,13 @@
 - Source SHA-256 68f9a0665f0de02fc1810f9e8c92b4d90d46199f141b99ff814b4a1e7297154a; compiled object SHA-256 6af8d32a8ed9f271ade5c4a1f5a18bd47a311f48a8afd8fa3249f6cccda712d6; candidate object SHA-256 83c8d371a3bb57006ca471b381487f1454a22731e6550825296c3ad963a46a4a.
 - GitHub Issue: #9328 (https://github.com/soldieg/ReBLACK-XBOX/issues/9328).
 - Source is an address-pinned byte emitter. It is not semantic C or an ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
+
+## Lot 132 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 132, position 51; address order. Candidate span: 11 bytes (0x0018FEE0 to exclusive end 0x0018FEEB).
+- Boundary: Ghidra class not-in-procedure; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 0 incoming call sites; callers: none listed. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x17FEE0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x17F260. REA read_bytes evidence ev_fa7a8050fbdbf011f93a95afc2a3baa0907ff9744a7e1a99cc2537b1f2c46ea8 returned 11 bytes. XBE raw = derived PE = split = REA; span SHA-256 95d94a70c17780571fc6184de255859e11504bfdb1d119960a4c6d13a1b763b5.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 11 bytes.
+- Source SHA-256 68f9a0665f0de02fc1810f9e8c92b4d90d46199f141b99ff814b4a1e7297154a; compiled object SHA-256 de3c92cffc2e141ea04fe7dd076ff857243a729974f7535204a03adc3a37cf9c; candidate object SHA-256 83c8d371a3bb57006ca471b381487f1454a22731e6550825296c3ad963a46a4a.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
