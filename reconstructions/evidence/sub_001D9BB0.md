@@ -7,3 +7,13 @@
 - Source SHA-256 0a55c10931c22851e6fe754d7a84d6c45f41baab1b0ceb882efeb1899a33d393; fresh object SHA-256 73b7d7534d99af036989ee3e368d3e374163e959c7bde1e8e3ca071805437515; candidate object SHA-256 375026530602067693542b81aac432cb9db6febca3bdb2702606701319d27fac.
 - GitHub Issue: #9288 (https://github.com/soldieg/ReBLACK-XBOX/issues/9288).
 - Source is an address-pinned byte emitter, not semantic C or a formal ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
+
+## Lot 139 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 139, position 76; address order. Candidate span: 1519 bytes (0x001D9BB0 to exclusive end 0x001DA19F).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 0 incoming call sites; callers: none listed. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x1C9BB0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x1C8F30. REA read_bytes evidence ev_8cbfe0aa99f59267734a3c51a93fdb400a6b9a3d03813a22fdfd05508d5c4781 returned 1519 bytes. XBE raw = derived PE = split = REA; span SHA-256 bde6f59d053c813d934c808ddf5b9be36faeee307bfd98a10b16c5ddc87e0509.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 1519 bytes.
+- Source SHA-256 0a55c10931c22851e6fe754d7a84d6c45f41baab1b0ceb882efeb1899a33d393; compiled object SHA-256 3fbbb07b643f812895410ef802f5e7d80b8abff2537a9cf0c1f6426d2a8c0dcb; candidate object SHA-256 375026530602067693542b81aac432cb9db6febca3bdb2702606701319d27fac.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.

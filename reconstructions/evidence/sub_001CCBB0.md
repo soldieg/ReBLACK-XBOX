@@ -7,3 +7,13 @@
 - Source SHA-256 2765111dee82f5c021396ca3f92199efb9f9eaba434cca04c58d9c0831bdba08; fresh object SHA-256 0834abde979afa3a3dd050dd220e1347cea47c8199aaee05aa370464d67eaf10; candidate object SHA-256 576cfb28d22bee3c975675c04c0d402c257478e7fc257ac26fe001fe3463c7e6.
 - GitHub Issue: #9269 (https://github.com/soldieg/ReBLACK-XBOX/issues/9269).
 - Source is an address-pinned byte emitter, not semantic C or a formal ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
+
+## Lot 139 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 139, position 24; address order. Candidate span: 239 bytes (0x001CCBB0 to exclusive end 0x001CCC9F).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 1 incoming call sites; callers: 001f120d@001f1080. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x1BCBB0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x1BBF30. REA read_bytes evidence ev_5ea6b72d76b1cad6c96600fe37d98b4443535125b6ba888fbab1fc9bdf80b3f3 returned 239 bytes. XBE raw = derived PE = split = REA; span SHA-256 ae934234435c489f0b36b6da3d1c7a91956e5440da65419baef3cb2a1ca3fb09.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 239 bytes.
+- Source SHA-256 2765111dee82f5c021396ca3f92199efb9f9eaba434cca04c58d9c0831bdba08; compiled object SHA-256 4bee09175863e12f21b9ac224eed926c13a5f13e175a03ec6d010b5413885f72; candidate object SHA-256 576cfb28d22bee3c975675c04c0d402c257478e7fc257ac26fe001fe3463c7e6.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.

@@ -75075,6 +75075,282 @@
       "address": "0x001C6CF0",
       "sizeBytes": 96,
       "status": "current-exact"
+    },
+    {
+      "function": "sub_001C7690",
+      "address": "0x001C7690",
+      "sizeBytes": 563,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001C9160",
+      "address": "0x001C9160",
+      "sizeBytes": 17,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001C96A0",
+      "address": "0x001C96A0",
+      "sizeBytes": 5,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001C9890",
+      "address": "0x001C9890",
+      "sizeBytes": 5,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001C9980",
+      "address": "0x001C9980",
+      "sizeBytes": 5,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001C9B90",
+      "address": "0x001C9B90",
+      "sizeBytes": 61,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CB350",
+      "address": "0x001CB350",
+      "sizeBytes": 46,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CB4E0",
+      "address": "0x001CB4E0",
+      "sizeBytes": 31,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CB570",
+      "address": "0x001CB570",
+      "sizeBytes": 18,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CBF00",
+      "address": "0x001CBF00",
+      "sizeBytes": 64,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CC900",
+      "address": "0x001CC900",
+      "sizeBytes": 38,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CCBA0",
+      "address": "0x001CCBA0",
+      "sizeBytes": 12,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CD310",
+      "address": "0x001CD310",
+      "sizeBytes": 46,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CD340",
+      "address": "0x001CD340",
+      "sizeBytes": 12,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CDA10",
+      "address": "0x001CDA10",
+      "sizeBytes": 27,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CDF20",
+      "address": "0x001CDF20",
+      "sizeBytes": 263,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CE4C0",
+      "address": "0x001CE4C0",
+      "sizeBytes": 314,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CE820",
+      "address": "0x001CE820",
+      "sizeBytes": 5,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001CFAD0",
+      "address": "0x001CFAD0",
+      "sizeBytes": 31,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D001D",
+      "address": "0x001D001D",
+      "sizeBytes": 245,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D1C30",
+      "address": "0x001D1C30",
+      "sizeBytes": 48,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D21B0",
+      "address": "0x001D21B0",
+      "sizeBytes": 49,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D2D70",
+      "address": "0x001D2D70",
+      "sizeBytes": 23,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D3770",
+      "address": "0x001D3770",
+      "sizeBytes": 19,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D3790",
+      "address": "0x001D3790",
+      "sizeBytes": 149,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D3830",
+      "address": "0x001D3830",
+      "sizeBytes": 143,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D38C0",
+      "address": "0x001D38C0",
+      "sizeBytes": 21,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D54C0",
+      "address": "0x001D54C0",
+      "sizeBytes": 161,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D5970",
+      "address": "0x001D5970",
+      "sizeBytes": 19,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D5A40",
+      "address": "0x001D5A40",
+      "sizeBytes": 297,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D5B00",
+      "address": "0x001D5B00",
+      "sizeBytes": 105,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D5D90",
+      "address": "0x001D5D90",
+      "sizeBytes": 83,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D5DF0",
+      "address": "0x001D5DF0",
+      "sizeBytes": 16,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D6200",
+      "address": "0x001D6200",
+      "sizeBytes": 528,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D6D40",
+      "address": "0x001D6D40",
+      "sizeBytes": 60,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001D7780",
+      "address": "0x001D7780",
+      "sizeBytes": 30,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001DAF10",
+      "address": "0x001DAF10",
+      "sizeBytes": 222,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001DD190",
+      "address": "0x001DD190",
+      "sizeBytes": 8,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001DF620",
+      "address": "0x001DF620",
+      "sizeBytes": 10,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E001E",
+      "address": "0x001E001E",
+      "sizeBytes": 253,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E08E0",
+      "address": "0x001E08E0",
+      "sizeBytes": 130,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E1790",
+      "address": "0x001E1790",
+      "sizeBytes": 103,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E2610",
+      "address": "0x001E2610",
+      "sizeBytes": 17,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E3D10",
+      "address": "0x001E3D10",
+      "sizeBytes": 135,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E3F30",
+      "address": "0x001E3F30",
+      "sizeBytes": 108,
+      "status": "current-exact"
+    },
+    {
+      "function": "sub_001E43F0",
+      "address": "0x001E43F0",
+      "sizeBytes": 317,
+      "status": "current-exact"
     }
   ]
 }
