@@ -1,5 +1,4 @@
-extern unsigned char dat_00295c90;
-extern unsigned char dat_00288244;
+/* Keep absolute operands unrelocated to match the candidate COFF. */
 __declspec(naked) void sub_00013BE0(void)
 {
     __asm {
@@ -20,9 +19,19 @@ __declspec(naked) void sub_00013BE0(void)
         mov dword ptr [esp + 4h], eax
         fild dword ptr [esp + 4h]
         jge L_13C0E
-        fadd float ptr [dat_00295c90]
+        _emit 0xD8
+        _emit 0x05
+        _emit 0x90
+        _emit 0x5C
+        _emit 0x29
+        _emit 0x00
         L_13C0E:
-        fmul float ptr [dat_00288244]
+        _emit 0xD8
+        _emit 0x0D
+        _emit 0x44
+        _emit 0x82
+        _emit 0x28
+        _emit 0x00
         pop esi
         pop ecx
         ret
