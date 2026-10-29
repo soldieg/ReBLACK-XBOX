@@ -6,3 +6,13 @@ Candidate `sub_001BF8D0` - manifest lot 138, position 64; address `0x001BF8D0`; 
 - Original XBE SHA-256 `df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6`; XBE raw bytes at file offset `0x1af8d0` equal split `.s` bytes, 2860/2860; byte SHA-256 `881b07bfb3d71953d8e1605808944a9a2602db4dd19d6154ee283f3d51e83399`.
 - Fresh MSVC object and candidate object have identical `.text$mn` bytes, confirmed by ObjDiff 3.8.2: function and section 100.00%. MSVC 19.51.36260 x86 `/W4 /TC /c /O2 /GS- /Zl /Gd /Gy` compiled without diagnostics; COFF relocation count is zero for both objects.
 - Source SHA-256 `ddc712a724f992ef39a96794bfef803b38859941da8783af1a95db13bc424ea3`.
+
+## Lot 138 manifest candidate evidence (2026-10-29)
+
+- Manifest: lot 138, position 64; address order. Candidate span: 2860 bytes (0x001BF8D0 to exclusive end 0x001C03FC).
+- Boundary: Ghidra class procedure-entry; manifest span only. It does not promote an interior or unmapped span to a function boundary. Direct references list 28 incoming call sites; callers: 001c04cc@001c0450;001c052c@001c0450;001c058c@001c0450;001c05ec@001c0450;001c064c@001c0450;001c06ac@001c0450;001c070c@001c0450;001c076c@001c0450;001c07cc@001c0450;001c082c@001c0450;001c088c@001c0450;001c08ec@001c0450;001c094c@001c0450;001c09bf@001c0450;001c0a2f@001c0450;001c0a9f@001c0450;001c0b0f@001c0450;001c0b7f@001c0450;001c0bef@001c0450;001c0c5f@001c0450;001c0ccf@001c0450;001c0d3c@001c0450;001c0dac@001c0450;001c0e1f@001c0450;001c0e8f@001c0450;001c0eff@001c0450;001c0f6f@001c0450;001c042c@001c0400. Indirect-call coverage remains unknown.
+- XBE SHA-256 df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6, raw offset 0x1AF8D0; derived PE SHA-256 aabdebf414d216e67161df9ddf1dac5fd915ebb59bd2b26ae42e062c245682bd, offset 0x1AEC50. REA read_bytes evidence ev_74ac546e79d5a0ef5c0a124cf90119e310cd196c67175171db300b3166f537f6 returned 2860 bytes. XBE raw = derived PE = split = REA; span SHA-256 881b07bfb3d71953d8e1605808944a9a2602db4dd19d6154ee283f3d51e83399.
+- MSVC x86 compile passed (/W4 /TC /c /O2 /GS- /Zl /Gd /Gy). ObjDiff 3.8.2: symbol 100.00%, .text$mn 100.00%; both objects 2860 bytes.
+- Source SHA-256 ddc712a724f992ef39a96794bfef803b38859941da8783af1a95db13bc424ea3; compiled object SHA-256 7fd446dbe7b83b1aaff6c3563d3714b1cbfb0b3e3640868840fc99f2dfe00d3d; candidate object SHA-256 df43fbaf617ed1d8a805184095a3355a9609500338af68c8b83aaceecf380f7f.
+- GitHub Issue: pending; no issue number is linked for this candidate.
+- Source preserves candidate bytes with an address-pinned emitter; this is static byte exactification, not semantic C or ABI reconstruction. Xbox link, post-link XBE diff, runtime, and gameplay were not run.
