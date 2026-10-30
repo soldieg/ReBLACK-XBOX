@@ -1,9 +1,13 @@
-# Function reconstruction submissions
+# Reconstructed sources and evidence
 
-This directory is the public home for reviewed reconstruction source and sanitized evidence summaries.
+This folder pairs each reconstructed source with its function-specific evidence note.
 
-- `functions/<function-id>.c` — one reconstructed function per source file.
-- `evidence/<function-id>.md` — source identity, function range, toolchain, evidence references, and per-level validation results.
-- `validation-index.json` — maintainer-owned public ledger; only records accepted build + exact byte-diff results with an evidence link.
+| Purpose | Folder | Contents |
+|---|---|---|
+| Reconstructed code | [`functions/`](functions/) | 13,676 separate C translation units, keyed by candidate address. |
+| Explanation and evidence | [`evidence/`](evidence/) | 13,676 Markdown notes with the corresponding candidate, boundary/byte evidence, compiler and comparison record, and limitations. |
+| Combined package | [`codigo-completo/`](codigo-completo/) | Continuous source listing, source ZIP, CMake build, ObjDiff and byte comparison reports. |
 
-Use the same stable function ID in both filenames and link the related GitHub Issue from the evidence summary. Keep each result independently reviewable. The public preflight checks safe text format and evidence-file pairing; it does not compile for Xbox or compare against the target. Do not edit `validation-index.json` as a contributor: maintainers update it only after reviewing a successful target build and exact byte comparison. Do not add game files, extracted binaries, raw target byte dumps, local machine paths, or credentials. Full validation details belong in the PR and evidence summary; the dashboard is updated separately from a reviewed progress report.
+The pairing uses the function name: `functions/sub_00011000.c` corresponds to `evidence/sub_00011000.md`. Each note records the evidence available for that source at the time it was prepared. Issue and batch references in those notes are historical provenance, not live project status.
+
+These are reverse-engineered source reconstructions, including address-pinned x86/assembly bodies. They should not be read as recovered original source or as proof that every function has a complete semantic model. Byte matching, compilation, ObjDiff, Xbox linking, and runtime are separate validation levels; see the package reports and each note for the exact scope.
