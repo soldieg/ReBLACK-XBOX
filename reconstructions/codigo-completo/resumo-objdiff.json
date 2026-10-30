@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-30",
+  "tool": "objdiff-cli 3.8.2",
+  "compiler": "MSVC 19.51.36260.0 x86",
+  "flags": "/DWIN32 /D_WINDOWS /O2 /GS- /Gy /Zl /DNDEBUG /MD /Oy",
+  "source_count": 13676,
+  "object_pairs_compared": 13676,
+  "missing_compiled_or_candidate_objects": 0,
+  "candidate_project": "decompdev-refresh-20261015",
+  "candidate_metadata": "all 13,676 candidate units are marked complete=false",
+  "raw_objdiff": {
+    "score_100": 13651,
+    "score_80_to_under_100": 16,
+    "symbol_name_incomparable": 9,
+    "below_80": 0,
+    "errors": 0
+  },
+  "after_symbol_only_normalization": {
+    "score_100": 13660,
+    "score_80_to_under_100": 16,
+    "below_80": 0,
+    "normalizations": 9,
+    "code_section_hash_changed": false
+  },
+  "byte_replay_against_xbe": {
+    "candidate_intervals_matched": 13676,
+    "mismatches": 0,
+    "tracker_boundary_confirmed": 13674,
+    "tracker_boundary_unresolved": 2,
+    "unresolved_boundary_candidates": [
+      "sub_00581A58",
+      "xbe_entry_point"
+    ]
+  },
+  "review_band_functions": [
+    "sub_00030340",
+    "sub_00043050",
+    "sub_0007EB20",
+    "sub_0007EB80",
+    "sub_0007F4A0",
+    "sub_00081030",
+    "sub_00081A80",
+    "sub_00083090",
+    "sub_00085770",
+    "sub_000858A0",
+    "sub_00085BB0",
+    "sub_00085D20",
+    "sub_00085DE0",
+    "sub_0026689F",
+    "sub_00266A4A",
+    "sub_00266A93"
+  ],
+  "review_note": "The 16 ObjDiff review scores reflect differing CALL/JMP/address operand encodings in incomplete candidate COFF objects. All 16 compile-object code intervals independently match the XBE after relocation replay; keep them in ObjDiff review and do not promote them from score alone.",
+  "scope_note": "Object-level host comparison and candidate-range byte replay only. Not an Xbox link, post-link XBE comparison, runtime, gameplay, or proof of semantic reconstruction.",
+  "files": {
+    "per_function_csv": "objdiff-completo-por-funcao.csv",
+    "symbol_normalization_csv": "objdiff-normalizacao-simbolos.csv",
+    "per_function_csv_sha256": "de794221297c3c14ea59f28f68f1d4ac75eaaa8a192bc99a582e751b58bbd832",
+    "symbol_normalization_csv_sha256": "f54c6bd2117076f4dde300535b22ed215a37b8cd6443298d5e4c9636d4c05517"
+  },
+  "validation_summary_sha256_before_objdiff_update": "b2c1e38a5327cedf08805b3a77c7278ceb23a573fb0c7a6d43a571df1deff9bb"
+}
