@@ -1,23 +1,26 @@
-# Código completo reconstruído do BLACK Xbox
+# Código reconstruído completo do BLACK Xbox
 
-Este pacote reúne o código publicado no repositório e a compilação completa feita para comparação com o XBE original.
+Este pacote entrega o código reconstruído como fontes compiláveis e uma listagem integral sem cabeçalhos de proveniência.
 
-- [`black_complete_source.txt`](black_complete_source.txt): texto bruto único com o conteúdo das 13.676 fontes `.c`, cada uma identificada pelo caminho. Inclui `sub_00016630.c` corrigida. O arquivo é um dump para leitura; os marcadores separam unidades de compilação e não o tornam uma única unidade C compilável.
-- [`black_complete_source.zip`](black_complete_source.zip): as mesmas 13.676 fontes como arquivos `.c` separados, prontas para extrair e compilar com o projeto.
-- [`black_public_functions.lib`](black_public_functions.lib): biblioteca estática host x86 com os 13.676 objetos compilados. Não é executável nem XBE.
-- [`validacao-byte-a-byte.csv`](validacao-byte-a-byte.csv): resultado individual por fonte contra os intervalos candidatos do XBE.
-- `resumo-validacao.json` e `manifest.json`: contagens, versões, flags e hashes.
+- [`black_complete_source.txt`](black_complete_source.txt): listagem das 13.676 definições de função/entrada, ordenadas pelo endereço candidato no XBE. Não inclui os marcadores `SOURCE FILE` que apareciam na versão anterior.
+- [`CMakeLists.txt`](CMakeLists.txt): projeto que compila as fontes canônicas em `../functions/` como unidades C separadas e cria `black_public_functions.lib` com todos os objetos.
+- [`black_complete_source.zip`](black_complete_source.zip): fontes individuais por função, preservando a organização necessária para compilar e resolver declarações entre unidades.
+- [`black_public_functions.lib`](black_public_functions.lib): biblioteca host x86 compilada do conjunto completo.
+- [`objdiff-completo-por-funcao.csv`](objdiff-completo-por-funcao.csv), [`validacao-byte-a-byte.csv`](validacao-byte-a-byte.csv), [`resumo-objdiff.json`](resumo-objdiff.json) e [`manifest.json`](manifest.json): evidência e hashes.
 
-A tentativa de compilar os 13.676 arquivos como uma única unidade C falha porque algumas fontes declaram funções com assinaturas incompatíveis entre arquivos (MSVC C2371). Por isso o pacote preserva as unidades C independentes; a biblioteca estática reúne todos os objetos sem fundir os arquivos-fonte.
+## Compilar
 
-Resultado do build: 13.676/13.676 fontes compiladas. Resultado da comparação de bytes: 13.676/13.676 intervalos candidatos iguais após a correção local. Duas fronteiras ainda não estão confirmadas pelo tracker; esses casos permanecem candidatos e não recebem `EXACT_PASS`. Isso não comprova link Xbox, geração de XBE, execução ou gameplay.
+Com Visual Studio e MSVC x86:
 
-## Resultado ObjDiff integral (30/10/2026)
+```powershell
+cmake -S reconstructions/codigo-completo -B build/black-reconstructed -A Win32
+cmake --build build/black-reconstructed --config Release --target black_public_functions
+```
 
-- [`objdiff-completo-por-funcao.csv`](objdiff-completo-por-funcao.csv): 13.676 pares de objetos, um por fonte, com score cru, score efetivo, evidência de bytes e estado da fronteira.
-- [`objdiff-normalizacao-simbolos.csv`](objdiff-normalizacao-simbolos.csv): nove cópias temporárias tiveram somente o nome do símbolo COFF normalizado; o hash da seção `.text$mn` permaneceu igual e todos deram 100%.
-- [`resumo-objdiff.json`](resumo-objdiff.json): versões, contagens e limites.
+O CMake compila cada `.c` separadamente e arquiva todos os objetos. Assim as declarações locais de cada função não colidem como na tentativa de achatar tudo numa única unidade C. O arquivo TXT é uma leitura integral do código; para compilar, use o projeto CMake e as fontes individuais.
 
-ObjDiff bruto: 13.651/13.676 scores em 100%, 16 entre 80% e menos de 100%, nove inicialmente sem correspondência de símbolo e zero abaixo de 80%. Depois da normalização apenas dos nomes COFF, 13.660 ficaram em 100% e 16 seguem em revisão. Os 16 são diferenças de operandos de chamadas/saltos/endereço nos objetos candidatos incompletos (`complete=false`); os intervalos compilados conferem com o XBE após reaplicar relocations (0 bytes divergentes). Os dois limites de função ainda sem confirmação continuam pendentes.
+## Escopo atual
 
-ObjDiff não substitui validação de fronteira, link Xbox, comparação do XBE pós-link, runtime ou gameplay.
+As fontes preservam reconstruções x86 do snapshot GitHub, inclusive corpos `__declspec(naked)`/assembly e chamadas entre símbolos. O projeto gera biblioteca MSVC Win32; ele não é um XBE, não executa no Xbox e não é ainda um port semântico para Windows x64. Um port para PC precisará traduzir assembly, ABI, dados/globais e imports.
+
+A compilação e a comparação cobrem 13.676 unidades. Os intervalos candidatos conferiram byte a byte após replay de relocations, mas duas fronteiras (`sub_00581A58` e `xbe_entry_point`) ainda não têm confirmação independente. ObjDiff manteve 16 casos na faixa de revisão contra objetos candidatos marcados `complete=false`; eles não são promovidos a passes por score.

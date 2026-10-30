@@ -7,7 +7,7 @@
   "corrected_function": "sub_00016630",
   "corrected_source_sha256": "b60063ba87c588386a3bdb4ba8c31f3bbf94cf58ff16b01e41f7a16d9a43acc6",
   "corpus_zip_sha256": "202fb69b8ec111927e4f492ba5f4083fa41afc13ee4c655a4bea756388681eeb",
-  "library_sha256": "ffb323b42f026c546d273554c7717e1f8e035ec2ab4ea321bc79d1cdb349bcec",
+  "library_sha256": "81dccc5f3b1acb98f6576e27dfe6f925543dc2fa189553041ae530bbec89fed4",
   "validation_csv_sha256": "10278c9acdea06ce3ce74127c8073909b30deabbd14203a7444aa22ed65da46b",
   "compiler": "MSVC 19.51.36260.0 x86",
   "flags": "/DWIN32 /D_WINDOWS /O2 /GS- /Gy /Zl /DNDEBUG /MD /Oy",
@@ -20,7 +20,7 @@
   },
   "scope_note": "Candidate-range equality only; the two unresolved boundaries are not EXACT_PASS. No Xbox link, XBE, runtime, or gameplay is included.",
   "raw_source_dump": "black_complete_source.txt",
-  "raw_source_dump_sha256": "125f8f052aa6c5d4f7f89d8535603ec044d8fd7f95357ebeeb57c7381b3fee4d",
+  "raw_source_dump_sha256": "5711322640e36ce58575d2192db515b4052e806753fb0b461c70551b51bd82a6",
   "source_content_inventory_sha256": "1ba03e306b20c4f706c70f9d90932c43253f60686e0ad57712df952962ab1db0",
   "objdiff_validation": {
     "summary": "resumo-objdiff.json",
@@ -34,5 +34,9 @@
     "review_80_to_under_100": 16,
     "below_80": 0,
     "candidate_byte_replay_mismatches": 0
-  }
+  },
+  "source_order": "ascending candidate XBE address; no inserted source path markers",
+  "build_project": "CMakeLists.txt",
+  "build_output": "black_public_functions.lib",
+  "build_model": "MSVC x86; one translation unit per source; static archive contains all 13,676 function objects"
 }
