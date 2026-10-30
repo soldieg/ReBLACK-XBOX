@@ -18,5 +18,8 @@
     "boundary_confirmed_by_unique_tracker_size": 13674,
     "boundary_unresolved": 2
   },
-  "scope_note": "Candidate-range equality only; the two unresolved boundaries are not EXACT_PASS. No Xbox link, XBE, runtime, or gameplay is included."
+  "scope_note": "Candidate-range equality only; the two unresolved boundaries are not EXACT_PASS. No Xbox link, XBE, runtime, or gameplay is included.",
+  "raw_source_dump": "black_complete_source.txt",
+  "raw_source_dump_sha256": "125f8f052aa6c5d4f7f89d8535603ec044d8fd7f95357ebeeb57c7381b3fee4d",
+  "source_content_inventory_sha256": "1ba03e306b20c4f706c70f9d90932c43253f60686e0ad57712df952962ab1db0"
 }
