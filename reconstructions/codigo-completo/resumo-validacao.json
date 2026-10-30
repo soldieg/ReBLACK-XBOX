@@ -1,0 +1,21 @@
+{
+  "repository": "https://github.com/soldieg/ReBLACK-XBOX",
+  "commit": "52d4f607e1ffb5f4f6402dc06520d464ed9a1d2f",
+  "xbe_sha256": "df2739c372d254a90aeeccf5971d12097f22d89fbb90db021fda96dd4deb68f6",
+  "source_files": 13676,
+  "function_candidates": 13675,
+  "entry_point_candidates": 1,
+  "compile_pass": 13676,
+  "candidate_byte_results": {
+    "byte_match_candidate": 13676
+  },
+  "tracker_unique_size_matches": 13674,
+  "tracker_ambiguous_or_missing": 2,
+  "tracker_size_mismatches": 0,
+  "total_mismatch_bytes": 0,
+  "mismatch_sources": [],
+  "unresolved_relocations": 0,
+  "scope_limit": "Full-corpus candidate-range byte scan, not per-function EXACT_PASS. Tracker intervals and filename addresses remain candidates until boundary/callgraph evidence is independently verified; compilation/object equality does not prove semantics or runtime.",
+  "report_csv": "comparacao-completa-por-fonte.csv",
+  "byte_diff_csv": "divergencias-byte-a-byte.csv"
+}
